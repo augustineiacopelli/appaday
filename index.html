@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>AppADay — Augustine Iacopelli</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f0e0c;
+    --paper: #f5f0e8;
+    --paper-dark: #ede8df;
+    --accent: #c8401a;
+    --accent-dim: rgba(200, 64, 26, 0.12);
+    --accent-mid: rgba(200, 64, 26, 0.35);
+    --gold: #b8860b;
+    --muted: #7a7468;
+    --rule: rgba(15,14,12,0.12);
+    --card-bg: rgba(255,253,248,0.9);
+    --shadow: 0 2px 16px rgba(15,14,12,0.08), 0 1px 3px rgba(15,14,12,0.06);
+    --shadow-hover: 0 8px 32px rgba(15,14,12,0.14), 0 2px 8px rgba(15,14,12,0.08);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background-color: var(--paper);
+    color: var(--ink);
+    min-height: 100dvh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+  }
+
+  header {
+    position: relative;
+    z-index: 10;
+    padding: 64px 48px 48px;
+    border-bottom: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 24px;
+    align-items: end;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .header-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(48px, 8vw, 96px);
+    line-height: 0.92;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .header-sub {
+    font-size: 15px;
+    color: var(--muted);
+    margin-top: 20px;
+    max-width: 440px;
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  .header-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: flex-end;
+    padding-bottom: 4px;
+  }
+
+  .stat-block { text-align: right; }
+
+  .stat-number {
+    font-family: 'DM Serif Display', serif;
+    font-size: 40px;
+    line-height: 1;
+    color: var(--ink);
+  }
+
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .filter-zone {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: rgba(245, 240, 232, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .filter-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 12px 48px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .filter-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-right: 4px;
+  }
+
+  .filter-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    padding: 5px 12px;
+    border-radius: 2px;
+    border: 1px solid var(--rule);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-transform: uppercase;
+  }
+
+  .filter-btn:hover {
+    border-color: var(--accent-mid);
+    color: var(--accent);
+    background: var(--accent-dim);
+  }
+
+  .filter-btn.active {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--paper);
+  }
+
+  main {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 48px 48px 96px;
+    position: relative;
+    z-index: 5;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 28px;
+    margin-top: 56px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .section-header:first-child { margin-top: 0; }
+
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+  }
+
+  .section-code {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .section-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-left: auto;
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+
+  .app-card {
+    background: var(--card-bg);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: var(--shadow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    overflow: hidden;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  .app-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s ease;
+  }
+
+  .app-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+    border-color: rgba(15,14,12,0.18);
+  }
+
+  .app-card:hover::after { transform: scaleX(1); }
+
+  .card-number {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+  }
+
+  .card-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+
+  .card-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.55;
+    font-weight: 300;
+    flex: 1;
+  }
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 4px;
+  }
+
+  .card-cat {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 2px;
+    background: var(--accent-dim);
+    color: var(--accent);
+  }
+
+  .card-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+  }
+
+  .card-arrow {
+    position: absolute;
+    top: 24px; right: 24px;
+    font-size: 14px;
+    color: var(--muted);
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: opacity 0.2s, transform 0.2s;
+  }
+
+  .app-card:hover .card-arrow { opacity: 1; transform: translateX(0); }
+
+  .empty-state {
+    grid-column: 1 / -1;
+    padding: 64px 0;
+    text-align: center;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+  }
+
+  footer {
+    position: relative;
+    z-index: 5;
+    border-top: 1px solid var(--rule);
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 32px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-motto {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--muted);
+  }
+
+  .footer-link {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .footer-link:hover { color: var(--accent); }
+
+  /* category color overrides */
+  [data-cat="G"] .card-cat { background: rgba(39,110,183,0.1); color: #276EB7; }
+  [data-cat="U"] .card-cat { background: rgba(40,150,100,0.1); color: #289664; }
+  [data-cat="A"] .card-cat { background: rgba(140,50,180,0.1); color: #8C32B4; }
+  [data-cat="D"] .card-cat { background: rgba(184,134,11,0.1); color: var(--gold); }
+  [data-cat="P"] .card-cat { background: rgba(200,64,26,0.1); color: var(--accent); }
+
+  [data-cat="G"] .app-card::after { background: #276EB7; }
+  [data-cat="U"] .app-card::after { background: #289664; }
+  [data-cat="A"] .app-card::after { background: #8C32B4; }
+  [data-cat="D"] .app-card::after { background: var(--gold); }
+  [data-cat="P"] .app-card::after { background: var(--accent); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 768px) {
+    header { grid-template-columns: 1fr; padding: 40px 20px 32px; }
+    .header-stats { flex-direction: row; align-items: flex-start; gap: 32px; }
+    .stat-block { text-align: left; }
+    .filter-inner { padding: 10px 20px; }
+    main { padding: 32px 20px 80px; }
+    footer { padding: 24px 20px; flex-direction: column; gap: 12px; align-items: flex-start; }
+    .card-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <div class="header-eyebrow">Augustine Iacopelli · Started May 7, 2026</div>
+    <h1>App<em>A</em><br>Day</h1>
+    <p class="header-sub">One complete, functional, mobile-friendly web app built and shipped every single day. Inspired by Jonathan Mann's Song A Day.</p>
+  </div>
+  <div class="header-stats">
+    <div class="stat-block">
+      <div class="stat-number" id="total-count">0</div>
+      <div class="stat-label">Apps Shipped</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-number" id="streak-count">0</div>
+      <div class="stat-label">Day Streak</div>
+    </div>
+  </div>
+</header>
+
+<div class="filter-zone">
+  <div class="filter-inner">
+    <span class="filter-label">Filter</span>
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="G">Games</button>
+    <button class="filter-btn" data-filter="U">Utility</button>
+    <button class="filter-btn" data-filter="A">AI</button>
+    <button class="filter-btn" data-filter="D">Data</button>
+    <button class="filter-btn" data-filter="P">Productivity</button>
+  </div>
+</div>
+
+<main id="main-content"></main>
+
+<footer>
+  <span class="footer-motto">Ship something every day. It compounds.</span>
+  <a class="footer-link" href="https://github.com/augustineiacopelli" target="_blank" rel="noopener">GitHub ↗</a>
+</footer>
+
+<script>
+// ============================================================
+//  APP REGISTRY — append new objects here to add apps
+//  cat codes: G = Games · U = Utility · A = AI · D = Data · P = Productivity
+// ============================================================
+const APPS = [
+  {
+    num:"001", name:"Reaction Timer", cat:"G", date:"2026-05-07",
+    desc:"Wait for the screen to flash green — then tap as fast as you can. Tracks your last 5 attempts with a live bar chart and a running average. Under 180ms is elite.",
+    url:"https://augustineiacopelli.github.io/appaday-001-reaction-timer/"
+  },
+  {
+    num:"002", name:"Stream Cleaner", cat:"G", date:"2026-05-08",
+    desc:"Drag the hose across the urinal screen and hold to blast it clean before time runs out. Clear 80% to advance through 5 levels. Features a leaderboard, level flash animations, and a score system that rewards speed.",
+    url:"https://augustineiacopelli.github.io/appaday-002-stream-cleaner/"
+  },
+  {
+    num:"003", name:"Daily Scripture", cat:"U", date:"2026-05-09",
+    desc:"A daily scripture companion that surfaces a random Bible verse from 50 passages spanning both Testaments. Tap for a new verse, see the reference and testament label.",
+    url:"https://augustineiacopelli.github.io/appaday-003-daily-scripture/"
+  },
+  {
+    num:"004", name:"Tube Sort", cat:"A", date:"2026-05-10",
+    desc:"Snap a screenshot of any Ball Sort puzzle and let AI parse the tubes automatically. Fill in unknowns with ?, step through the BFS solution move by move, or enter tubes manually.",
+    url:"https://augustineiacopelli.github.io/appaday-004-tube-sort/"
+  },
+  {
+    num:"005", name:"Dad Joke Generator", cat:"A", date:"2026-05-11",
+    desc:"Uses the Claude API to generate fresh, original dad jokes on demand. The punchline is hidden until you're ready — because the beat before the groan is half the joke. A groan meter scores each joke from 1 to 100.",
+    url:"https://augustineiacopelli.github.io/appaday-005-dad-joke-generator/"
+  },
+  {
+    num:"006", name:"Life Calendar", cat:"D", date:"2026-05-12",
+    desc:"Enter your birthdate and a life expectancy. Every week of your life rendered as a single mark — gold for weeks lived, red for the week you're in now, dark for the weeks still ahead.",
+    url:"https://augustineiacopelli.github.io/appaday-006-life-calendar/"
+  },
+  {
+    num:"007", name:"Still Standing", cat:"P", date:"2026-05-13",
+    desc:"A personal encouragement app. Type what is weighing on your heart and receive a word of warmth drawn from 100 curated messages — each paired with a scripture verse. The input and response flip like a physical card.",
+    url:"https://augustineiacopelli.github.io/appaday-007-Still-Standing/"
+  },
+  {
+    num:"008", name:"Number Neighbors", cat:"G", date:"2026-05-14",
+    desc:"The classic 15-puzzle across three grid sizes: 3×3, 4×4, and 5×5. Every shuffle is guaranteed solvable via parity checking. Tracks move count, elapsed time, and personal best per grid size.",
+    url:"https://augustineiacopelli.github.io/appaday-008-number-neighbors/"
+  },
+  {
+    num:"009", name:"Focus Timer", cat:"P", date:"2026-05-15",
+    desc:"A Pomodoro-style focus timer with configurable work and break intervals, a circular progress ring, and a clean fullscreen mode.",
+    url:"https://augustineiacopelli.github.io/appaday-009-focus-timer/"
+  },
+  {
+    num:"010", name:"Magic 8 Ball", cat:"G", date:"2026-05-16",
+    desc:"All 20 classic responses rendered inside a glowing blue triangle window — exactly as on the real toy. A history strip tracks your last five verdicts, color-coded by outcome type.",
+    url:"https://augustineiacopelli.github.io/appaday-010-magic-8-ball/"
+  },
+  {
+    num:"011", name:"Password Sculptor", cat:"U", date:"2026-05-17",
+    desc:"Generates secure passwords using the browser's Web Crypto API. Control length, character sets, and ambiguous character exclusion. A live strength meter calculates Shannon entropy and labels the result from Very Weak through Fortress.",
+    url:"https://augustineiacopelli.github.io/appaday-011-password-sculptor/"
+  },
+  {
+    num:"012", name:"Prayer Intentions", cat:"P", date:"2026-05-18",
+    desc:"A quiet, devotional app for capturing and praying through personal intentions. Add the names and intentions of those you're carrying in prayer, then work through them one card at a time.",
+    url:"https://augustineiacopelli.github.io/appaday-012-prayer-intentions/"
+  },
+  {
+    num:"013", name:"Flick", cat:"G", date:"2026-05-19",
+    desc:"Two players take turns flicking pucks across a divided board. A gold blast token appears randomly — hit it to trigger a shockwave that sends every puck flying. Most pucks in the opponent's zone when all pucks are played wins.",
+    url:"https://augustineiacopelli.github.io/appaday-013-flick/"
+  },
+  {
+    num:"014", name:"Countdown Wall", cat:"P", date:"2026-05-20",
+    desc:"A personal countdown tracker built for your phone's home screen. Add named events, assign a color, and see every upcoming date as a big, beautiful day count. Cards sort automatically — soonest first, past events last.",
+    url:"https://augustineiacopelli.github.io/appaday-014-countdown-wall/"
+  },
+  {
+    num:"015", name:"Quest Log", cat:"P", date:"2026-05-21",
+    desc:"A Minecraft-inspired homework tracker where assignments become quests. Check one off and earn a randomized achievement toast with XP. Level up to unlock new badge tiers — from Starter all the way to Grandmaster.",
+    url:"https://augustineiacopelli.github.io/appaday-015-quest-log/"
+  },
+  {
+    num:"016", name:"Chug Roulette", cat:"G", date:"2026-05-22",
+    desc:"A spin-the-wheel party drinking game inspired by the Beer Mile. Spin for a random challenge — chugs, waterfalls, rule-making, swaps, or a full DNF penalty. Add your group as Runners and the wheel cycles through players by name.",
+    url:"https://augustineiacopelli.github.io/appaday-016-chug-roulette/"
+  },
+  {
+    num:"017", name:"Session Scribe", cat:"A", date:"2026-05-23",
+    desc:"Record any conference session in the browser. The Web Speech API transcribes audio in real time. When you stop, Claude returns structured notes: a summary, Roman-numeral outline, key takeaways, notable quotes, and follow-up questions.",
+    url:"https://augustineiacopelli.github.io/appaday-017-session-scribe/"
+  },
+  {
+    num:"018", name:"Still Water", cat:"G", date:"2026-05-24",
+    desc:"A meditative tap-to-explore experience. A dark, living pond with subtle caustic shimmer lines. Tap anywhere to cast ripples. Eight hidden objects wait to be found — land close enough and they surface with a glow. No timer. No fail state.",
+    url:"https://augustineiacopelli.github.io/appaday-018-still-water/"
+  },
+  {
+    num:"019", name:"Tone Translator", cat:"A", date:"2026-05-25",
+    desc:"Paste any text and translate it into a different tone. Four options: Formal, Casual, Direct, and Warm. Claude rewrites your text while preserving the core meaning.",
+    url:"https://augustineiacopelli.github.io/appaday-019-tone-translator/"
+  },
+  {
+    num:"020", name:"Rainbow Readers", cat:"G", date:"2026-05-26",
+    desc:"A four-level phonics game for early readers ages 4–7. Tap the correct starting letter, identify full words, trace guide letters in rainbow ink with your finger, and progress through whole words one letter at a time.",
+    url:"https://augustineiacopelli.github.io/appaday-020-rainbow-readers/"
+  },
+  {
+    num:"021", name:"Bolt Patrol", cat:"G", date:"2026-05-27",
+    desc:"A Sonic-inspired side-scrolling runner. Roll through 8 zones, stomp enemies, collect rings, and survive long enough to destroy the Death Egg.",
+    url:"https://augustineiacopelli.github.io/appaday-021-bolt-patrol/"
+  },
+  {
+    num:"022", name:"Haiku Engine", cat:"A", date:"2026-05-28",
+    desc:"Enter any topic or mood — morning fog, grief, a long flight home — and receive an original 5-7-5 haiku with a short reflection on the imagery choices that shaped it.",
+    url:"https://augustineiacopelli.github.io/appaday-022-haiku-engine/"
+  },
+  {
+    num:"023", name:"Beer Tasting Scorecard", cat:"U", date:"2026-05-29",
+    desc:"Rate beers one at a time on four attributes with large tap-friendly sliders. Built for group tastings on the go — bus tours, tap rooms, homebrew club events.",
+    url:"https://augustineiacopelli.github.io/appaday-023-beer-tasting-scorecard/"
+  },
+  {
+    num:"024", name:"Budget Ring", cat:"D", date:"2026-05-30",
+    desc:"A spending visualizer that renders up to 8 budget categories as a live donut chart with percentage labels. Enter category names and amounts, watch the ring update instantly, and email yourself a plain-text report with one tap.",
+    url:"https://augustineiacopelli.github.io/appaday-024-budget-ring/"
+  },
+  {
+    num:"025", name:"Chroma", cat:"U", date:"2026-05-31",
+    desc:"Extract a full set of color palettes from any input color. Five ways to enter a color, seven palette sections generated instantly, every hex value click-to-copy, and a one-tap email to send your palette anywhere.",
+    url:"https://augustineiacopelli.github.io/appaday-025-chroma/"
+  },
+  {
+    num:"026", name:"Tippy Tip", cat:"U", date:"2026-06-01",
+    desc:"A mobile-friendly Italian tipping guide for travelers. Select your situation, enter relevant details, and get culturally accurate tip guidance — including whether a tip is expected, optional, or not needed, plus a phrase to say in Italian.",
+    url:"https://augustineiacopelli.github.io/appaday-026-tippy-tip/"
+  },
+  // — Add new apps below this line —
+  // { num:"027", name:"App Name", cat:"X", date:"YYYY-MM-DD", desc:"One sentence description.", url:"https://augustineiacopelli.github.io/appaday-027-app-name/" },
+];
+
+// ============================================================
+//  CATEGORY METADATA
+// ============================================================
+const CATS = {
+  G: { label: "Games & Interactive", plural: "Games" },
+  U: { label: "Utility Tools",       plural: "Utility" },
+  A: { label: "AI-Powered Tools",    plural: "AI-Powered" },
+  D: { label: "Data Viz",            plural: "Data" },
+  P: { label: "Productivity & Life", plural: "Productivity" },
+};
+const CAT_ORDER = ["G","U","A","D","P"];
+
+// ============================================================
+//  HELPERS
+// ============================================================
+function formatDate(iso) {
+  const [y,m,d] = iso.split("-");
+  return new Date(y, m-1, d).toLocaleDateString("en-US", { month:"short", day:"numeric", year:"numeric" });
+}
+
+function calcStreak() {
+  const sorted = [...APPS].sort((a,b) => b.date.localeCompare(a.date));
+  let streak = 0, prev = null;
+  for (const app of sorted) {
+    if (!prev) { streak = 1; prev = app.date; continue; }
+    const diff = Math.round((new Date(prev) - new Date(app.date)) / 86400000);
+    if (diff === 1) { streak++; prev = app.date; } else break;
+  }
+  return streak;
+}
+
+// ============================================================
+//  CARD FACTORY
+// ============================================================
+function makeCard(app, index) {
+  const a = document.createElement("a");
+  a.className = "app-card";
+  a.href = app.url;
+  a.target = "_blank";
+  a.rel = "noopener";
+  a.setAttribute("data-cat", app.cat);
+  a.style.animationDelay = `${index * 35}ms`;
+  a.innerHTML = `
+    <span class="card-arrow">↗</span>
+    <div class="card-number">${app.num}</div>
+    <div class="card-name">${app.name}</div>
+    <div class="card-desc">${app.desc}</div>
+    <div class="card-footer">
+      <span class="card-cat">${CATS[app.cat].plural}</span>
+      <span class="card-date">${formatDate(app.date)}</span>
+    </div>
+  `;
+  return a;
+}
+
+// ============================================================
+//  RENDER
+// ============================================================
+function buildCards(filter) {
+  const main = document.getElementById("main-content");
+  main.innerHTML = "";
+  const visible = filter === "all" ? APPS : APPS.filter(a => a.cat === filter);
+
+  if (filter === "all") {
+    CAT_ORDER.forEach(cat => {
+      const group = visible.filter(a => a.cat === cat);
+      if (!group.length) return;
+      const sec = document.createElement("div");
+      sec.setAttribute("data-cat", cat);
+      const hdr = document.createElement("div");
+      hdr.className = "section-header";
+      hdr.innerHTML = `
+        <span class="section-title">${CATS[cat].label}</span>
+        <span class="section-code">${cat}</span>
+        <span class="section-count">${group.length} app${group.length !== 1 ? "s" : ""}</span>
+      `;
+      sec.appendChild(hdr);
+      const grid = document.createElement("div");
+      grid.className = "card-grid";
+      group.forEach((app, i) => grid.appendChild(makeCard(app, i)));
+      sec.appendChild(grid);
+      main.appendChild(sec);
+    });
+  } else {
+    const grid = document.createElement("div");
+    grid.className = "card-grid";
+    if (!visible.length) {
+      const emp = document.createElement("div");
+      emp.className = "empty-state";
+      emp.textContent = "No apps in this category yet.";
+      grid.appendChild(emp);
+    } else {
+      visible.forEach((app, i) => grid.appendChild(makeCard(app, i)));
+    }
+    main.appendChild(grid);
+  }
+
+  document.getElementById("total-count").textContent = APPS.length;
+  document.getElementById("streak-count").textContent = calcStreak();
+}
+
+// ============================================================
+//  FILTER BUTTONS
+// ============================================================
+document.querySelectorAll(".filter-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    buildCards(btn.dataset.filter);
+  });
+});
+
+buildCards("all");
+</script>
+</body>
+</html>
