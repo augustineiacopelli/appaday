@@ -413,6 +413,7 @@
     <button class="filter-btn" data-filter="A">AI</button>
     <button class="filter-btn" data-filter="D">Data</button>
     <button class="filter-btn" data-filter="P">Productivity</button>
+    <button class="filter-btn" data-filter="S">Spirituality</button>
   </div>
 </div>
 
@@ -426,7 +427,7 @@
 <script>
 // ============================================================
 //  APP REGISTRY — append new objects here to add apps
-//  cat codes: G = Games · U = Utility · A = AI · D = Data · P = Productivity
+//  cat codes: G = Games · U = Utility · A = AI · D = Data · P = Productivity · S = Spirituality
 // ============================================================
 const APPS = [
   {
@@ -440,7 +441,7 @@ const APPS = [
     url:"https://augustineiacopelli.github.io/appaday-002-stream-cleaner/"
   },
   {
-    num:"003", name:"Daily Scripture", cat:"U", date:"2026-05-10",
+    num:"003", name:"Daily Scripture", cat:"S", date:"2026-05-10",
     desc:"A daily scripture companion that surfaces a random Bible verse from 50 passages spanning both Testaments. Tap for a new verse, see the reference and testament label.",
     url:"https://augustineiacopelli.github.io/appaday-003-daily-scripture/"
   },
@@ -485,7 +486,7 @@ const APPS = [
     url:"https://augustineiacopelli.github.io/appaday-011-password-sculptor/"
   },
   {
-    num:"012", name:"Prayer Intentions", cat:"P", date:"2026-05-19",
+    num:"012", name:"Prayer Intentions", cat:"S", date:"2026-05-19",
     desc:"A quiet, devotional app for capturing and praying through personal intentions. Add the names and intentions of those you're carrying in prayer, then work through them one card at a time.",
     url:"https://augustineiacopelli.github.io/appaday-012-prayer-intentions/"
   },
@@ -592,6 +593,7 @@ const CATS = {
   A: { label: "AI-Powered Tools",    plural: "AI-Powered" },
   D: { label: "Data Viz",            plural: "Data" },
   P: { label: "Productivity & Life", plural: "Productivity" },
+  S: { label: "Spirituality",         plural: "Spirituality" },
 };
 const CAT_ORDER = ["G","U","A","D","P"];
 
