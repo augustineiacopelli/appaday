@@ -2,734 +2,1107 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>AppADay — Augustine Iacopelli</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>036 \u2014 Sivam Nocab</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --ink: #0f0e0c;
-    --paper: #f5f0e8;
-    --paper-dark: #ede8df;
-    --accent: #c8401a;
-    --accent-dim: rgba(200, 64, 26, 0.12);
-    --accent-mid: rgba(200, 64, 26, 0.35);
-    --gold: #b8860b;
-    --muted: #7a7468;
-    --rule: rgba(15,14,12,0.12);
-    --card-bg: rgba(255,253,248,0.9);
-    --shadow: 0 2px 16px rgba(15,14,12,0.08), 0 1px 3px rgba(15,14,12,0.06);
-    --shadow-hover: 0 8px 32px rgba(15,14,12,0.14), 0 2px 8px rgba(15,14,12,0.08);
-  }
-
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
+
+  :root {
+    --green:   #39ff14;
+    --green-dim: #1a7a00;
+    --green-mid: #22cc00;
+    --red:     #ff3333;
+    --amber:   #ffb000;
+    --bg:      #0a0f0a;
+    --bezel:   #1c1c1c;
+    --screen:  #050d05;
+    --text:    #39ff14;
+  }
 
   body {
-    font-family: 'DM Sans', sans-serif;
-    background-color: var(--paper);
-    color: var(--ink);
+    background: #111;
     min-height: 100dvh;
-    overflow-x: hidden;
-  }
-
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.035;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-    background-size: 200px 200px;
-  }
-
-  header {
-    position: relative;
-    z-index: 10;
-    padding: 64px 48px 48px;
-    border-bottom: 1px solid var(--rule);
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 24px;
-    align-items: end;
-    max-width: 1280px;
-    margin: 0 auto;
-  }
-
-  .header-eyebrow {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 12px;
-  }
-
-  h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(48px, 8vw, 96px);
-    line-height: 0.92;
-    letter-spacing: -0.02em;
-    color: var(--ink);
-  }
-
-  h1 em {
-    font-style: italic;
-    color: var(--accent);
-  }
-
-  .header-sub {
-    font-size: 15px;
-    color: var(--muted);
-    margin-top: 20px;
-    max-width: 440px;
-    line-height: 1.6;
-    font-weight: 300;
-  }
-
-  .header-stats {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    align-items: flex-end;
-    padding-bottom: 4px;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Share Tech Mono', monospace;
+    padding: 16px;
   }
 
-  .stat-block { text-align: right; }
-
-  .stat-number {
-    font-family: 'DM Serif Display', serif;
-    font-size: 40px;
-    line-height: 1;
-    color: var(--ink);
+  /* CRT BEZEL */
+  .bezel {
+    background: var(--bezel);
+    border-radius: 18px;
+    padding: 24px 20px 28px;
+    box-shadow:
+      0 0 0 3px #333,
+      0 0 0 6px #222,
+      0 8px 40px rgba(0,0,0,0.9),
+      inset 0 2px 4px rgba(255,255,255,0.04);
+    width: 100%;
+    max-width: 780px;
+    height: 100%;
+    max-height: calc(100dvh - 32px);
+    display: flex;
+    flex-direction: column;
+    position: relative;
   }
 
-  .stat-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.15em;
+  .bezel-label {
+    font-family: 'VT323', monospace;
+    font-size: 11px;
+    color: #555;
+    text-align: center;
+    letter-spacing: 4px;
     text-transform: uppercase;
-    color: var(--muted);
-    margin-top: 2px;
+    margin-bottom: 10px;
   }
 
-  .filter-zone {
-    position: sticky;
-    top: 0;
-    z-index: 20;
-    background: rgba(245, 240, 232, 0.92);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--rule);
+  /* CRT SCREEN */
+  .screen {
+    background: var(--screen);
+    border-radius: 8px;
+    padding: 24px 20px;
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+      inset 0 0 60px rgba(0,0,0,0.8),
+      inset 0 0 20px rgba(57,255,20,0.04),
+      0 0 20px rgba(57,255,20,0.08);
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
   }
 
-  .filter-inner {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 12px 48px;
+  /* Scanlines */
+  .screen::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 3px,
+      rgba(0,0,0,0.18) 3px,
+      rgba(0,0,0,0.18) 4px
+    );
+    pointer-events: none;
+    z-index: 10;
+    border-radius: 8px;
+  }
+
+  /* Phosphor glow flicker */
+  @keyframes flicker {
+    0%,100% { opacity: 1; }
+    92% { opacity: 1; }
+    93% { opacity: 0.96; }
+    94% { opacity: 1; }
+    97% { opacity: 0.98; }
+    98% { opacity: 1; }
+  }
+  .screen-inner {
+    animation: flicker 8s infinite;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+  }
+
+  /* HEADER */
+  .app-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--green-dim);
+    padding-bottom: 12px;
+  }
+  .app-num {
+    font-family: 'VT323', monospace;
+    font-size: 14px;
+    color: var(--green-dim);
+    letter-spacing: 2px;
+  }
+  .app-title {
+    font-family: 'VT323', monospace;
+    font-size: 28px;
+    color: var(--green);
+    letter-spacing: 3px;
+    text-shadow: 0 0 8px rgba(57,255,20,0.6);
+  }
+  .app-sub {
+    font-size: 11px;
+    color: var(--green-dim);
+    margin-left: auto;
+    letter-spacing: 1px;
+  }
+
+  /* OPERATOR BADGE */
+  .operator-badge {
     display: flex;
     align-items: center;
     gap: 8px;
-    flex-wrap: wrap;
-  }
-
-  .filter-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-right: 4px;
-  }
-
-  .filter-btn {
-    font-family: 'DM Mono', monospace;
     font-size: 11px;
-    letter-spacing: 0.08em;
-    padding: 5px 12px;
-    border-radius: 2px;
-    border: 1px solid var(--rule);
-    background: transparent;
-    color: var(--muted);
-    cursor: pointer;
-    transition: all 0.15s ease;
-    text-transform: uppercase;
-  }
-
-  .filter-btn:hover {
-    border-color: var(--accent-mid);
-    color: var(--accent);
-    background: var(--accent-dim);
-  }
-
-  .filter-btn.active {
-    background: var(--ink);
-    border-color: var(--ink);
-    color: var(--paper);
-  }
-
-  main {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 48px 48px 96px;
-    position: relative;
-    z-index: 5;
-  }
-
-  .section-header {
-    display: flex;
-    align-items: baseline;
-    gap: 16px;
-    margin-bottom: 28px;
-    margin-top: 56px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid var(--rule);
-  }
-
-  .section-header:first-child { margin-top: 0; }
-
-  .section-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: 22px;
-    letter-spacing: -0.01em;
-  }
-
-  .section-code {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-
-  .section-count {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
+    color: var(--green-dim);
+    letter-spacing: 1px;
     margin-left: auto;
   }
-
-  .card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 16px;
+  .operator-name {
+    color: var(--green);
+    text-shadow: 0 0 6px rgba(57,255,20,0.4);
   }
+  .switch-link {
+    background: none;
+    border: none;
+    color: var(--green-dim);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0;
+  }
+  .switch-link:hover { color: var(--green); }
 
-  .app-card {
-    background: var(--card-bg);
-    border: 1px solid var(--rule);
-    border-radius: 4px;
-    padding: 24px;
+  /* LOGIN OVERLAY */
+  .login-screen {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    box-shadow: var(--shadow);
-    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-    cursor: pointer;
-    text-decoration: none;
-    color: inherit;
-    position: relative;
-    overflow: hidden;
-    animation: fadeUp 0.4s ease both;
-  }
-
-  .app-card::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 2px;
-    background: var(--accent);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.25s ease;
-  }
-
-  .app-card:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-hover);
-    border-color: rgba(15,14,12,0.18);
-  }
-
-  .app-card:hover::after { transform: scaleX(1); }
-
-  .card-number {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    color: var(--muted);
-  }
-
-  .card-name {
-    font-family: 'DM Serif Display', serif;
-    font-size: 20px;
-    line-height: 1.15;
-    letter-spacing: -0.01em;
-    color: var(--ink);
-  }
-
-  .card-desc {
-    font-size: 13px;
-    color: var(--muted);
-    line-height: 1.55;
-    font-weight: 300;
+    align-items: center;
+    justify-content: center;
     flex: 1;
-  }
-
-  .card-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 4px;
-  }
-
-  .card-cat {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 3px 8px;
-    border-radius: 2px;
-    background: var(--accent-dim);
-    color: var(--accent);
-  }
-
-  .card-date {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    letter-spacing: 0.06em;
-  }
-
-  .card-arrow {
-    position: absolute;
-    top: 24px; right: 24px;
-    font-size: 14px;
-    color: var(--muted);
-    opacity: 0;
-    transform: translateX(-4px);
-    transition: opacity 0.2s, transform 0.2s;
-  }
-
-  .app-card:hover .card-arrow { opacity: 1; transform: translateX(0); }
-
-  .empty-state {
-    grid-column: 1 / -1;
-    padding: 64px 0;
+    min-height: 0;
     text-align: center;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-    font-size: 13px;
-    letter-spacing: 0.08em;
+    padding: 20px 10px;
+  }
+  .login-title {
+    font-family: 'VT323', monospace;
+    font-size: 26px;
+    color: var(--green);
+    letter-spacing: 4px;
+    text-shadow: 0 0 10px rgba(57,255,20,0.6);
+    margin-bottom: 4px;
+  }
+  .login-sub {
+    font-size: 11px;
+    color: var(--green-dim);
+    letter-spacing: 2px;
+    margin-bottom: 24px;
+  }
+  .profile-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    max-width: 320px;
+    margin-bottom: 20px;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  .profile-btn {
+    background: rgba(57,255,20,0.04);
+    border: 1px solid var(--green-dim);
+    color: var(--green);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 14px;
+    padding: 10px 14px;
+    border-radius: 3px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    letter-spacing: 1px;
+    transition: all 0.1s;
+  }
+  .profile-btn:hover {
+    background: rgba(57,255,20,0.1);
+    border-color: var(--green);
+    box-shadow: 0 0 10px rgba(57,255,20,0.15);
+  }
+  .profile-btn span.pb-stats {
+    font-size: 10px;
+    color: var(--green-dim);
+    letter-spacing: 1px;
+  }
+  .login-divider {
+    width: 100%;
+    max-width: 320px;
+    border-top: 1px solid var(--green-dim);
+    opacity: 0.4;
+    margin: 4px 0 16px;
+  }
+  .login-input-row {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    max-width: 320px;
+  }
+  .login-input {
+    flex: 1;
+    background: rgba(57,255,20,0.03);
+    border: 1px solid var(--green-dim);
+    border-radius: 4px;
+    color: var(--green);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 16px;
+    padding: 10px;
+    outline: none;
+    caret-color: var(--green);
+    letter-spacing: 1px;
+    -webkit-appearance: none;
+  }
+  .login-input:focus {
+    border-color: var(--green);
+    box-shadow: 0 0 10px rgba(57,255,20,0.12);
+  }
+  .login-input::placeholder { color: var(--green-dim); opacity: 0.6; }
+  .login-go {
+    background: transparent;
+    border: 1px solid var(--green);
+    color: var(--green);
+    font-family: 'VT323', monospace;
+    font-size: 18px;
+    padding: 0 18px;
+    border-radius: 4px;
+    cursor: pointer;
+    letter-spacing: 2px;
+    text-shadow: 0 0 6px rgba(57,255,20,0.4);
+  }
+  .login-go:hover { background: rgba(57,255,20,0.1); }
+  .login-error {
+    font-size: 10px;
+    color: var(--red);
+    letter-spacing: 1px;
+    margin-top: 10px;
+    min-height: 14px;
   }
 
-  footer {
-    position: relative;
-    z-index: 5;
-    border-top: 1px solid var(--rule);
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 32px 48px;
+  #app-main {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+  }
+
+  /* STATS BAR */
+  .stats-bar {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .stat-val {
+    font-family: 'VT323', monospace;
+    font-size: 36px;
+    color: var(--green);
+    text-shadow: 0 0 10px rgba(57,255,20,0.5);
+    line-height: 1;
+  }
+  .stat-lbl {
+    font-size: 10px;
+    color: var(--green-dim);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+  .stat-divider {
+    width: 1px;
+    background: var(--green-dim);
+    opacity: 0.4;
+    align-self: stretch;
+    margin: 4px 0;
+  }
+
+  /* LESSON SELECTOR */
+  .lesson-row {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
   }
-
-  .footer-motto {
-    font-family: 'DM Serif Display', serif;
-    font-style: italic;
-    font-size: 15px;
-    color: var(--muted);
-  }
-
-  .footer-link {
-    font-family: 'DM Mono', monospace;
+  .lesson-lbl {
     font-size: 11px;
-    letter-spacing: 0.1em;
+    color: var(--green-dim);
+    letter-spacing: 2px;
+    white-space: nowrap;
+  }
+  .lesson-btns {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .lesson-btn {
+    background: transparent;
+    border: 1px solid var(--green-dim);
+    color: var(--green-dim);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 2px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: all 0.1s;
+    white-space: nowrap;
+  }
+  .lesson-btn:hover, .lesson-btn.active {
+    background: rgba(57,255,20,0.1);
+    border-color: var(--green);
+    color: var(--green);
+    text-shadow: 0 0 6px rgba(57,255,20,0.5);
+  }
+
+  /* TARGET TEXT */
+  .target-label {
+    font-size: 10px;
+    color: var(--green-dim);
+    letter-spacing: 3px;
+    margin-bottom: 6px;
+  }
+  .target-text {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: clamp(14px, 2.5vw, 18px);
+    line-height: 1.9;
+    color: var(--green-dim);
+    margin-bottom: 14px;
+    word-break: break-all;
+    letter-spacing: 0.5px;
+    background: rgba(57,255,20,0.02);
+    padding: 8px 10px;
+    border-radius: 4px;
+    border: 1px solid rgba(57,255,20,0.08);
+  }
+  .target-text span.correct  { color: var(--green-mid); }
+  .target-text span.wrong    { color: var(--red); background: rgba(255,51,51,0.15); }
+  .target-text span.cursor   { border-bottom: 2px solid var(--green); }
+  .target-text span.pending  { color: #2a5520; }
+
+  @keyframes blink { 0%,49%{opacity:1} 50%,100%{opacity:0} }
+  .target-text span.cursor { animation: blink 0.75s step-end infinite; }
+
+  /* INPUT AREA */
+  .input-label {
+    font-size: 10px;
+    color: var(--green-dim);
+    letter-spacing: 3px;
+    margin-bottom: 6px;
+  }
+  .typing-input {
+    width: 100%;
+    background: rgba(57,255,20,0.03);
+    border: 1px solid var(--green-dim);
+    border-radius: 4px;
+    color: var(--green);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: clamp(14px, 2.5vw, 18px);
+    padding: 10px;
+    outline: none;
+    caret-color: var(--green);
+    letter-spacing: 0.5px;
+    resize: none;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+  }
+  .typing-input:focus {
+    border-color: var(--green);
+    box-shadow: 0 0 10px rgba(57,255,20,0.12);
+  }
+  .typing-input:disabled {
+    opacity: 0.5;
+  }
+
+  /* RESULT OVERLAY */
+  .result-panel {
+    display: none;
+    text-align: center;
+    padding: 20px 10px;
+  }
+  .result-panel.show { display: block; }
+  .result-grade {
+    font-family: 'VT323', monospace;
+    font-size: 72px;
+    line-height: 1;
+    text-shadow: 0 0 20px currentColor;
+    margin-bottom: 8px;
+  }
+  .grade-s { color: var(--green); }
+  .grade-a { color: #88ff44; }
+  .grade-b { color: var(--amber); }
+  .grade-c { color: #ff8800; }
+  .grade-d { color: var(--red); }
+
+  .result-stats {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin: 16px 0;
+    flex-wrap: wrap;
+  }
+  .result-stat-val {
+    font-family: 'VT323', monospace;
+    font-size: 42px;
+    color: var(--green);
+    text-shadow: 0 0 10px rgba(57,255,20,0.4);
+    line-height: 1;
+  }
+  .result-stat-lbl {
+    font-size: 10px;
+    color: var(--green-dim);
+    letter-spacing: 2px;
     text-transform: uppercase;
-    color: var(--muted);
+  }
+  .result-msg {
+    font-size: 13px;
+    color: var(--green-dim);
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+  }
+
+  /* BUTTONS */
+  .btn-primary {
+    background: transparent;
+    border: 2px solid var(--green);
+    color: var(--green);
+    font-family: 'VT323', monospace;
+    font-size: 24px;
+    padding: 8px 32px;
+    border-radius: 3px;
+    cursor: pointer;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-shadow: 0 0 8px rgba(57,255,20,0.5);
+    box-shadow: 0 0 10px rgba(57,255,20,0.1);
+    transition: all 0.15s;
+  }
+  .btn-primary:hover {
+    background: rgba(57,255,20,0.12);
+    box-shadow: 0 0 20px rgba(57,255,20,0.25);
+  }
+
+  /* FOOTER */
+  .screen-footer {
+    margin-top: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+    border-top: 1px solid var(--green-dim);
+    opacity: 0.6;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .screen-footer a {
+    color: var(--green-dim);
     text-decoration: none;
-    transition: color 0.15s;
+    font-size: 10px;
+    letter-spacing: 2px;
+  }
+  .screen-footer a:hover { color: var(--green); }
+  .screen-footer span {
+    font-size: 10px;
+    color: var(--green-dim);
+    letter-spacing: 1px;
   }
 
-  .footer-link:hover { color: var(--accent); }
-
-  /* category color overrides */
-  [data-cat="G"] .card-cat { background: rgba(39,110,183,0.1); color: #276EB7; }
-  [data-cat="U"] .card-cat { background: rgba(40,150,100,0.1); color: #289664; }
-  [data-cat="A"] .card-cat { background: rgba(140,50,180,0.1); color: #8C32B4; }
-  [data-cat="D"] .card-cat { background: rgba(184,134,11,0.1); color: var(--gold); }
-  [data-cat="P"] .card-cat { background: rgba(200,64,26,0.1); color: var(--accent); }
-
-  [data-cat="G"] .app-card::after { background: #276EB7; }
-  [data-cat="U"] .app-card::after { background: #289664; }
-  [data-cat="A"] .app-card::after { background: #8C32B4; }
-  [data-cat="D"] .app-card::after { background: var(--gold); }
-  [data-cat="P"] .app-card::after { background: var(--accent); }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 1; transform: translateY(0); }
+  /* PROGRESS BAR */
+  .progress-track {
+    height: 3px;
+    background: rgba(57,255,20,0.1);
+    border-radius: 2px;
+    margin-bottom: 14px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--green);
+    box-shadow: 0 0 6px var(--green);
+    transition: width 0.1s;
+    width: 0%;
   }
 
-  @media (max-width: 768px) {
-    header { grid-template-columns: 1fr; padding: 40px 20px 32px; }
-    .header-stats { flex-direction: row; align-items: flex-start; gap: 32px; }
-    .stat-block { text-align: left; }
-    .filter-inner { padding: 10px 20px; }
-    main { padding: 32px 20px 80px; }
-    footer { padding: 24px 20px; flex-direction: column; gap: 12px; align-items: flex-start; }
-    .card-grid { grid-template-columns: 1fr; }
+  /* MOBILE */
+  @media (max-width: 500px) {
+    .bezel { padding: 14px 10px 18px; }
+    .screen { padding: 16px 12px; }
+    .app-title { font-size: 22px; }
+    .stat-val { font-size: 28px; }
+    .stats-bar { gap: 16px; }
   }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="header-left">
-    <div class="header-eyebrow">Augustine Iacopelli · Started May 7, 2026</div>
-    <h1>App<em>A</em><br>Day</h1>
-    <p class="header-sub">One complete, functional, mobile-friendly web app built and shipped every single day. Inspired by Jonathan Mann's Song A Day.</p>
-  </div>
-  <div class="header-stats">
-    <div class="stat-block">
-      <div class="stat-number" id="total-count">0</div>
-      <div class="stat-label">Apps Shipped</div>
-    </div>
-    <div class="stat-block">
-      <div class="stat-number" id="streak-count">0</div>
-      <div class="stat-label">Day Streak</div>
-    </div>
-  </div>
-</header>
+<div class="bezel">
+  <div class="bezel-label">SIVAM NOCAB TYPING SYSTEM \u2014 REV 1.0</div>
+  <div class="screen">
+    <div class="screen-inner">
 
-<div class="filter-zone">
-  <div class="filter-inner">
-    <span class="filter-label">Filter</span>
-    <button class="filter-btn active" data-filter="all">All</button>
-    <button class="filter-btn" data-filter="G">Games</button>
-    <button class="filter-btn" data-filter="U">Utility</button>
-    <button class="filter-btn" data-filter="A">AI</button>
-    <button class="filter-btn" data-filter="D">Data</button>
-    <button class="filter-btn" data-filter="P">Productivity</button>
-    <button class="filter-btn" data-filter="S">Spirituality</button>
+      <!-- LOGIN SCREEN -->
+      <div class="login-screen" id="login-screen">
+        <div class="login-title">OPERATOR LOGIN</div>
+        <div class="login-sub">SELECT OR CREATE A PROFILE TO BEGIN</div>
+        <div class="profile-list" id="profile-list"></div>
+        <div class="login-divider" id="login-divider" style="display:none;"></div>
+        <div class="login-input-row">
+          <input type="text" class="login-input" id="profile-input" placeholder="ENTER NEW NAME" maxlength="16" autocomplete="off" autocapitalize="off" spellcheck="false">
+          <button class="login-go" onclick="createProfile()">GO</button>
+        </div>
+        <div class="login-error" id="login-error"></div>
+      </div>
+
+      <!-- MAIN APP (hidden until login) -->
+      <div id="app-main" style="display:none;">
+
+      <!-- HEADER -->
+      <div class="app-header">
+        <span class="app-num">APP 036</span>
+        <span class="app-title">SIVAM NOCAB</span>
+        <span class="app-sub" id="app-sub-label">TYPING TRAINER</span>
+        <div class="operator-badge" id="operator-badge" style="display:none;">
+          <span>OPERATOR:</span>
+          <span class="operator-name" id="operator-name"></span>
+          <button class="switch-link" onclick="switchProfile()">SWITCH</button>
+        </div>
+      </div>
+
+      <!-- STATS -->
+      <div class="stats-bar">
+        <div class="stat">
+          <span class="stat-val" id="wpm-val">0</span>
+          <span class="stat-lbl">WPM</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-val" id="acc-val">100</span>
+          <span class="stat-lbl">ACC %</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-val" id="streak-val">0</span>
+          <span class="stat-lbl">STREAK</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-val" id="best-val">0</span>
+          <span class="stat-lbl">BEST WPM</span>
+        </div>
+      </div>
+
+      <!-- LESSON SELECTOR -->
+      <div class="lesson-row">
+        <span class="lesson-lbl">LESSON:</span>
+        <div class="lesson-btns" id="lesson-btns"></div>
+      </div>
+
+      <!-- MAIN TYPING AREA (shown during typing) -->
+      <div id="typing-area">
+        <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+        <div class="target-label">TARGET</div>
+        <div class="target-text" id="target-display"></div>
+        <div class="input-label">YOUR INPUT</div>
+        <textarea class="typing-input" id="typing-input" rows="3" spellcheck="false" autocorrect="off" autocapitalize="off" autocomplete="off" placeholder="Start typing to begin..."></textarea>
+      </div>
+
+      <!-- RESULT PANEL (shown on completion) -->
+      <div class="result-panel" id="result-panel">
+        <div class="result-grade" id="result-grade">S</div>
+        <div class="result-stats">
+          <div class="stat">
+            <div class="result-stat-val" id="r-wpm">0</div>
+            <div class="result-stat-lbl">WPM</div>
+          </div>
+          <div class="stat">
+            <div class="result-stat-val" id="r-acc">0</div>
+            <div class="result-stat-lbl">ACCURACY</div>
+          </div>
+          <div class="stat">
+            <div class="result-stat-val" id="r-time">0</div>
+            <div class="result-stat-lbl">SECONDS</div>
+          </div>
+        </div>
+        <div class="result-msg" id="result-msg"></div>
+        <button class="btn-primary" id="next-btn" onclick="nextLesson()">&gt; NEXT LESSON</button>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="screen-footer">
+        <a href="https://augustineiacopelli.github.io/appaday/" target="_blank">&larr; APPADAY PORTFOLIO</a>
+        <span id="status-txt">READY</span>
+      </div>
+
+      </div><!-- /app-main -->
+
+    </div>
   </div>
 </div>
 
-<main id="main-content"></main>
-
-<footer>
-  <span class="footer-motto">Ship something every day. It compounds.</span>
-  <a class="footer-link" href="https://github.com/augustineiacopelli" target="_blank" rel="noopener">GitHub ↗</a>
-</footer>
-
 <script>
-// ============================================================
-//  APP REGISTRY — append new objects here to add apps
-//  cat codes: G = Games · U = Utility · A = AI · D = Data · P = Productivity · S = Spirituality
-// ============================================================
-const APPS = [
+(function() {
+
+// ── LESSONS ────────────────────────────────────────────────────────────────────
+var LESSONS = [
   {
-    num:"001", name:"Reaction Timer", cat:"G", date:"2026-05-08",
-    desc:"Wait for the screen to flash green — then tap as fast as you can. Tracks your last 5 attempts with a live bar chart and a running average. Under 180ms is elite.",
-    url:"https://augustineiacopelli.github.io/appaday-001-reaction-timer/"
+    id: 'L1',
+    label: 'Home Row',
+    passages: [
+      'asd jkl asd jkl asdf jkl; asdf jkl; a s d f j k l ;',
+      'add fall glad flask salad flag had lad sad dad gal',
+      'falls halls glass flasks salads flags lads dads gals',
+      'ask a lass a glad glad salad fad shall fall a lad half'
+    ]
   },
   {
-    num:"002", name:"Stream Cleaner", cat:"G", date:"2026-05-09",
-    desc:"Drag the hose across the urinal screen and hold to blast it clean before time runs out. Clear 80% to advance through 5 levels. Features a leaderboard, level flash animations, and a score system that rewards speed.",
-    url:"https://augustineiacopelli.github.io/appaday-002-stream-cleaner/"
+    id: 'L2',
+    label: 'Top Row',
+    passages: [
+      'qwe rty uio qwe rty uio qwer tyui qwer tyui',
+      'quiet write tower route power outer outer pique quire',
+      'your query power tower outer write quote equip quite',
+      'we require two quiet tower routes to our outer port'
+    ]
   },
   {
-    num:"003", name:"Daily Scripture", cat:"S", date:"2026-05-10",
-    desc:"A daily scripture companion that surfaces a random Bible verse from 50 passages spanning both Testaments. Tap for a new verse, see the reference and testament label.",
-    url:"https://augustineiacopelli.github.io/appaday-003-daily-scripture/"
+    id: 'L3',
+    label: 'Full Alpha',
+    passages: [
+      'the quick brown fox jumps over the lazy dog',
+      'pack my box with five dozen liquor jugs',
+      'how vexingly quick daft zebras jump',
+      'the five boxing wizards jump quickly'
+    ]
   },
   {
-    num:"004", name:"Tube Sort", cat:"A", date:"2026-05-11",
-    desc:"Snap a screenshot of any Ball Sort puzzle and let AI parse the tubes automatically. Fill in unknowns with ?, step through the BFS solution move by move, or enter tubes manually.",
-    url:"https://augustineiacopelli.github.io/appaday-004-tube-sort/"
+    id: 'L4',
+    label: 'Numbers',
+    passages: [
+      '1234567890 1234567890 123 456 789 0',
+      'call 1-800-555-0199 or dial ext 247 or 381',
+      'order 36 units at $12.50 each totaling $450.00',
+      'from 1492 to 1776 to 1865 to 1969 to 2001'
+    ]
   },
   {
-    num:"005", name:"Dad Joke Generator", cat:"A", date:"2026-05-12",
-    desc:"Uses the Claude API to generate fresh, original dad jokes on demand. The punchline is hidden until you're ready — because the beat before the groan is half the joke. A groan meter scores each joke from 1 to 100.",
-    url:"https://augustineiacopelli.github.io/appaday-005-dad-joke-generator/"
+    id: 'L5',
+    label: 'Common Words',
+    passages: [
+      'the be to of and a in that have it for not on with',
+      'he as you do at this but his by from they we say her',
+      'or an will my one all would there their what so up',
+      'if about who get which go me when make can like time'
+    ]
   },
   {
-    num:"006", name:"Life Calendar", cat:"D", date:"2026-05-13",
-    desc:"Enter your birthdate and a life expectancy. Every week of your life rendered as a single mark — gold for weeks lived, red for the week you're in now, dark for the weeks still ahead.",
-    url:"https://augustineiacopelli.github.io/appaday-006-life-calendar/"
+    id: 'L6',
+    label: 'Sentences',
+    passages: [
+      'Every day is a chance to build something new and ship it before midnight.',
+      'Consistency compounds faster than talent when the work is done daily.',
+      'The best way to learn is to build something real and let people use it.',
+      'Small apps shipped every day add up to a portfolio that speaks for itself.'
+    ]
   },
   {
-    num:"007", name:"Still Standing", cat:"P", date:"2026-05-14",
-    desc:"A personal encouragement app. Type what is weighing on your heart and receive a word of warmth drawn from 100 curated messages — each paired with a scripture verse. The input and response flip like a physical card.",
-    url:"https://augustineiacopelli.github.io/appaday-007-Still-Standing/"
-  },
-  {
-    num:"008", name:"Number Neighbors", cat:"G", date:"2026-05-15",
-    desc:"The classic 15-puzzle across three grid sizes: 3×3, 4×4, and 5×5. Every shuffle is guaranteed solvable via parity checking. Tracks move count, elapsed time, and personal best per grid size.",
-    url:"https://augustineiacopelli.github.io/appaday-008-number-neighbors/"
-  },
-  {
-    num:"009", name:"Focus Timer", cat:"P", date:"2026-05-16",
-    desc:"A Pomodoro-style focus timer with configurable work and break intervals, a circular progress ring, and a clean fullscreen mode.",
-    url:"https://augustineiacopelli.github.io/appaday-009-focus-timer/"
-  },
-  {
-    num:"010", name:"Magic 8 Ball", cat:"G", date:"2026-05-17",
-    desc:"All 20 classic responses rendered inside a glowing blue triangle window — exactly as on the real toy. A history strip tracks your last five verdicts, color-coded by outcome type.",
-    url:"https://augustineiacopelli.github.io/appaday-010-magic-8-ball/"
-  },
-  {
-    num:"011", name:"Password Sculptor", cat:"U", date:"2026-05-18",
-    desc:"Generates secure passwords using the browser's Web Crypto API. Control length, character sets, and ambiguous character exclusion. A live strength meter calculates Shannon entropy and labels the result from Very Weak through Fortress.",
-    url:"https://augustineiacopelli.github.io/appaday-011-password-sculptor/"
-  },
-  {
-    num:"012", name:"Prayer Intentions", cat:"S", date:"2026-05-19",
-    desc:"A quiet, devotional app for capturing and praying through personal intentions. Add the names and intentions of those you're carrying in prayer, then work through them one card at a time.",
-    url:"https://augustineiacopelli.github.io/appaday-012-prayer-intentions/"
-  },
-  {
-    num:"013", name:"Flick", cat:"G", date:"2026-05-20",
-    desc:"Two players take turns flicking pucks across a divided board. A gold blast token appears randomly — hit it to trigger a shockwave that sends every puck flying. Most pucks in the opponent's zone when all pucks are played wins.",
-    url:"https://augustineiacopelli.github.io/appaday-013-flick/"
-  },
-  {
-    num:"014", name:"Countdown Wall", cat:"P", date:"2026-05-21",
-    desc:"A personal countdown tracker built for your phone's home screen. Add named events, assign a color, and see every upcoming date as a big, beautiful day count. Cards sort automatically — soonest first, past events last.",
-    url:"https://augustineiacopelli.github.io/appaday-014-countdown-wall/"
-  },
-  {
-    num:"015", name:"Quest Log", cat:"P", date:"2026-05-22",
-    desc:"A Minecraft-inspired homework tracker where assignments become quests. Check one off and earn a randomized achievement toast with XP. Level up to unlock new badge tiers — from Starter all the way to Grandmaster.",
-    url:"https://augustineiacopelli.github.io/appaday-015-quest-log/"
-  },
-  {
-    num:"016", name:"Chug Roulette", cat:"G", date:"2026-05-23",
-    desc:"A spin-the-wheel party drinking game inspired by the Beer Mile. Spin for a random challenge — chugs, waterfalls, rule-making, swaps, or a full DNF penalty. Add your group as Runners and the wheel cycles through players by name.",
-    url:"https://augustineiacopelli.github.io/appaday-016-chug-roulette/"
-  },
-  {
-    num:"017", name:"Session Scribe", cat:"A", date:"2026-05-24",
-    desc:"Record any conference session in the browser. The Web Speech API transcribes audio in real time. When you stop, Claude returns structured notes: a summary, Roman-numeral outline, key takeaways, notable quotes, and follow-up questions.",
-    url:"https://augustineiacopelli.github.io/appaday-017-session-scribe/"
-  },
-  {
-    num:"018", name:"Still Water", cat:"G", date:"2026-05-25",
-    desc:"A meditative tap-to-explore experience. A dark, living pond with subtle caustic shimmer lines. Tap anywhere to cast ripples. Eight hidden objects wait to be found — land close enough and they surface with a glow. No timer. No fail state.",
-    url:"https://augustineiacopelli.github.io/appaday-018-still-water/"
-  },
-  {
-    num:"019", name:"Tone Translator", cat:"A", date:"2026-05-26",
-    desc:"Paste any text and translate it into a different tone. Four options: Formal, Casual, Direct, and Warm. Claude rewrites your text while preserving the core meaning.",
-    url:"https://augustineiacopelli.github.io/appaday-019-tone-translator/"
-  },
-  {
-    num:"020", name:"Rainbow Readers", cat:"G", date:"2026-05-27",
-    desc:"A four-level phonics game for early readers ages 4–7. Tap the correct starting letter, identify full words, trace guide letters in rainbow ink with your finger, and progress through whole words one letter at a time.",
-    url:"https://augustineiacopelli.github.io/appaday-020-rainbow-readers/"
-  },
-  {
-    num:"021", name:"Bolt Patrol", cat:"G", date:"2026-05-28",
-    desc:"A Sonic-inspired side-scrolling runner. Roll through 8 zones, stomp enemies, collect rings, and survive long enough to destroy the Death Egg.",
-    url:"https://augustineiacopelli.github.io/appaday-021-bolt-patrol/"
-  },
-  {
-    num:"022", name:"Haiku Engine", cat:"A", date:"2026-05-29",
-    desc:"Enter any topic or mood — morning fog, grief, a long flight home — and receive an original 5-7-5 haiku with a short reflection on the imagery choices that shaped it.",
-    url:"https://augustineiacopelli.github.io/appaday-022-haiku-engine/"
-  },
-  {
-    num:"023", name:"Beer Tasting Scorecard", cat:"U", date:"2026-05-30",
-    desc:"Rate beers one at a time on four attributes with large tap-friendly sliders. Built for group tastings on the go — bus tours, tap rooms, homebrew club events.",
-    url:"https://augustineiacopelli.github.io/appaday-023-beer-tasting-scorecard/"
-  },
-  {
-    num:"024", name:"Budget Ring", cat:"D", date:"2026-05-31",
-    desc:"A spending visualizer that renders up to 8 budget categories as a live donut chart with percentage labels. Enter category names and amounts, watch the ring update instantly, and email yourself a plain-text report with one tap.",
-    url:"https://augustineiacopelli.github.io/appaday-024-budget-ring/"
-  },
-  {
-    num:"025", name:"Chroma", cat:"U", date:"2026-06-01",
-    desc:"Extract a full set of color palettes from any input color. Five ways to enter a color, seven palette sections generated instantly, every hex value click-to-copy, and a one-tap email to send your palette anywhere.",
-    url:"https://augustineiacopelli.github.io/appaday-025-chroma/"
-  },
-  {
-    num:"026", name:"Tippy Tip", cat:"U", date:"2026-06-02",
-    desc:"A mobile-friendly Italian tipping guide for travelers. Select your situation, enter relevant details, and get culturally accurate tip guidance — including whether a tip is expected, optional, or not needed, plus a phrase to say in Italian.",
-    url:"https://augustineiacopelli.github.io/appaday-026-tippy-tip/"
-  },
-  {
-    num:"027", name:"Habit Heatmap", cat:"D", date:"2026-06-03",
-    desc:"Track up to five daily habits across the month with a GitHub-style heatmap grid. Tap any day to mark it done, watch your streak climb, and switch between habits instantly with the tab bar. Data lives in your browser — no account needed.",
-    url:"https://augustineiacopelli.github.io/appaday-027-habit-heatmap/"
-  },
-  // — Add new apps below this line —
-  {
-    num:"028", name:"Pixel Quest", cat:"G", date:"2026-06-04",
-    desc:"A full overworld RPG with a 60x38 tile world map, two castles with interior sub-maps, two villages with weapon shops and inns, eight enemy types, an XP and leveling system, equipment slots, and a final Lich King boss battle.",
-    url:"https://augustineiacopelli.github.io/appaday-028-pixel-quest/"
-  },
-  {
-    num:"029", name:"Life Advocate", cat:"A", date:"2026-06-05",
-    desc:"An AI-powered male advocate chat for men facing an unexpected pregnancy — guiding with love toward life-affirming decisions and connecting users to verified pro-life pregnancy resource centers nationwide.",
-    url:"https://augustineiacopelli.github.io/appaday-029-life-advocate/"
-  },
-  {
-    num:"030", name:"Sleep Curve", cat:"D", date:"2026-06-06",
-    desc:"Log your bedtime and wake time each night and watch your sleep curve take shape. Color-coded durations, a 7-hour target line, nightly stats, and iOS Shortcuts support for one-tap automatic logging.",
-    url:"https://augustineiacopelli.github.io/appaday-030-sleep-curve/"
-  },
-  {
-    num:"031", name:"Saints of the Day", cat:"S", date:"2026-06-07",
-    desc:"A daily companion to the Roman Martyrology. Browse the principal saint for any day of the year, read their biography and a signature quote, and pray a monthly collect. Full 366-day coverage with a date picker and prev/next navigation.",
-    url:"https://augustineiacopelli.github.io/appaday-031-saints-of-the-day/"
-  },
-  {
-    num:"032", name:"Duck Season", cat:"G", date:"2026-06-08",
-    desc:"A Duck Hunt-style browser game with canvas-drawn pixel art sprites and 8 weather scenes. Shoot ducks before they escape — 3 shared shots per wave, 5 waves per round, 24 rounds total. Miss over 50% of your shots and it's game over.",
-    url:"https://augustineiacopelli.github.io/appaday-032-duck-season/"
-  },
-  {
-    num:"033", name:"Convert It", cat:"U", date:"2026-06-09",
-    desc:"Instant unit conversion across 8 categories: Length, Weight, Temperature, Volume, Speed, Area, Data, and Time. Pick a category, choose your units, type a value, and get an instant result with the conversion formula displayed.",
-    url:"https://augustineiacopelli.github.io/appaday-033-convert-it/"
-  },
-  {
-    num:"034", name:"LCR Dice", cat:"G", date:"2026-06-10",
-    desc:"A full-featured browser version of the classic dice game Left Center Right. 3–8 players, circular table layout, configurable house rules (Dot-Dot-Dot, LCR Jackpot, Triple L/R/C), adjustable starting chips, and a lifetime chip bank that persists across sessions.",
-    url:"https://augustineiacopelli.github.io/appaday-034-lcr-dice/"
-  },
-  {
-    num:"035", name:"Meeting Distiller", cat:"A", date:"2026-06-11",
-    desc:"Paste raw meeting notes and get an instant structured breakdown: summary, decisions, action items with owners and deadlines, and open questions. Then send each person their tasks directly via email with one tap.",
-    url:"https://augustineiacopelli.github.io/appaday-035-meeting-distiller/"
-  },
-  {
-    num:"036",
-    name:"Sivam Nocab",
-    cat:"G",
-    date:"2026-06-12",
-    desc:"A retro CRT-styled typing trainer with 7 lesson tracks covering home row, top row, full alphabet, numbers, common words, sentences, and symbols. Tracks live WPM and accuracy, grades each run S through D, and persists your best WPM and completion streak across sessions.",
-    url:"https://augustineiacopelli.github.io/appaday-036-sivam-nocab/"
-  },
+    id: 'L7',
+    label: 'Symbols',
+    passages: [
+      '! @ # $ % ^ & * ( ) _ + = - [ ] { } | ; : \' " , . < > / ?',
+      'email: user@example.com | phone: (316) 555-0123',
+      'price: $19.99 | discount: 15% | savings: $3.00',
+      'function add(a, b) { return a + b; } // returns sum'
+    ]
+  }
 ];
 
-// ============================================================
-//  CATEGORY METADATA
-// ============================================================
-const CATS = {
-  G: { label: "Games & Interactive", plural: "Games" },
-  U: { label: "Utility Tools",       plural: "Utility" },
-  A: { label: "AI-Powered Tools",    plural: "AI-Powered" },
-  D: { label: "Data Viz",            plural: "Data" },
-  P: { label: "Productivity & Life", plural: "Productivity" },
-  S: { label: "Spirituality",         plural: "Spirituality" },
-};
-const CAT_ORDER = ["G","U","A","D","P","S"];
+// ── STATE ──────────────────────────────────────────────────────────────────────
+var currentLesson = 0;
+var passageIdx = 0;
+var target = '';
+var typed = '';
+var startTime = null;
+var timerInterval = null;
+var totalKeystrokes = 0;
+var wrongKeystrokes = 0;
+var bestWpm = 0;
+var streak = 0;
+var profile = null;
 
-// ============================================================
-//  HELPERS
-// ============================================================
-function formatDate(iso) {
-  const [y,m,d] = iso.split("-");
-  return new Date(y, m-1, d).toLocaleDateString("en-US", { month:"short", day:"numeric", year:"numeric" });
+// ── PROFILES ───────────────────────────────────────────────────────────────────
+var PROFILES_KEY = 'sivam_profiles';
+
+function loadProfiles() {
+  try {
+    var raw = localStorage.getItem(PROFILES_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) { return []; }
 }
 
-function calcStreak() {
-  const sorted = [...APPS].sort((a,b) => b.date.localeCompare(a.date));
-  let streak = 0, prev = null;
-  for (const app of sorted) {
-    if (!prev) { streak = 1; prev = app.date; continue; }
-    const diff = Math.round((new Date(prev) - new Date(app.date)) / 86400000);
-    if (diff === 1) { streak++; prev = app.date; } else break;
+function saveProfiles(list) {
+  try { localStorage.setItem(PROFILES_KEY, JSON.stringify(list)); } catch (e) {}
+}
+
+function saveCurrentProfile() {
+  if (!profile) return;
+  var list = loadProfiles();
+  for (var i = 0; i < list.length; i++) {
+    if (list[i].name === profile.name) { list[i] = profile; saveProfiles(list); return; }
   }
-  return streak;
+  list.push(profile);
+  saveProfiles(list);
 }
 
-// ============================================================
-//  CARD FACTORY
-// ============================================================
-function makeCard(app, index) {
-  const a = document.createElement("a");
-  a.className = "app-card";
-  a.href = app.url;
-  a.target = "_blank";
-  a.rel = "noopener";
-  a.setAttribute("data-cat", app.cat);
-  a.style.animationDelay = `${index * 35}ms`;
-  a.innerHTML = `
-    <span class="card-arrow">↗</span>
-    <div class="card-number">${app.num}</div>
-    <div class="card-name">${app.name}</div>
-    <div class="card-desc">${app.desc}</div>
-    <div class="card-footer">
-      <span class="card-cat">${CATS[app.cat].plural}</span>
-      <span class="card-date">${formatDate(app.date)}</span>
-    </div>
-  `;
-  return a;
+function renderProfileList() {
+  var list = loadProfiles();
+  var container = document.getElementById('profile-list');
+  var divider = document.getElementById('login-divider');
+  container.innerHTML = '';
+  if (list.length === 0) {
+    divider.style.display = 'none';
+    return;
+  }
+  divider.style.display = 'block';
+  list.sort(function(a, b) { return (b.lastSeen || 0) - (a.lastSeen || 0); });
+  for (var i = 0; i < list.length; i++) {
+    var p = list[i];
+    var btn = document.createElement('button');
+    btn.className = 'profile-btn';
+    var nameSpan = document.createElement('span');
+    nameSpan.textContent = p.name;
+    var statsSpan = document.createElement('span');
+    statsSpan.className = 'pb-stats';
+    statsSpan.textContent = 'BEST ' + (p.bestWpm || 0) + ' WPM \u00b7 STREAK ' + (p.streak || 0);
+    btn.appendChild(nameSpan);
+    btn.appendChild(statsSpan);
+    btn.onclick = (function(name) {
+      return function() { loginProfile(name); };
+    })(p.name);
+    container.appendChild(btn);
+  }
 }
 
-// ============================================================
-//  RENDER
-// ============================================================
-function buildCards(filter) {
-  const main = document.getElementById("main-content");
-  main.innerHTML = "";
-  const visible = filter === "all" ? APPS : APPS.filter(a => a.cat === filter);
+function showLogin() {
+  clearInterval(timerInterval);
+  document.getElementById('login-error').textContent = '';
+  document.getElementById('profile-input').value = '';
+  renderProfileList();
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('app-main').style.display = 'none';
+}
 
-  if (filter === "all") {
-    CAT_ORDER.forEach(cat => {
-      const group = visible.filter(a => a.cat === cat);
-      if (!group.length) return;
-      const sec = document.createElement("div");
-      sec.setAttribute("data-cat", cat);
-      const hdr = document.createElement("div");
-      hdr.className = "section-header";
-      hdr.innerHTML = `
-        <span class="section-title">${CATS[cat].label}</span>
-        <span class="section-code">${cat}</span>
-        <span class="section-count">${group.length} app${group.length !== 1 ? "s" : ""}</span>
-      `;
-      sec.appendChild(hdr);
-      const grid = document.createElement("div");
-      grid.className = "card-grid";
-      group.forEach((app, i) => grid.appendChild(makeCard(app, i)));
-      sec.appendChild(grid);
-      main.appendChild(sec);
-    });
-  } else {
-    const grid = document.createElement("div");
-    grid.className = "card-grid";
-    if (!visible.length) {
-      const emp = document.createElement("div");
-      emp.className = "empty-state";
-      emp.textContent = "No apps in this category yet.";
-      grid.appendChild(emp);
-    } else {
-      visible.forEach((app, i) => grid.appendChild(makeCard(app, i)));
+window.createProfile = function() {
+  var input = document.getElementById('profile-input');
+  var name = input.value.trim();
+  var errEl = document.getElementById('login-error');
+  if (!name) { errEl.textContent = 'ENTER A NAME TO CONTINUE'; return; }
+  if (name.length > 16) name = name.substring(0, 16);
+  var list = loadProfiles();
+  for (var i = 0; i < list.length; i++) {
+    if (list[i].name.toLowerCase() === name.toLowerCase()) {
+      loginProfile(list[i].name);
+      return;
     }
-    main.appendChild(grid);
+  }
+  errEl.textContent = '';
+  loginProfile(name);
+};
+
+function loginProfile(name) {
+  var list = loadProfiles();
+  var found = null;
+  for (var i = 0; i < list.length; i++) {
+    if (list[i].name === name) { found = list[i]; break; }
+  }
+  if (!found) {
+    found = { name: name, bestWpm: 0, streak: 0, lesson: 0, passage: 0, lastSeen: Date.now() };
+    list.push(found);
+    saveProfiles(list);
+  }
+  profile = found;
+  profile.lastSeen = Date.now();
+  bestWpm = profile.bestWpm || 0;
+  streak = profile.streak || 0;
+  saveCurrentProfile();
+
+  try { localStorage.setItem('sivam_last_profile', profile.name); } catch (e) {}
+
+  document.getElementById('operator-name').textContent = profile.name;
+  document.getElementById('operator-badge').style.display = 'flex';
+  document.getElementById('best-val').textContent = bestWpm;
+  document.getElementById('streak-val').textContent = streak;
+
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app-main').style.display = 'flex';
+
+  var lesson = profile.lesson || 0;
+  var passage = profile.passage || 0;
+  if (lesson >= LESSONS.length) lesson = 0;
+  if (passage >= LESSONS[lesson].passages.length) passage = 0;
+
+  var btns = document.querySelectorAll('.lesson-btn');
+  for (var j = 0; j < btns.length; j++) {
+    btns[j].classList.toggle('active', parseInt(btns[j].getAttribute('data-idx')) === lesson);
   }
 
-  document.getElementById("total-count").textContent = APPS.length;
-  document.getElementById("streak-count").textContent = calcStreak();
+  loadLesson(lesson, passage);
 }
 
-// ============================================================
-//  FILTER BUTTONS
-// ============================================================
-document.querySelectorAll(".filter-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
-    buildCards(btn.dataset.filter);
-  });
-});
+window.switchProfile = function() {
+  saveCurrentProfile();
+  profile = null;
+  showLogin();
+};
 
-buildCards("all");
+// ── INIT ───────────────────────────────────────────────────────────────────────
+function init() {
+  buildLessonBtns();
+  document.getElementById('typing-input').addEventListener('input', onInput);
+  document.getElementById('typing-input').addEventListener('keydown', onKeydown);
+  document.getElementById('profile-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') createProfile();
+  });
+
+  var lastName = null;
+  try { lastName = localStorage.getItem('sivam_last_profile'); } catch (e) {}
+  if (lastName) {
+    var list = loadProfiles();
+    for (var i = 0; i < list.length; i++) {
+      if (list[i].name === lastName) {
+        loginProfile(lastName);
+        return;
+      }
+    }
+  }
+  showLogin();
+}
+
+function buildLessonBtns() {
+  var container = document.getElementById('lesson-btns');
+  container.innerHTML = '';
+  for (var i = 0; i < LESSONS.length; i++) {
+    var btn = document.createElement('button');
+    btn.className = 'lesson-btn' + (i === 0 ? ' active' : '');
+    btn.textContent = LESSONS[i].label;
+    btn.setAttribute('data-idx', i);
+    btn.onclick = (function(idx) {
+      return function() { selectLesson(idx); };
+    })(i);
+    container.appendChild(btn);
+  }
+}
+
+function selectLesson(idx) {
+  currentLesson = idx;
+  passageIdx = 0;
+  var btns = document.querySelectorAll('.lesson-btn');
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].classList.toggle('active', parseInt(btns[i].getAttribute('data-idx')) === idx);
+  }
+  loadLesson(idx, 0);
+}
+
+function loadLesson(lessonIdx, pIdx) {
+  currentLesson = lessonIdx;
+  passageIdx = pIdx;
+  target = LESSONS[lessonIdx].passages[pIdx];
+  typed = '';
+  startTime = null;
+  totalKeystrokes = 0;
+  wrongKeystrokes = 0;
+  clearInterval(timerInterval);
+
+  if (profile) {
+    profile.lesson = lessonIdx;
+    profile.passage = pIdx;
+    saveCurrentProfile();
+  }
+
+  var input = document.getElementById('typing-input');
+  input.value = '';
+  input.disabled = false;
+
+  document.getElementById('typing-area').style.display = 'block';
+  document.getElementById('result-panel').classList.remove('show');
+  document.getElementById('progress-fill').style.width = '0%';
+  document.getElementById('wpm-val').textContent = '0';
+  document.getElementById('acc-val').textContent = '100';
+  document.getElementById('status-txt').textContent = 'READY';
+
+  renderTarget('');
+  input.focus();
+}
+
+// ── INPUT HANDLING ─────────────────────────────────────────────────────────────
+function onKeydown(e) {
+  // Prevent tab
+  if (e.key === 'Tab') { e.preventDefault(); return; }
+}
+
+function onInput(e) {
+  var input = document.getElementById('typing-input');
+  var value = input.value;
+
+  // Strip newlines
+  value = value.replace(/\n/g, '');
+  input.value = value;
+
+  // Start timer on first keystroke
+  if (!startTime && value.length > 0) {
+    startTime = Date.now();
+    timerInterval = setInterval(updateLiveStats, 300);
+    document.getElementById('status-txt').textContent = 'TYPING...';
+  }
+
+  totalKeystrokes++;
+  typed = value;
+
+  // Count wrong (characters typed that don't match target)
+  var errors = 0;
+  for (var i = 0; i < value.length; i++) {
+    if (i >= target.length || value[i] !== target[i]) errors++;
+  }
+  wrongKeystrokes = errors;
+
+  renderTarget(value);
+
+  var pct = Math.min(100, Math.round((value.length / target.length) * 100));
+  document.getElementById('progress-fill').style.width = pct + '%';
+
+  updateLiveStats();
+
+  // Check completion
+  if (value === target) {
+    finishLesson();
+  }
+}
+
+function renderTarget(value) {
+  var display = document.getElementById('target-display');
+  var html = '';
+  for (var i = 0; i < target.length; i++) {
+    var ch = target[i] === ' ' ? '&nbsp;' : target[i];
+    if (i < value.length) {
+      if (value[i] === target[i]) {
+        html += '<span class="correct">' + ch + '</span>';
+      } else {
+        html += '<span class="wrong">' + ch + '</span>';
+      }
+    } else if (i === value.length) {
+      html += '<span class="cursor">' + ch + '</span>';
+    } else {
+      html += '<span class="pending">' + ch + '</span>';
+    }
+  }
+  display.innerHTML = html;
+}
+
+function updateLiveStats() {
+  if (!startTime) return;
+  var elapsed = (Date.now() - startTime) / 1000 / 60; // minutes
+  var words = typed.length / 5;
+  var wpm = elapsed > 0 ? Math.round(words / elapsed) : 0;
+  var acc = totalKeystrokes > 0
+    ? Math.round(((totalKeystrokes - wrongKeystrokes) / totalKeystrokes) * 100)
+    : 100;
+  document.getElementById('wpm-val').textContent = wpm;
+  document.getElementById('acc-val').textContent = Math.max(0, acc);
+}
+
+// ── FINISH ─────────────────────────────────────────────────────────────────────
+function finishLesson() {
+  clearInterval(timerInterval);
+  var input = document.getElementById('typing-input');
+  input.disabled = true;
+
+  var elapsed = (Date.now() - startTime) / 1000;
+  var wpm = Math.round((target.length / 5) / (elapsed / 60));
+  var acc = totalKeystrokes > 0
+    ? Math.round(((totalKeystrokes - wrongKeystrokes) / totalKeystrokes) * 100)
+    : 100;
+  acc = Math.max(0, acc);
+
+  // Update best
+  if (wpm > bestWpm) {
+    bestWpm = wpm;
+    document.getElementById('best-val').textContent = bestWpm;
+  }
+
+  // Update streak
+  streak++;
+  document.getElementById('streak-val').textContent = streak;
+
+  if (profile) {
+    profile.bestWpm = bestWpm;
+    profile.streak = streak;
+    saveCurrentProfile();
+  }
+
+  // Grade
+  var grade, gradeClass, msg;
+  if (acc >= 98 && wpm >= 60) {
+    grade = 'S'; gradeClass = 'grade-s';
+    msg = 'FLAWLESS EXECUTION. HOME ROW HERO.';
+  } else if (acc >= 95 && wpm >= 45) {
+    grade = 'A'; gradeClass = 'grade-a';
+    msg = 'EXCELLENT. FINGERS ON FIRE.';
+  } else if (acc >= 90 && wpm >= 30) {
+    grade = 'B'; gradeClass = 'grade-b';
+    msg = 'SOLID WORK. KEEP THE RHYTHM.';
+  } else if (acc >= 80 && wpm >= 20) {
+    grade = 'C'; gradeClass = 'grade-c';
+    msg = 'GETTING THERE. SLOW DOWN TO SPEED UP.';
+  } else {
+    grade = 'D'; gradeClass = 'grade-d';
+    msg = 'PRACTICE MAKES PERFECT. TRY AGAIN.';
+  }
+
+  document.getElementById('typing-area').style.display = 'none';
+  var panel = document.getElementById('result-panel');
+  panel.classList.add('show');
+
+  var gradeEl = document.getElementById('result-grade');
+  gradeEl.textContent = grade;
+  gradeEl.className = 'result-grade ' + gradeClass;
+  document.getElementById('r-wpm').textContent = wpm;
+  document.getElementById('r-acc').textContent = acc + '%';
+  document.getElementById('r-time').textContent = Math.round(elapsed);
+  document.getElementById('result-msg').textContent = msg;
+  document.getElementById('status-txt').textContent = 'COMPLETE';
+
+  // Update live stats display too
+  document.getElementById('wpm-val').textContent = wpm;
+  document.getElementById('acc-val').textContent = acc;
+}
+
+// ── NEXT LESSON ────────────────────────────────────────────────────────────────
+window.nextLesson = function() {
+  var lesson = LESSONS[currentLesson];
+  var nextPIdx = (passageIdx + 1) % lesson.passages.length;
+
+  // If we've cycled through all passages, move to next lesson
+  if (nextPIdx === 0) {
+    var nextLesson = (currentLesson + 1) % LESSONS.length;
+    var btns = document.querySelectorAll('.lesson-btn');
+    for (var i = 0; i < btns.length; i++) {
+      btns[i].classList.toggle('active', parseInt(btns[i].getAttribute('data-idx')) === nextLesson);
+    }
+    loadLesson(nextLesson, 0);
+  } else {
+    loadLesson(currentLesson, nextPIdx);
+  }
+};
+
+init();
+
+})();
 </script>
 </body>
 </html>
