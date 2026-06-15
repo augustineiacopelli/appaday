@@ -368,6 +368,35 @@
   [data-cat="D"] .app-card::after { background: var(--gold); }
   [data-cat="P"] .app-card::after { background: var(--accent); }
 
+  /* coming-soon cards */
+  .app-card.coming-soon {
+    pointer-events: none;
+    cursor: default;
+    border: 1.5px dashed rgba(0,0,0,0.3);
+    box-shadow: none;
+    background: #c8c8c8 !important;
+    color: #888 !important;
+  }
+  .app-card.coming-soon .card-number,
+  .app-card.coming-soon .card-name,
+  .app-card.coming-soon .card-desc,
+  .app-card.coming-soon .card-date,
+  .app-card.coming-soon .card-cat { color: #888 !important; background: rgba(0,0,0,0.06) !important; }
+  .app-card.coming-soon .card-arrow { display: none; }
+  .card-coming-badge {
+    display: inline-block;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: rgba(0,0,0,0.08);
+    color: #666;
+    border-radius: 4px;
+    padding: 2px 7px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(16px); }
     to   { opacity: 1; transform: translateY(0); }
@@ -637,6 +666,48 @@ const APPS = [
     date:"2026-06-15",
     desc:"Tap glowing fireflies drifting across a summer night sky to catch them in your jar. Each tap sends a firefly arcing into a glass jar at the bottom of the screen, where caught fireflies accumulate and pulse. Three difficulty levels with adjustable time limits.",
     url:"https://augustineiacopelli.github.io/appaday-039-firefly-catcher/"
+  },
+  {
+    num:"040", name:"Kitchen Tamer", cat:"A", date:"2026-06-16",
+    desc:"Upload photos of your fridge, freezer, and pantry — multiple shots per space — and Kitchen Tamer generates a realistic multi-day meal plan using what you already have, plus a shopping list for what’s missing. Email the plan directly from the app via Google Apps Script.",
+    url:"https://augustineiacopelli.github.io/appaday-040-kitchen-tamer/",
+    coming_soon: true
+  },
+  {
+    num:"041", name:"Frame By Frame", cat:"P", date:"2026-06-17",
+    desc:"A photo slideshow with five decorative frame styles — Polaroid, Gallery Mat, Film Strip, Gilded, and Borderless. Load photos from your device, set your interval, and let it run. Hide the UI for a clean full-screen view. Photos persist between sessions.",
+    url:"https://augustineiacopelli.github.io/appaday-041-frame-by-frame/",
+    coming_soon: true
+  },
+  {
+    num:"042", name:"Breath Guide", cat:"P", date:"2026-06-18",
+    desc:"Meditative breathing guide with six researched patterns — Box, 4-7-8, Coherent, Wim Hof, Diaphragmatic, and Contemplative. An animated orb breathes with you. A built-in calendar tracks every day you practice and shows your current streak.",
+    url:"https://augustineiacopelli.github.io/appaday-042-breath-guide/",
+    coming_soon: true
+  },
+  {
+    num:"043", name:"Chore Quest", cat:"G", date:"2026-06-19",
+    desc:"Gamified chore manager for kids. Parents assign quests with XP rewards and daily, weekly, or one-time frequency. Kids level up by completing chores and compete on a live sibling scoreboard.",
+    url:"https://augustineiacopelli.github.io/appaday-043-chore-quest/",
+    coming_soon: true
+  },
+  {
+    num:"044", name:"Quarters Master", cat:"G", date:"2026-06-20",
+    desc:"A bar-game skill challenge with three modes: solo Practice with an escalating-difficulty streak, 2-Player Pass and Play, and 2-Player vs CPU across four difficulty tiers. Two timed taps lock your power and aim — land the coin in the cup for a make, hit the bright zone for a perfect, and race to 7 cups.",
+    url:"https://augustineiacopelli.github.io/appaday-044-quarters-master/",
+    coming_soon: true
+  },
+  {
+    num:"045", name:"Water Reminder", cat:"A", date:"2026-06-21",
+    desc:"Tracks your hydration by comparing photos of your glass over time. Snap a photo, and Claude estimates the current fill level; compared against your last check-in, it calculates what you actually drank, asking about refills when needed. A filling glass shows progress toward your daily goal.",
+    url:"https://augustineiacopelli.github.io/appaday-045-water-reminder/",
+    coming_soon: true
+  },
+  {
+    num:"046", name:"Time to Sober", cat:"U", date:"2026-06-22",
+    desc:"A blood alcohol estimator and live drinking-session tracker. Log drinks with start/finish times, watch a real-time BAC curve, and see live countdowns to the legal limit and to 0.000%. Includes a gender-aware what-you-may-be-feeling guide and saves your session automatically.",
+    url:"https://augustineiacopelli.github.io/appaday-046-time-to-sober/",
+    coming_soon: true
   }
 ];
 
@@ -662,7 +733,7 @@ function formatDate(iso) {
 }
 
 function calcStreak() {
-  const sorted = [...APPS].sort((a,b) => b.date.localeCompare(a.date));
+  const sorted = [...APPS].filter(a => !a.coming_soon).sort((a,b) => b.date.localeCompare(a.date));
   let streak = 0, prev = null;
   for (const app of sorted) {
     if (!prev) { streak = 1; prev = app.date; continue; }
@@ -677,16 +748,16 @@ function calcStreak() {
 // ============================================================
 function makeCard(app, index) {
   const a = document.createElement("a");
-  a.className = "app-card";
-  a.href = app.url;
-  a.target = "_blank";
-  a.rel = "noopener";
+  a.className = app.coming_soon ? "app-card coming-soon" : "app-card";
+  a.href = app.coming_soon ? "#" : app.url;
+  if (!app.coming_soon) { a.target = "_blank"; a.rel = "noopener"; }
   a.setAttribute("data-cat", app.cat);
   a.style.animationDelay = `${index * 35}ms`;
+  const badge = app.coming_soon ? `<span class="card-coming-badge">Coming ${formatDate(app.date)}</span>` : "";
   a.innerHTML = `
     <span class="card-arrow">↗</span>
     <div class="card-number">${app.num}</div>
-    <div class="card-name">${app.name}</div>
+    <div class="card-name">${app.name}${badge}</div>
     <div class="card-desc">${app.desc}</div>
     <div class="card-footer">
       <span class="card-cat">${CATS[app.cat].plural}</span>
@@ -738,7 +809,8 @@ function buildCards(filter) {
     main.appendChild(grid);
   }
 
-  document.getElementById("total-count").textContent = APPS.length;
+  const liveApps = APPS.filter(a => !a.coming_soon);
+  document.getElementById("total-count").textContent = liveApps.length;
   document.getElementById("streak-count").textContent = calcStreak();
 }
 
