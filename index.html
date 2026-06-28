@@ -730,8 +730,7 @@ const APPS = [
   {
     num:"052", name:"QR Forge", cat:"U", date:"2026-06-27",
     desc:"Turn any URL or text into a scannable QR code. Set size, pick foreground and background colors, upload a center logo, and download a PNG in one tap.",
-    url:"https://augustineiacopelli.github.io/appaday-052-qr-forge/",
-    coming_soon: true
+    url:"https://augustineiacopelli.github.io/appaday-052-qr-forge/"
   }
 ];
 
@@ -757,12 +756,15 @@ function formatDate(iso) {
 }
 
 function calcStreak() {
-  const sorted = [...APPS].filter(a => !a.coming_soon).sort((a,b) => b.date.localeCompare(a.date));
-  let streak = 0, prev = null;
-  for (const app of sorted) {
-    if (!prev) { streak = 1; prev = app.date; continue; }
-    const diff = Math.round((new Date(prev) - new Date(app.date)) / 86400000);
-    if (diff === 1) { streak++; prev = app.date; } else break;
+  // Streak = number of shipped apps with no gap in sequential numbering
+  const nums = [...APPS]
+    .filter(a => !a.coming_soon)
+    .map(a => parseInt(a.num, 10))
+    .sort((a,b) => b - a);
+  let streak = 0;
+  for (let i = 0; i < nums.length; i++) {
+    if (i === 0) { streak = 1; continue; }
+    if (nums[i-1] - nums[i] === 1) { streak++; } else break;
   }
   return streak;
 }
