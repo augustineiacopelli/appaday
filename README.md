@@ -17,11 +17,13 @@ This `index.html` is the root of the AppADay GitHub Pages portfolio. It displays
 Open `index.html` in any browser. No build step, no dependencies, no server required.
 
 Use the sticky filter bar to narrow the view by category:
+
 - **Games** — browser games, puzzles, interactive experiences
 - **Utility** — converters, generators, formatters
 - **AI-Powered** — apps using the Claude API
 - **Data** — charts, visualizations, dashboards
 - **Productivity** — trackers, planners, life tools
+- **Spirituality** — prayer, scripture, saints, and faith tools
 
 Click any card to open that app in a new tab.
 
@@ -33,12 +35,12 @@ Open `index.html` and find the `APPS` array near the top of the `<script>` block
 
 ```js
 {
-  num:  "027",
+  num:  "054",
   name: "App Name",
-  cat:  "G",           // G · U · A · D · P
-  date: "2026-06-02",  // YYYY-MM-DD
+  cat:  "G",           // G · U · A · D · P · S
+  date: "2026-06-30",  // YYYY-MM-DD
   desc: "One sentence description of what the app does.",
-  url:  "https://augustineiacopelli.github.io/appaday-027-app-name/"
+  url:  "https://augustineiacopelli.github.io/appaday-054-app-name/"
 }
 ```
 
@@ -58,8 +60,8 @@ Save, commit, and push. The portal updates automatically — no other changes ne
 
 ## Definition of Complete
 
-- [x] All 26 shipped apps listed with correct numbers, names, categories, dates, and URLs
-- [x] Category filter works for all five types
+- [x] All 53 shipped apps listed with correct numbers, names, categories, dates, and URLs
+- [x] Category filter works for all six types (G · U · A · D · P · S)
 - [x] App count and streak stats render correctly
 - [x] Cards link to live GitHub Pages URLs
 - [x] Mobile-friendly at 375px viewport
