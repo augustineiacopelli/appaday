@@ -397,6 +397,21 @@
     vertical-align: middle;
   }
 
+  .card-ai-badge {
+    display: inline-block;
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: rgba(200,64,26,0.12);
+    color: var(--accent);
+    border-radius: 4px;
+    padding: 2px 6px;
+    margin-left: 7px;
+    vertical-align: middle;
+    border: 1px solid rgba(200,64,26,0.25);
+  }
+
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(16px); }
     to   { opacity: 1; transform: translateY(0); }
@@ -438,10 +453,12 @@
     <span class="filter-label">Filter</span>
     <button class="filter-btn active" data-filter="all">All</button>
     <button class="filter-btn" data-filter="G">Games</button>
+    <button class="filter-btn" data-filter="I">Interactive</button>
     <button class="filter-btn" data-filter="U">Utility</button>
-    <button class="filter-btn" data-filter="A">AI</button>
+    <button class="filter-btn" data-filter="C">Creative</button>
     <button class="filter-btn" data-filter="D">Data</button>
     <button class="filter-btn" data-filter="P">Productivity</button>
+    <button class="filter-btn" data-filter="H">Health</button>
     <button class="filter-btn" data-filter="S">Spirituality</button>
   </div>
 </div>
@@ -456,7 +473,7 @@
 <script>
 // ============================================================
 //  APP REGISTRY — append new objects here to add apps
-//  cat codes: G = Games · U = Utility · A = AI · D = Data · P = Productivity · S = Spirituality
+//  cat codes: G = Games · I = Interactive · U = Utility · C = Creative · D = Data · P = Productivity · H = Health · S = Spirituality
 // ============================================================
 const APPS = [
   {
@@ -475,14 +492,16 @@ const APPS = [
     url:"https://augustineiacopelli.github.io/appaday-003-daily-scripture/"
   },
   {
-    num:"004", name:"Tube Sort", cat:"A", date:"2026-05-11",
+    num:"004", name:"Tube Sort", cat:"U", date:"2026-05-11",
     desc:"Snap a screenshot of any Ball Sort puzzle and let AI parse the tubes automatically. Fill in unknowns with ?, step through the BFS solution move by move, or enter tubes manually.",
-    url:"https://augustineiacopelli.github.io/appaday-004-tube-sort/"
+    url:"https://augustineiacopelli.github.io/appaday-004-tube-sort/",
+    ai:true
   },
   {
-    num:"005", name:"Dad Joke Generator", cat:"A", date:"2026-05-12",
+    num:"005", name:"Dad Joke Generator", cat:"C", date:"2026-05-12",
     desc:"Uses the Claude API to generate fresh, original dad jokes on demand. The punchline is hidden until you're ready — because the beat before the groan is half the joke. A groan meter scores each joke from 1 to 100.",
-    url:"https://augustineiacopelli.github.io/appaday-005-dad-joke-generator/"
+    url:"https://augustineiacopelli.github.io/appaday-005-dad-joke-generator/",
+    ai:true
   },
   {
     num:"006", name:"Life Calendar", cat:"D", date:"2026-05-13",
@@ -490,7 +509,7 @@ const APPS = [
     url:"https://augustineiacopelli.github.io/appaday-006-life-calendar/"
   },
   {
-    num:"007", name:"Still Standing", cat:"P", date:"2026-05-14",
+    num:"007", name:"Still Standing", cat:"I", date:"2026-05-14",
     desc:"A personal encouragement app. Type what is weighing on your heart and receive a word of warmth drawn from 100 curated messages — each paired with a scripture verse. The input and response flip like a physical card.",
     url:"https://augustineiacopelli.github.io/appaday-007-Still-Standing/"
   },
@@ -500,12 +519,12 @@ const APPS = [
     url:"https://augustineiacopelli.github.io/appaday-008-number-neighbors/"
   },
   {
-    num:"009", name:"Focus Timer", cat:"P", date:"2026-05-16",
+    num:"009", name:"Focus Timer", cat:"H", date:"2026-05-16",
     desc:"A Pomodoro-style focus timer with configurable work and break intervals, a circular progress ring, and a clean fullscreen mode.",
     url:"https://augustineiacopelli.github.io/appaday-009-focus-timer/"
   },
   {
-    num:"010", name:"Magic 8 Ball", cat:"G", date:"2026-05-17",
+    num:"010", name:"Magic 8 Ball", cat:"I", date:"2026-05-17",
     desc:"All 20 classic responses rendered inside a glowing blue triangle window — exactly as on the real toy. A history strip tracks your last five verdicts, color-coded by outcome type.",
     url:"https://augustineiacopelli.github.io/appaday-010-magic-8-ball/"
   },
@@ -540,19 +559,21 @@ const APPS = [
     url:"https://augustineiacopelli.github.io/appaday-016-chug-roulette/"
   },
   {
-    num:"017", name:"Session Scribe", cat:"A", date:"2026-05-24",
+    num:"017", name:"Session Scribe", cat:"P", date:"2026-05-24",
     desc:"Record any conference session in the browser. The Web Speech API transcribes audio in real time. When you stop, Claude returns structured notes: a summary, Roman-numeral outline, key takeaways, notable quotes, and follow-up questions.",
-    url:"https://augustineiacopelli.github.io/appaday-017-session-scribe/"
+    url:"https://augustineiacopelli.github.io/appaday-017-session-scribe/",
+    ai:true
   },
   {
-    num:"018", name:"Still Water", cat:"G", date:"2026-05-25",
+    num:"018", name:"Still Water", cat:"I", date:"2026-05-25",
     desc:"A meditative tap-to-explore experience. A dark, living pond with subtle caustic shimmer lines. Tap anywhere to cast ripples. Eight hidden objects wait to be found — land close enough and they surface with a glow. No timer. No fail state.",
     url:"https://augustineiacopelli.github.io/appaday-018-still-water/"
   },
   {
-    num:"019", name:"Tone Translator", cat:"A", date:"2026-05-26",
+    num:"019", name:"Tone Translator", cat:"U", date:"2026-05-26",
     desc:"Paste any text and translate it into a different tone. Four options: Formal, Casual, Direct, and Warm. Claude rewrites your text while preserving the core meaning.",
-    url:"https://augustineiacopelli.github.io/appaday-019-tone-translator/"
+    url:"https://augustineiacopelli.github.io/appaday-019-tone-translator/",
+    ai:true
   },
   {
     num:"020", name:"Rainbow Readers", cat:"G", date:"2026-05-27",
@@ -565,9 +586,10 @@ const APPS = [
     url:"https://augustineiacopelli.github.io/appaday-021-bolt-patrol/"
   },
   {
-    num:"022", name:"Haiku Engine", cat:"A", date:"2026-05-29",
+    num:"022", name:"Haiku Engine", cat:"C", date:"2026-05-29",
     desc:"Enter any topic or mood — morning fog, grief, a long flight home — and receive an original 5-7-5 haiku with a short reflection on the imagery choices that shaped it.",
-    url:"https://augustineiacopelli.github.io/appaday-022-haiku-engine/"
+    url:"https://augustineiacopelli.github.io/appaday-022-haiku-engine/",
+    ai:true
   },
   {
     num:"023", name:"Beer Tasting Scorecard", cat:"U", date:"2026-05-30",
@@ -580,7 +602,7 @@ const APPS = [
     url:"https://augustineiacopelli.github.io/appaday-024-budget-ring/"
   },
   {
-    num:"025", name:"Chroma", cat:"U", date:"2026-06-01",
+    num:"025", name:"Chroma", cat:"C", date:"2026-06-01",
     desc:"Extract a full set of color palettes from any input color. Five ways to enter a color, seven palette sections generated instantly, every hex value click-to-copy, and a one-tap email to send your palette anywhere.",
     url:"https://augustineiacopelli.github.io/appaday-025-chroma/"
   },
@@ -590,7 +612,7 @@ const APPS = [
     url:"https://augustineiacopelli.github.io/appaday-026-tippy-tip/"
   },
   {
-    num:"027", name:"Habit Heatmap", cat:"D", date:"2026-06-03",
+    num:"027", name:"Habit Heatmap", cat:"P", date:"2026-06-03",
     desc:"Track up to five daily habits across the month with a GitHub-style heatmap grid. Tap any day to mark it done, watch your streak climb, and switch between habits instantly with the tab bar. Data lives in your browser — no account needed.",
     url:"https://augustineiacopelli.github.io/appaday-027-habit-heatmap/"
   },
@@ -601,12 +623,13 @@ const APPS = [
     url:"https://augustineiacopelli.github.io/appaday-028-pixel-quest/"
   },
   {
-    num:"029", name:"Life Advocate", cat:"A", date:"2026-06-05",
+    num:"029", name:"Life Advocate", cat:"P", date:"2026-06-05",
     desc:"An AI-powered male advocate chat for men facing an unexpected pregnancy — guiding with love toward life-affirming decisions and connecting users to verified pro-life pregnancy resource centers nationwide.",
-    url:"https://augustineiacopelli.github.io/appaday-029-life-advocate/"
+    url:"https://augustineiacopelli.github.io/appaday-029-life-advocate/",
+    ai:true
   },
   {
-    num:"030", name:"Sleep Curve", cat:"D", date:"2026-06-06",
+    num:"030", name:"Sleep Curve", cat:"H", date:"2026-06-06",
     desc:"Log your bedtime and wake time each night and watch your sleep curve take shape. Color-coded durations, a 7-hour target line, nightly stats, and iOS Shortcuts support for one-tap automatic logging.",
     url:"https://augustineiacopelli.github.io/appaday-030-sleep-curve/"
   },
@@ -631,9 +654,10 @@ const APPS = [
     url:"https://augustineiacopelli.github.io/appaday-034-lcr-dice/"
   },
   {
-    num:"035", name:"Meeting Distiller", cat:"A", date:"2026-06-11",
+    num:"035", name:"Meeting Distiller", cat:"P", date:"2026-06-11",
     desc:"Paste raw meeting notes and get an instant structured breakdown: summary, decisions, action items with owners and deadlines, and open questions. Then send each person their tasks directly via email with one tap.",
-    url:"https://augustineiacopelli.github.io/appaday-035-meeting-distiller/"
+    url:"https://augustineiacopelli.github.io/appaday-035-meeting-distiller/",
+    ai:true
   },
   {
     num:"036",
@@ -668,22 +692,23 @@ const APPS = [
     url:"https://augustineiacopelli.github.io/appaday-039-firefly-catcher/"
   },
   {
-    num:"040", name:"Kitchen Tamer", cat:"A", date:"2026-06-16",
+    num:"040", name:"Kitchen Tamer", cat:"U", date:"2026-06-16",
     desc:"Upload photos of your fridge, freezer, and pantry — multiple shots per space — and Kitchen Tamer generates a realistic multi-day meal plan using what you already have, plus a shopping list for what’s missing. Email the plan directly from the app via Google Apps Script.",
-    url:"https://augustineiacopelli.github.io/appaday-040-kitchen-tamer/"
+    url:"https://augustineiacopelli.github.io/appaday-040-kitchen-tamer/",
+    ai:true
   },
   {
-    num:"041", name:"Frame By Frame", cat:"P", date:"2026-06-17",
+    num:"041", name:"Frame By Frame", cat:"C", date:"2026-06-17",
     desc:"A photo slideshow with five decorative frame styles — Polaroid, Gallery Mat, Film Strip, Gilded, and Borderless. Load photos from your device, set your interval, and let it run. Hide the UI for a clean full-screen view. Photos persist between sessions.",
     url:"https://augustineiacopelli.github.io/appaday-041-frame-by-frame/"
   },
   {
-    num:"042", name:"Breath Guide", cat:"P", date:"2026-06-18",
+    num:"042", name:"Breath Guide", cat:"H", date:"2026-06-18",
     desc:"Meditative breathing guide with six researched patterns — Box, 4-7-8, Coherent, Wim Hof, Diaphragmatic, and Contemplative. An animated orb breathes with you. A built-in calendar tracks every day you practice and shows your current streak.",
     url:"https://augustineiacopelli.github.io/appaday-042-breath-guide/"
   },
   {
-    num:"043", name:"Chore Quest", cat:"G", date:"2026-06-19",
+    num:"043", name:"Chore Quest", cat:"P", date:"2026-06-19",
     desc:"Gamified chore manager for kids. Parents assign quests with XP rewards and daily, weekly, or one-time frequency. Kids level up by completing chores and compete on a live sibling scoreboard.",
     url:"https://augustineiacopelli.github.io/appaday-043-chore-quest/"
   },
@@ -693,12 +718,13 @@ const APPS = [
     url:"https://augustineiacopelli.github.io/appaday-044-quarters-master/"
   },
   {
-    num:"045", name:"Water Reminder", cat:"A", date:"2026-06-21",
+    num:"045", name:"Water Reminder", cat:"H", date:"2026-06-21",
     desc:"Tracks your hydration by comparing photos of your glass over time. Snap a photo, and Claude estimates the current fill level; compared against your last check-in, it calculates what you actually drank, asking about refills when needed. A filling glass shows progress toward your daily goal.",
-    url:"https://augustineiacopelli.github.io/appaday-045-water-reminder/"
+    url:"https://augustineiacopelli.github.io/appaday-045-water-reminder/",
+    ai:true
   },
   {
-    num:"046", name:"Time to Sober", cat:"U", date:"2026-06-22",
+    num:"046", name:"Time to Sober", cat:"H", date:"2026-06-22",
     desc:"A blood alcohol estimator and live drinking-session tracker. Log drinks with start/finish times, watch a real-time BAC curve, and see live countdowns to the legal limit and to 0.000%. Includes a gender-aware what-you-may-be-feeling guide and saves your session automatically.",
     url:"https://augustineiacopelli.github.io/appaday-046-time-to-sober/"
   },
@@ -713,17 +739,17 @@ const APPS = [
     url:"https://augustineiacopelli.github.io/appaday-048-tilt-racer/"
   },
   {
-    num:"049", name:"Pace Planner", cat:"D", date:"2026-06-25",
+    num:"049", name:"Pace Planner", cat:"H", date:"2026-06-25",
     desc:"Select a race distance from 5K to 50K, enter your goal time and fitness level, and get a personalized week-by-week training plan. Includes pace targets, a mileage ramp chart, and daily workout breakdowns across four research-backed training styles.",
     url:"https://augustineiacopelli.github.io/appaday-049-pace-planner/"
   },
   {
-    num:"050", name:"Training Log", cat:"D", date:"2026-06-26",
+    num:"050", name:"Training Log", cat:"H", date:"2026-06-26",
     desc:"A personal run tracker with a weekly mileage bar chart, per-day dot summary, and full run history. Log distance, duration, workout type, feel, shoes, and notes. Stats update live: total miles, run count, this-week miles, and average pace.",
     url:"https://augustineiacopelli.github.io/appaday-050-training-log/"
   },
   {
-    num:"051", name:"Pace + Log", cat:"D", date:"2026-06-27",
+    num:"051", name:"Pace + Log", cat:"H", date:"2026-06-27",
     desc:"The complete running companion: build a personalized training plan by start date or race date, log every run against it, and track your pace vs. goal. Includes base training, mid-week onramp weeks, one-off day adjustments, and a live Today card showing today's prescribed workout.",
     url:"https://augustineiacopelli.github.io/appaday-051-pace-log/"
   },
@@ -743,14 +769,16 @@ const APPS = [
 //  CATEGORY METADATA
 // ============================================================
 const CATS = {
-  G: { label: "Games & Interactive", plural: "Games" },
-  U: { label: "Utility Tools",       plural: "Utility" },
-  A: { label: "AI-Powered Tools",    plural: "AI-Powered" },
-  D: { label: "Data Viz",            plural: "Data" },
-  P: { label: "Productivity & Life", plural: "Productivity" },
-  S: { label: "Spirituality",         plural: "Spirituality" },
+  G: { label: "Games",              plural: "Games" },
+  I: { label: "Interactive",        plural: "Interactive" },
+  U: { label: "Utility Tools",      plural: "Utility" },
+  C: { label: "Creative",           plural: "Creative" },
+  D: { label: "Data Viz",           plural: "Data" },
+  P: { label: "Productivity",       plural: "Productivity" },
+  H: { label: "Health & Wellness",  plural: "Health" },
+  S: { label: "Spirituality",       plural: "Spirituality" },
 };
-const CAT_ORDER = ["G","U","A","D","P","S"];
+const CAT_ORDER = ["G","I","U","C","D","P","H","S"];
 
 // ============================================================
 //  HELPERS
@@ -785,10 +813,11 @@ function makeCard(app, index) {
   a.setAttribute("data-cat", app.cat);
   a.style.animationDelay = `${index * 35}ms`;
   const badge = app.coming_soon ? `<span class="card-coming-badge">Coming ${formatDate(app.date)}</span>` : "";
+  const aiBadge = app.ai ? `<span class="card-ai-badge">AI</span>` : "";
   a.innerHTML = `
     <span class="card-arrow">↗</span>
     <div class="card-number">${app.num}</div>
-    <div class="card-name">${app.name}${badge}</div>
+    <div class="card-name">${app.name}${badge}${aiBadge}</div>
     <div class="card-desc">${app.desc}</div>
     <div class="card-footer">
       <span class="card-cat">${CATS[app.cat].plural}</span>
