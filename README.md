@@ -66,7 +66,7 @@ Save, commit, and push. The portal updates automatically — no other changes ne
 
 ## Definition of Complete
 
-- [x] All 53 shipped apps listed with correct numbers, names, categories, dates, and URLs
+- [x] All 54 shipped apps listed with correct numbers, names, categories, dates, and URLs
 - [x] Category filter works for all eight types (G · I · U · C · D · P · H · S)
 - [x] AI badge displayed on all nine Claude API apps
 - [x] App count and streak stats render correctly
