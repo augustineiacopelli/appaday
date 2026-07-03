@@ -1,80 +1,21 @@
-# AppADay Portal
+# 057 · Liberty Lights
 
-**Live:** https://augustineiacopelli.github.io/appaday/
+**Category:** Interactive (I)
+**Shipped:** July 3, 2026
+**Live URL:** https://augustineiacopelli.github.io/appaday-057-liberty-lights/
 
-The landing page and archive for the AppADay project — one complete, functional, mobile-friendly web app built and shipped every day, started May 7, 2026. Inspired by Jonathan Mann's Song A Day project.
+## What it does
 
----
+Tap anywhere on the night sky to launch a firework toward that point. Choose from six burst styles before you tap: Peony, a classic gold radial burst; Willow, long silver cascading trails with heavier gravity; Chrysanthemum, a layered sapphire bloom with a twinkle effect; Liberty Ring, a tight uniform red ring; Freedom Palm, an upward crackle burst that pops a second time mid-fall; and the signature ★ 250 Salute, concentric red, white, and blue rings with thirteen gold sparks on the outer edge, one for each of the original colonies. A seventh option, Random Mix, picks a weighted random style on every tap instead of a fixed one.
 
-## What This Is
+An Auto Show toggle runs a self-playing display at randomized intervals. Sound is synthesized live through the Web Audio API, a launch whistle and a filtered-noise boom, with no external audio files, and the mute state persists across visits. The header badge shows a live countdown to July 4, 2026, computed from the system clock, so it reads correctly whether it's viewed a day before, on the day, or years from now.
 
-This `index.html` is the root of the AppADay GitHub Pages portfolio. It displays every shipped app as a card, grouped by category, with filtering, live app count, and a streak counter calculated from the ship dates.
+Record Show captures every tap during a session, its position, timing, and resolved firework type, so a Random Mix show replays with the same specific bursts it had originally rather than re-rolling. Stopping the recording saves it to the browser automatically, so Play Show and Save Show stay available after a reload. Save Show downloads the sequence as a dated JSON file, and Load Show reads one back in, so a show can be handed to someone else or moved between devices. Play Show replays the full sequence on its own timeline. Starting a recording or playback turns off Auto Show automatically to avoid the three modes overlapping.
 
----
+## Technical notes
 
-## Usage
+Single-file vanilla HTML, CSS, and JavaScript. Canvas-based particle system using `globalCompositeOperation: 'lighter'` for glow blending and a low-alpha overlay fill each frame for motion trails instead of a hard clear. Physics runs in CSS pixel space with the canvas scaled by `devicePixelRatio` via `ctx.setTransform`. Pointer events handle both mouse and touch in one listener. Recording and playback timing runs through the same delta-time accumulator as Auto Show, so the file makes no use of `setTimeout` or `setInterval` anywhere. All DOM access is wrapped in a `window.addEventListener('load', ...)` block, canvas context creation is null-guarded, and the render loop is wrapped in try/catch so a drawing error can't kill the animation frame loop. `localStorage` access for the sound preference and saved show is wrapped in try/catch to tolerate sandboxed iframes. Save/Load uses a `Blob` and `FileReader` for file export and import, with no server involved.
 
-Open `index.html` in any browser. No build step, no dependencies, no server required.
+## Design
 
-Use the sticky filter bar to narrow the view by category:
-
-- **Games** — browser games, puzzles, scored experiences
-- **Interactive** — experience-driven apps with no win state (meditative, generative, exploratory)
-- **Utility** — converters, generators, formatters, single-function tools
-- **Creative** — apps that make something: poems, jokes, palettes, presentations
-- **Data** — charts, visualizations, dashboards
-- **Productivity** — trackers, planners, task managers, life tools
-- **Health & Wellness** — physical and mental wellbeing: sleep, breathing, hydration, training
-- **Spirituality** — prayer, scripture, saints, and faith tools
-
-Apps that use the Claude API display an **AI** badge on their card. AI is an attribute, not a category.
-
-Click any card to open that app in a new tab.
-
----
-
-## Adding a New App
-
-Open `index.html` and find the `APPS` array near the top of the `<script>` block. Append a new object following this format:
-
-```js
-{
-  num:  "054",
-  name: "App Name",
-  cat:  "G",           // G · I · U · C · D · P · H · S
-  date: "2026-06-30",  // YYYY-MM-DD
-  desc: "One sentence description of what the app does.",
-  url:  "https://augustineiacopelli.github.io/appaday-054-app-name/",
-  ai:   true           // include only if the app uses the Claude API
-}
-```
-
-Save, commit, and push. The portal updates automatically — no other changes needed.
-
----
-
-## Technical Notes
-
-- Single-file vanilla HTML/CSS/JS. No frameworks, no external dependencies beyond Google Fonts.
-- Category grouping, filtering, card rendering, streak calculation, and app count are all computed from the `APPS` array at runtime.
-- Streak is calculated as the longest consecutive run counting backward from the most recently shipped app by sequential number.
-- AI badge rendered automatically on any entry with `ai:true`.
-- Cards animate in with staggered fade-up on each filter change.
-- Fully responsive; tested on 375px mobile viewport and desktop.
-
----
-
-## Definition of Complete
-
-- [x] All 57 shipped apps listed with correct numbers, names, categories, dates, and URLs
-- [x] Category filter works for all eight types (G · I · U · C · D · P · H · S)
-- [x] AI badge displayed on all nine Claude API apps
-- [x] App count and streak stats render correctly
-- [x] Cards link to live GitHub Pages URLs
-- [x] Mobile-friendly at 375px viewport
-- [x] Visually polished — editorial paper aesthetic, DM Serif Display / DM Mono typography
-- [x] Published at repo root as `index.html`
-
----
-
-*Ship something every day. It compounds.*
+Deep navy-to-black sky gradient rather than pure black, with a gold accent (nodding to the semiquincentennial branding) layered over Old Glory red and blue. Big Shoulders Display for the header type, Space Grotesk for UI, IBM Plex Mono for the countdown badge.
