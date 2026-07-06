@@ -452,14 +452,15 @@
   <div class="filter-inner">
     <span class="filter-label">Filter</span>
     <button class="filter-btn active" data-filter="all">All</button>
-    <button class="filter-btn" data-filter="G">Games</button>
-    <button class="filter-btn" data-filter="I">Interactive</button>
-    <button class="filter-btn" data-filter="U">Utility</button>
     <button class="filter-btn" data-filter="C">Creative</button>
     <button class="filter-btn" data-filter="D">Data</button>
-    <button class="filter-btn" data-filter="P">Productivity</button>
+    <button class="filter-btn" data-filter="E">Educational</button>
+    <button class="filter-btn" data-filter="G">Games</button>
     <button class="filter-btn" data-filter="H">Health</button>
+    <button class="filter-btn" data-filter="I">Interactive</button>
+    <button class="filter-btn" data-filter="P">Productivity</button>
     <button class="filter-btn" data-filter="S">Spirituality</button>
+    <button class="filter-btn" data-filter="U">Utility</button>
   </div>
 </div>
 
@@ -473,7 +474,7 @@
 <script>
 // ============================================================
 //  APP REGISTRY — append new objects here to add apps
-//  cat codes: G = Games · I = Interactive · U = Utility · C = Creative · D = Data · P = Productivity · H = Health · S = Spirituality
+//  cat codes: C = Creative · D = Data · E = Educational · G = Games · H = Health · I = Interactive · P = Productivity · S = Spirituality · U = Utility
 // ============================================================
 const APPS = [
   {
@@ -576,7 +577,7 @@ const APPS = [
     ai:true
   },
   {
-    num:"020", name:"Rainbow Readers", cat:"G", date:"2026-05-27",
+    num:"020", name:"Rainbow Readers", cat:"E", date:"2026-05-27",
     desc:"A four-level phonics game for early readers ages 4–7. Tap the correct starting letter, identify full words, trace guide letters in rainbow ink with your finger, and progress through whole words one letter at a time.",
     url:"https://augustineiacopelli.github.io/appaday-020-rainbow-readers/"
   },
@@ -662,7 +663,7 @@ const APPS = [
   {
     num:"036",
     name:"Sivam Nocab",
-    cat:"G",
+    cat:"E",
     date:"2026-06-12",
     desc:"A retro CRT-styled typing trainer with 7 lesson tracks covering home row, top row, full alphabet, numbers, common words, sentences, and symbols. Tracks live WPM and accuracy, grades each run S through D, and persists your best WPM and completion streak across sessions.",
     url:"https://augustineiacopelli.github.io/appaday-036-sivam-nocab/"
@@ -784,7 +785,7 @@ const APPS = [
     url:"https://augustineiacopelli.github.io/appaday-057-liberty-lights/"
   },
   {
-    num:"058", name:"Civics Interview Practice", cat:"G", date:"2026-07-04",
+    num:"058", name:"Civics Interview Practice", cat:"E", date:"2026-07-04",
     desc:"Civics Interview Practice recreates the real naturalization interview: choose the 2008 test, ten of one hundred questions, pass at six, or the 2025 test, twenty of one hundred twenty-eight, pass at twelve. Missed questions get reviewed afterward, best scores are tracked per version, and every session closes with a stamped federal notice of the result.",
     url:"https://augustineiacopelli.github.io/appaday-058-civics-interview/"
   },
@@ -804,16 +805,17 @@ const APPS = [
 //  CATEGORY METADATA
 // ============================================================
 const CATS = {
-  G: { label: "Games",              plural: "Games" },
-  I: { label: "Interactive",        plural: "Interactive" },
-  U: { label: "Utility Tools",      plural: "Utility" },
   C: { label: "Creative",           plural: "Creative" },
   D: { label: "Data Viz",           plural: "Data" },
-  P: { label: "Productivity",       plural: "Productivity" },
+  E: { label: "Educational",        plural: "Educational" },
+  G: { label: "Games",              plural: "Games" },
   H: { label: "Health & Wellness",  plural: "Health" },
+  I: { label: "Interactive",        plural: "Interactive" },
+  P: { label: "Productivity",       plural: "Productivity" },
   S: { label: "Spirituality",       plural: "Spirituality" },
+  U: { label: "Utility Tools",      plural: "Utility" },
 };
-const CAT_ORDER = ["G","I","U","C","D","P","H","S"];
+const CAT_ORDER = ["C","D","E","G","H","I","P","S","U"];
 
 // ============================================================
 //  HELPERS
