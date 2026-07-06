@@ -18,14 +18,15 @@ Open `index.html` in any browser. No build step, no dependencies, no server requ
 
 Use the sticky filter bar to narrow the view by category:
 
-- **Games** — browser games, puzzles, scored experiences
-- **Interactive** — experience-driven apps with no win state (meditative, generative, exploratory)
-- **Utility** — converters, generators, formatters, single-function tools
 - **Creative** — apps that make something: poems, jokes, palettes, presentations
 - **Data** — charts, visualizations, dashboards
-- **Productivity** — trackers, planners, task managers, life tools
+- **Educational** — apps that teach or drill a skill: phonics, typing, test prep
+- **Games** — browser games, puzzles, scored experiences
 - **Health & Wellness** — physical and mental wellbeing: sleep, breathing, hydration, training
+- **Interactive** — experience-driven apps with no win state (meditative, generative, exploratory)
+- **Productivity** — trackers, planners, task managers, life tools
 - **Spirituality** — prayer, scripture, saints, and faith tools
+- **Utility** — converters, generators, formatters, single-function tools
 
 Apps that use the Claude API display an **AI** badge on their card. AI is an attribute, not a category.
 
@@ -41,7 +42,7 @@ Open `index.html` and find the `APPS` array near the top of the `<script>` block
 {
   num:  "054",
   name: "App Name",
-  cat:  "G",           // G · I · U · C · D · P · H · S
+  cat:  "G",           // C · D · E · G · H · I · P · S · U
   date: "2026-06-30",  // YYYY-MM-DD
   desc: "One sentence description of what the app does.",
   url:  "https://augustineiacopelli.github.io/appaday-054-app-name/",
@@ -67,7 +68,7 @@ Save, commit, and push. The portal updates automatically — no other changes ne
 ## Definition of Complete
 
 - [x] All 60 shipped apps listed with correct numbers, names, categories, dates, and URLs
-- [x] Category filter works for all eight types (G · I · U · C · D · P · H · S)
+- [x] Category filter works for all nine types (C · D · E · G · H · I · P · S · U)
 - [x] AI badge displayed on all nine Claude API apps
 - [x] App count and streak stats render correctly
 - [x] Cards link to live GitHub Pages URLs
