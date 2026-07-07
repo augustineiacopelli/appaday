@@ -2,7 +2,7 @@
 
 **Live:** https://augustineiacopelli.github.io/appaday/
 
-The landing page and archive for the AppADay project — one complete, functional, mobile-friendly web app built and shipped every day, started May 7, 2026. Inspired by Jonathan Mann's Song A Day project.
+The landing page and archive for the AppADay project — one complete, functional, mobile-friendly web app built and shipped every day, started May 8, 2026. Inspired by Jonathan Mann's Song A Day project.
 
 ---
 
