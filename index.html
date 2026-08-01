@@ -17,6 +17,12 @@
        else All.
     3. coming_soon entries, AI badges (app.ai), per-category color
        overrides, and the og-image / twitter ?v=N cache-buster.
+    4. New tab - localStorage key "appaday-newseen" holds the latest app
+       date the visitor has acknowledged. The "New" filter button + its
+       .new-count badge show apps whose date is newer than that marker;
+       opening the New view advances the marker so the badge clears, and
+       the set stays fixed for the rest of that session. A first-ever
+       visit is baselined to the latest date (caught up, empty New).
   Update this manifest whenever a new portal feature is added.
   ==================================================================
 -->
@@ -488,6 +494,20 @@
   .card-star:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 
   .filter-star .star-count { margin-left: 4px; opacity: 0.75; }
+  .filter-new .new-count {
+    margin-left: 5px;
+    display: inline-block;
+    min-width: 16px;
+    padding: 0 5px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: var(--paper);
+    font-size: 10px;
+    line-height: 16px;
+    text-align: center;
+    vertical-align: baseline;
+  }
+  .filter-new .new-count:empty { display: none; }
 
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(16px); }
@@ -529,6 +549,7 @@
   <div class="filter-inner">
     <span class="filter-label">Filter</span>
     <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn filter-new" data-filter="new">New <span class="new-count" id="new-count"></span></button>
     <button class="filter-btn filter-star" data-filter="starred">&#9733; Starred <span class="star-count" id="star-count"></span></button>
     <button class="filter-btn" data-filter="C">Creative</button>
     <button class="filter-btn" data-filter="D">Data</button>
@@ -1080,6 +1101,36 @@ function toggleStar(num, name, btn) {
 }
 
 // ============================================================
+//  NEW  (apps published since the visitor last checked)
+// ============================================================
+const SEEN_KEY = "appaday-newseen";
+function loadSeen() { try { return localStorage.getItem(SEEN_KEY) || ""; } catch (e) { return ""; } }
+function saveSeen(v) { try { localStorage.setItem(SEEN_KEY, v); } catch (e) {} }
+function latestDate() {
+  let latest = "";
+  APPS.forEach(a => { if (!a.coming_soon && a.date > latest) latest = a.date; });
+  return latest;
+}
+function computeNew(seen) {
+  if (!seen) return [];
+  return APPS.filter(a => !a.coming_soon && a.date > seen).sort((x, y) => (x.num < y.num ? 1 : -1));
+}
+let sessionNew = [];
+let newViewed = false;
+function updateNewCount() {
+  const el = document.getElementById("new-count");
+  if (!el) return;
+  const n = newViewed ? 0 : sessionNew.length;
+  el.textContent = n > 0 ? String(n) : "";
+}
+function initNew() {
+  const seen = loadSeen();
+  if (!seen) { saveSeen(latestDate()); sessionNew = []; }
+  else { sessionNew = computeNew(seen); }
+  updateNewCount();
+}
+
+// ============================================================
 //  CARD FACTORY
 // ============================================================
 function makeCard(app, index) {
@@ -1153,6 +1204,19 @@ function buildCards(filter) {
       list.forEach((app, i) => grid.appendChild(makeCard(app, i)));
     }
     main.appendChild(grid);
+  } else if (filter === "new") {
+    const grid = document.createElement("div");
+    grid.className = "card-grid";
+    if (!newViewed) { newViewed = true; saveSeen(latestDate()); }
+    if (!sessionNew.length) {
+      const emp = document.createElement("div");
+      emp.className = "empty-state";
+      emp.textContent = "You're all caught up. Apps published since your last visit will appear here.";
+      grid.appendChild(emp);
+    } else {
+      sessionNew.forEach((app, i) => grid.appendChild(makeCard(app, i)));
+    }
+    main.appendChild(grid);
   } else {
     const grid = document.createElement("div");
     grid.className = "card-grid";
@@ -1172,6 +1236,7 @@ function buildCards(filter) {
   document.getElementById("total-count").textContent = liveApps.length;
   document.getElementById("streak-count").textContent = calcStreak();
   updateStarCount();
+  updateNewCount();
 }
 
 // ============================================================
@@ -1184,6 +1249,9 @@ document.querySelectorAll(".filter-btn").forEach(btn => {
     buildCards(btn.dataset.filter);
   });
 });
+
+// Initialize the "New since last visit" badge before the first render.
+initNew();
 
 // On load, open the Starred view if the visitor has starred anything; otherwise All.
 (function initDefault(){
