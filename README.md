@@ -32,7 +32,7 @@ The repository root holds this README and the portal `index.html`, which lists e
 
 ## Finding your way around
 
-The portal opens with every app grouped by category, and a filter bar narrows the view to any single category. A few standout builds are flagged as milestones and carry a small gold badge on the card. Every live app also has a star in its corner: tap it to save the app to a personal Starred view, which is kept in your browser so it persists between visits. Once you have starred anything, the portal opens to that Starred view on your next visit; otherwise it opens to the full archive.
+The portal opens with every app grouped by category, and a filter bar narrows the view to any single category. A few standout builds are flagged as milestones and carry a small gold badge on the card. Every live app also has a star in its corner: tap it to save the app to a personal Starred view, which is kept in your browser so it persists between visits. Once you have starred anything, the portal opens to that Starred view on your next visit; otherwise it opens to the full archive. A New filter collects anything published since your last visit and shows a small count on the tab, which clears once you open it.
 
 ## The rules
 
