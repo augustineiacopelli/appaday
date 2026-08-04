@@ -23,6 +23,14 @@
        opening the New view advances the marker so the badge clears, and
        the set stays fixed for the rest of that session. A first-ever
        visit is baselined to the latest date (caught up, empty New).
+    5. Search - #search-input in .filter-inner runs runSearch(), a flat
+       keyword match over num/name/desc/category with light suffix stemming
+       (stemToken, so "brewing" matches "brew"), plus a type-ahead
+       suggestion listbox (#search-suggest, buildSuggestions from app
+       names + category words) that completes what is typed. It overrides the filter
+       view WITHOUT changing currentFilter; clearing the box (#search-clear
+       or emptying it) restores the active filter, and clicking any filter
+       button clears the search.
   Update this manifest whenever a new portal feature is added.
   ==================================================================
 -->
@@ -208,6 +216,101 @@
     border-color: var(--ink);
     color: var(--paper);
   }
+
+  .search-wrap {
+    display: flex;
+    align-items: center;
+    position: relative;
+    margin-left: auto;
+  }
+  .search-input {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    padding: 6px 24px 6px 28px;
+    width: 190px;
+    max-width: 46vw;
+    border-radius: 2px;
+    border: 1px solid var(--rule);
+    background: var(--paper);
+    color: var(--ink);
+    transition: all 0.15s ease;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  .search-input::placeholder {
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .search-input:focus {
+    outline: none;
+    border-color: var(--accent-mid);
+    box-shadow: 0 0 0 3px var(--accent-dim);
+  }
+  .search-input::-webkit-search-decoration,
+  .search-input::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; }
+  .search-icon {
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 13px;
+    height: 13px;
+    color: var(--muted);
+    pointer-events: none;
+  }
+  .search-clear {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 15px;
+    line-height: 1;
+    padding: 0;
+    display: none;
+  }
+  .search-clear:hover { color: var(--accent); }
+  .search-clear.show { display: block; }
+  .search-suggest {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    box-shadow: var(--shadow);
+    z-index: 40;
+    overflow: hidden;
+    display: none;
+  }
+  .search-suggest.show { display: block; }
+  .suggest-row {
+    display: block;
+    width: 100%;
+    text-align: left;
+    border: none;
+    border-bottom: 1px solid var(--rule);
+    background: transparent;
+    padding: 9px 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+    cursor: pointer;
+    transition: background 0.12s ease;
+  }
+  .suggest-row:last-child { border-bottom: none; }
+  .suggest-row.active, .suggest-row:hover { background: var(--accent-dim); }
+  .sg-head { color: var(--muted); }
+  .sg-tail { color: var(--accent); font-weight: 500; }
 
   main {
     max-width: 1280px;
@@ -522,6 +625,8 @@
     main { padding: 32px 20px 80px; }
     footer { padding: 24px 20px; flex-direction: column; gap: 12px; align-items: flex-start; }
     .card-grid { grid-template-columns: 1fr; }
+    .search-wrap { margin-left: 0; width: 100%; margin-top: 2px; }
+    .search-input { width: 100%; max-width: none; }
   }
 </style>
 </head>
@@ -560,6 +665,12 @@
     <button class="filter-btn" data-filter="P">Productivity</button>
     <button class="filter-btn" data-filter="S">Spirituality</button>
     <button class="filter-btn" data-filter="U">Utility</button>
+    <div class="search-wrap">
+      <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 21l-4.3-4.3M11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <input id="search-input" class="search-input" type="search" placeholder="Search" aria-label="Search apps by keyword" autocomplete="off" aria-autocomplete="list">
+      <button id="search-clear" class="search-clear" type="button" aria-label="Clear search">&#215;</button>
+      <div class="search-suggest" id="search-suggest" role="listbox" aria-label="Search suggestions"></div>
+    </div>
   </div>
 </div>
 
@@ -1250,10 +1361,192 @@ function buildCards(filter) {
 }
 
 // ============================================================
+//  SEARCH  (keyword lookup across number, name, desc, category)
+//  Overrides the filter view without changing currentFilter, so
+//  clearing the box restores whatever filter was active.
+// ============================================================
+const searchInput = document.getElementById("search-input");
+const searchClear = document.getElementById("search-clear");
+let searchQuery = "";
+
+function appHaystack(app) {
+  const meta = CATS[app.cat] || { label: "", plural: "" };
+  return [app.num, app.name, app.desc, app.cat, meta.label, meta.plural].join(" ").toLowerCase();
+}
+function stemToken(w) {
+  if (w.length < 5) return w;
+  const suf = ["ings", "ies", "ing", "ers", "ied", "es", "ed", "er", "ly", "s"];
+  for (let i = 0; i < suf.length; i++) {
+    const s = suf[i];
+    if (w.length > s.length && w.slice(-s.length) === s) {
+      const st = w.slice(0, w.length - s.length);
+      if (st.length >= 4) return st;
+    }
+  }
+  return w;
+}
+function tokenMatches(hay, t) {
+  if (hay.indexOf(t) !== -1) return true;
+  const st = stemToken(t);
+  return st !== t && hay.indexOf(st) !== -1;
+}
+function matchesQuery(app, tokens) {
+  const hay = appHaystack(app);
+  return tokens.every(t => tokenMatches(hay, t));
+}
+function refreshStats() {
+  document.getElementById("total-count").textContent = APPS.filter(a => !a.coming_soon).length;
+  document.getElementById("streak-count").textContent = calcStreak();
+  updateStarCount();
+  updateNewCount();
+}
+function runSearch(q) {
+  const main = document.getElementById("main-content");
+  main.innerHTML = "";
+  const tokens = q.toLowerCase().split(/\s+/).filter(Boolean);
+  const results = APPS.filter(a => matchesQuery(a, tokens));
+
+  const hdr = document.createElement("div");
+  hdr.className = "section-header";
+  const t = document.createElement("span"); t.className = "section-title"; t.textContent = "Search";
+  const code = document.createElement("span"); code.className = "section-code"; code.textContent = q;
+  const cnt = document.createElement("span"); cnt.className = "section-count";
+  cnt.textContent = results.length + " result" + (results.length !== 1 ? "s" : "");
+  hdr.appendChild(t); hdr.appendChild(code); hdr.appendChild(cnt);
+  main.appendChild(hdr);
+
+  const grid = document.createElement("div");
+  grid.className = "card-grid";
+  if (!results.length) {
+    const emp = document.createElement("div");
+    emp.className = "empty-state";
+    emp.textContent = "No apps match that keyword. Try another word or clear the search.";
+    grid.appendChild(emp);
+  } else {
+    results.forEach((app, i) => grid.appendChild(makeCard(app, i)));
+  }
+  main.appendChild(grid);
+  refreshStats();
+}
+function clearActiveButtons() {
+  document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+}
+function restoreActiveButton() {
+  document.querySelectorAll(".filter-btn").forEach(b => b.classList.toggle("active", b.dataset.filter === currentFilter));
+}
+function onSearchInput() {
+  searchQuery = searchInput.value.trim();
+  searchClear.classList.toggle("show", searchQuery.length > 0);
+  updateSuggest(searchInput.value);
+  if (searchQuery) { clearActiveButtons(); runSearch(searchQuery); }
+  else { restoreActiveButton(); buildCards(currentFilter); }
+}
+function clearSearchInput() {
+  searchInput.value = "";
+  searchQuery = "";
+  searchClear.classList.remove("show");
+  hideSuggest();
+}
+// --- type-ahead suggestions (vocabulary from app names + categories) ---
+const SUGGEST = (function () {
+  const words = new Set();
+  const names = [];
+  const addWords = (str) => str.toLowerCase().split(/[^a-z0-9]+/).forEach(w => { if (w.length >= 3) words.add(w); });
+  APPS.forEach(a => { names.push(a.name); addWords(a.name); });
+  Object.keys(CATS).forEach(k => { addWords(CATS[k].label); addWords(CATS[k].plural); });
+  return { words: [...words].sort(), names: names };
+})();
+let activeIndex = -1;
+
+function buildSuggestions(raw) {
+  const full = raw.trim().toLowerCase();
+  if (full.length < 2) return [];
+  const out = [];
+  const seen = new Set();
+  const add = (disp) => {
+    const key = disp.toLowerCase();
+    if (key === full || seen.has(key)) return;
+    seen.add(key); out.push(disp);
+  };
+  SUGGEST.names.filter(nm => nm.toLowerCase().startsWith(full))
+    .sort((a, b) => a.length - b.length).forEach(add);
+  const parts = full.split(/\s+/);
+  const last = parts[parts.length - 1];
+  const head = parts.slice(0, -1).join(" ");
+  if (last.length >= 2) {
+    SUGGEST.words.filter(v => v.startsWith(last) && v !== last)
+      .sort((a, b) => a.length - b.length)
+      .forEach(v => add((head ? head + " " : "") + v));
+  }
+  return out.slice(0, 6);
+}
+function renderSuggestions(list, raw) {
+  const box = document.getElementById("search-suggest");
+  box.innerHTML = "";
+  if (!list.length) { box.classList.remove("show"); activeIndex = -1; return; }
+  const typedLen = raw.trim().length;
+  list.forEach((disp, i) => {
+    const row = document.createElement("button");
+    row.type = "button";
+    row.className = "suggest-row" + (i === 0 ? " active" : "");
+    row.setAttribute("role", "option");
+    row.dataset.value = disp;
+    const h = document.createElement("span"); h.className = "sg-head"; h.textContent = disp.slice(0, typedLen);
+    const t = document.createElement("span"); t.className = "sg-tail"; t.textContent = disp.slice(typedLen);
+    row.appendChild(h); row.appendChild(t);
+    row.addEventListener("pointerdown", (e) => { e.preventDefault(); acceptSuggestion(disp); });
+    box.appendChild(row);
+  });
+  box.classList.add("show");
+  activeIndex = 0;
+}
+function updateSuggest(raw) { renderSuggestions(buildSuggestions(raw), raw); }
+function hideSuggest() {
+  const box = document.getElementById("search-suggest");
+  if (!box) return;
+  box.classList.remove("show"); box.innerHTML = ""; activeIndex = -1;
+}
+function setActiveRow(rows) {
+  rows.forEach((r, i) => r.classList.toggle("active", i === activeIndex));
+  const el = rows[activeIndex];
+  if (el && el.scrollIntoView) el.scrollIntoView({ block: "nearest" });
+}
+function acceptSuggestion(disp) {
+  searchInput.value = disp;
+  searchQuery = disp.trim();
+  searchClear.classList.add("show");
+  hideSuggest();
+  clearActiveButtons();
+  runSearch(searchQuery);
+  searchInput.focus();
+}
+
+if (searchInput) {
+  searchInput.addEventListener("input", onSearchInput);
+  searchInput.addEventListener("keydown", (e) => {
+    const box = document.getElementById("search-suggest");
+    const rows = [].slice.call(box.querySelectorAll(".suggest-row"));
+    if (!box.classList.contains("show") || !rows.length) return;
+    if (e.key === "ArrowDown") { e.preventDefault(); activeIndex = (activeIndex + 1) % rows.length; setActiveRow(rows); }
+    else if (e.key === "ArrowUp") { e.preventDefault(); activeIndex = (activeIndex - 1 + rows.length) % rows.length; setActiveRow(rows); }
+    else if (e.key === "Enter" || e.key === "Tab") { if (activeIndex >= 0) { e.preventDefault(); acceptSuggestion(rows[activeIndex].dataset.value); } }
+    else if (e.key === "Escape") { hideSuggest(); }
+  });
+  searchInput.addEventListener("blur", () => { setTimeout(hideSuggest, 120); });
+  searchClear.addEventListener("click", () => {
+    clearSearchInput();
+    restoreActiveButton();
+    buildCards(currentFilter);
+    searchInput.focus();
+  });
+}
+
+// ============================================================
 //  FILTER BUTTONS
 // ============================================================
 document.querySelectorAll(".filter-btn").forEach(btn => {
   btn.addEventListener("click", () => {
+    clearSearchInput();
     document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
     buildCards(btn.dataset.filter);
