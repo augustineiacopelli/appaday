@@ -14,7 +14,10 @@
     2. Starring - localStorage key "appaday-starred", .card-star toggle
        buttons on every live card, the "Starred" filter button, and the
        initDefault() logic that opens Starred on load when any exist,
-       else All.
+       else All. The Starred view is GROUPED BY CATEGORY in CAT_ORDER
+       with .section-header blocks, matching the All view, rather than
+       listed flat in app-number order. Any category not in CAT_ORDER is
+       appended after the known ones so a starred app can never vanish.
     3. coming_soon entries, AI badges (app.ai), per-category color
        overrides, and the og-image / twitter ?v=N cache-buster.
     4. New tab - localStorage key "appaday-newseen" holds the latest app
@@ -1330,18 +1333,38 @@ function buildCards(filter) {
       main.appendChild(sec);
     });
   } else if (filter === "starred") {
-    const grid = document.createElement("div");
-    grid.className = "card-grid";
     const list = APPS.filter(a => !a.coming_soon && starred.has(a.num));
     if (!list.length) {
+      const grid = document.createElement("div");
+      grid.className = "card-grid";
       const emp = document.createElement("div");
       emp.className = "empty-state";
       emp.textContent = "No starred apps yet. Tap the star on any app to save it here.";
       grid.appendChild(emp);
+      main.appendChild(grid);
     } else {
-      list.forEach((app, i) => grid.appendChild(makeCard(app, i)));
+      // Starred is grouped by category, same section shape as the All view.
+      const seenCats = [...CAT_ORDER, ...list.map(a => a.cat).filter(k => CAT_ORDER.indexOf(k) === -1)];
+      seenCats.forEach(cat => {
+        const group = list.filter(a => a.cat === cat);
+        if (!group.length) return;
+        const sec = document.createElement("div");
+        sec.setAttribute("data-cat", cat);
+        const hdr = document.createElement("div");
+        hdr.className = "section-header";
+        hdr.innerHTML = `
+        <span class="section-title">${CATS[cat] ? CATS[cat].label : cat}</span>
+        <span class="section-code">${cat}</span>
+        <span class="section-count">${group.length} app${group.length !== 1 ? "s" : ""}</span>
+      `;
+        sec.appendChild(hdr);
+        const grid = document.createElement("div");
+        grid.className = "card-grid";
+        group.forEach((app, i) => grid.appendChild(makeCard(app, i)));
+        sec.appendChild(grid);
+        main.appendChild(sec);
+      });
     }
-    main.appendChild(grid);
   } else if (filter === "new") {
     const grid = document.createElement("div");
     grid.className = "card-grid";
