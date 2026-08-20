@@ -23,7 +23,7 @@ Of the 104, twenty-six are AI-powered. The nine categories are spread as follows
 | Health | H | 10 |
 | Interactive | I | 10 |
 | Productivity | P | 13 |
-| Spirituality | S | 11 |
+| Spirituality | S | 12 |
 | Utility | U | 14 |
 
 ## How it is organized
