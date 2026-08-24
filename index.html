@@ -10,7 +10,12 @@
   Verify each of these still works after ANY change:
     1. Milestone markers - entries may carry `milestone:true`, rendered
        by .card-milestone-badge + the mBadge string in makeCard().
-       Currently flagged: App 075 (Fiefdom).
+       Currently flagged: App 075 (Fiefdom), App 100 (Signal Desk).
+       The "Milestone" filter button (data-filter="milestone") shows a
+       flat, app-number-sorted grid of every milestone:true entry, with
+       an empty-state fallback if none are flagged. Any app given
+       milestone:true in the future is automatically picked up here,
+       no other wiring needed.
     2. Starring - localStorage key "appaday-starred", .card-star toggle
        buttons on every live card, the "Starred" filter button, and the
        initDefault() logic that opens Starred on load when any exist,
@@ -659,6 +664,7 @@
     <button class="filter-btn active" data-filter="all">All</button>
     <button class="filter-btn filter-new" data-filter="new">New <span class="new-count" id="new-count"></span></button>
     <button class="filter-btn filter-star" data-filter="starred">&#9733; Starred <span class="star-count" id="star-count"></span></button>
+    <button class="filter-btn" data-filter="milestone">Milestone</button>
     <button class="filter-btn" data-filter="C">Creative</button>
     <button class="filter-btn" data-filter="D">Data</button>
     <button class="filter-btn" data-filter="E">Educational</button>
@@ -1462,6 +1468,19 @@ function buildCards(filter) {
         main.appendChild(sec);
       });
     }
+  } else if (filter === "milestone") {
+    const grid = document.createElement("div");
+    grid.className = "card-grid";
+    const list = APPS.filter(a => a.milestone).sort((a, b) => a.num.localeCompare(b.num));
+    if (!list.length) {
+      const emp = document.createElement("div");
+      emp.className = "empty-state";
+      emp.textContent = "No milestone apps flagged yet.";
+      grid.appendChild(emp);
+    } else {
+      list.forEach((app, i) => grid.appendChild(makeCard(app, i)));
+    }
+    main.appendChild(grid);
   } else if (filter === "new") {
     const grid = document.createElement("div");
     grid.className = "card-grid";
