@@ -10,9 +10,9 @@ Every app is a single self-contained file of vanilla HTML, CSS, and JavaScript w
 
 ## The count
 
-**All 110 shipped apps, numbered 001 through 110 with no gaps in the sequence.** Building since May 2026.
+**All 111 shipped apps, numbered 001 through 111 with no gaps in the sequence.** Building since May 2026.
 
-Of the 110, twenty-eight are AI-powered. The nine categories are spread as follows.
+Of the 111, twenty-nine are AI-powered. The nine categories are spread as follows.
 
 | Category | Code | Shipped |
 | --- | --- | --- |
@@ -22,7 +22,7 @@ Of the 110, twenty-eight are AI-powered. The nine categories are spread as follo
 | Games | G | 18 |
 | Health | H | 10 |
 | Interactive | I | 10 |
-| Productivity | P | 13 |
+| Productivity | P | 14 |
 | Spirituality | S | 12 |
 | Utility | U | 15 |
 
