@@ -1,0 +1,938 @@
+[
+ {
+  "num": "001",
+  "cat": "G",
+  "name": "Reaction Timer",
+  "slug": "appaday-001-reaction-timer",
+  "glyph": "zap",
+  "color": "#276EB7"
+ },
+ {
+  "num": "002",
+  "cat": "G",
+  "name": "Stream Cleaner",
+  "slug": "appaday-002-stream-cleaner",
+  "glyph": "droplets",
+  "color": "#276EB7"
+ },
+ {
+  "num": "003",
+  "cat": "S",
+  "name": "Daily Scripture",
+  "slug": "appaday-003-daily-scripture",
+  "glyph": "book-open",
+  "color": "#6A4C93"
+ },
+ {
+  "num": "004",
+  "cat": "U",
+  "name": "Tube Sort",
+  "slug": "appaday-004-tube-sort",
+  "glyph": "test-tubes",
+  "color": "#289664"
+ },
+ {
+  "num": "005",
+  "cat": "C",
+  "name": "Dad Joke Generator",
+  "slug": "appaday-005-dad-joke-generator",
+  "glyph": "laugh",
+  "color": "#A63D9E"
+ },
+ {
+  "num": "006",
+  "cat": "D",
+  "name": "Life Calendar",
+  "slug": "appaday-006-life-calendar",
+  "glyph": "layout-grid",
+  "color": "#B8860B"
+ },
+ {
+  "num": "007",
+  "cat": "I",
+  "name": "Still Standing",
+  "slug": "appaday-007-Still-Standing",
+  "glyph": "trophy",
+  "color": "#5B4BC4"
+ },
+ {
+  "num": "008",
+  "cat": "G",
+  "name": "Number Neighbors",
+  "slug": "appaday-008-number-neighbors",
+  "glyph": "grid-3x3",
+  "color": "#276EB7"
+ },
+ {
+  "num": "009",
+  "cat": "H",
+  "name": "Focus Timer",
+  "slug": "appaday-009-focus-timer",
+  "glyph": "timer",
+  "color": "#D14D72"
+ },
+ {
+  "num": "010",
+  "cat": "I",
+  "name": "Magic 8 Ball",
+  "slug": "appaday-010-magic-8-ball",
+  "glyph": "help-circle",
+  "color": "#5B4BC4"
+ },
+ {
+  "num": "011",
+  "cat": "U",
+  "name": "Password Sculptor",
+  "slug": "appaday-011-password-sculptor",
+  "glyph": "key-round",
+  "color": "#289664"
+ },
+ {
+  "num": "012",
+  "cat": "S",
+  "name": "Prayer Intentions",
+  "slug": "appaday-012-prayer-intentions",
+  "glyph": "flame",
+  "color": "#6A4C93"
+ },
+ {
+  "num": "013",
+  "cat": "G",
+  "name": "Flick",
+  "slug": "appaday-013-flick",
+  "glyph": "pointer",
+  "color": "#276EB7"
+ },
+ {
+  "num": "014",
+  "cat": "P",
+  "name": "Countdown Wall",
+  "slug": "appaday-014-countdown-wall",
+  "glyph": "hourglass",
+  "color": "#C8401A"
+ },
+ {
+  "num": "015",
+  "cat": "P",
+  "name": "Quest Log",
+  "slug": "appaday-015-quest-log",
+  "glyph": "scroll-text",
+  "color": "#C8401A"
+ },
+ {
+  "num": "016",
+  "cat": "G",
+  "name": "Chug Roulette",
+  "slug": "appaday-016-chug-roulette",
+  "glyph": "beer",
+  "color": "#276EB7"
+ },
+ {
+  "num": "017",
+  "cat": "P",
+  "name": "Session Scribe",
+  "slug": "appaday-017-session-scribe",
+  "glyph": "pen-line",
+  "color": "#C8401A"
+ },
+ {
+  "num": "018",
+  "cat": "I",
+  "name": "Still Water",
+  "slug": "appaday-018-still-water",
+  "glyph": "waves",
+  "color": "#5B4BC4"
+ },
+ {
+  "num": "019",
+  "cat": "U",
+  "name": "Tone Translator",
+  "slug": "appaday-019-tone-translator",
+  "glyph": "languages",
+  "color": "#289664"
+ },
+ {
+  "num": "020",
+  "cat": "E",
+  "name": "Rainbow Readers",
+  "slug": "appaday-020-rainbow-readers",
+  "glyph": "rainbow",
+  "color": "#1F7A8C"
+ },
+ {
+  "num": "021",
+  "cat": "G",
+  "name": "Bolt Patrol",
+  "slug": "appaday-021-bolt-patrol",
+  "glyph": "shield",
+  "color": "#276EB7"
+ },
+ {
+  "num": "022",
+  "cat": "C",
+  "name": "Haiku Engine",
+  "slug": "appaday-022-haiku-engine",
+  "glyph": "feather",
+  "color": "#A63D9E"
+ },
+ {
+  "num": "023",
+  "cat": "U",
+  "name": "Beer Tasting Scorecard",
+  "slug": "appaday-023-beer-tasting-scorecard",
+  "glyph": "clipboard-list",
+  "color": "#289664"
+ },
+ {
+  "num": "024",
+  "cat": "D",
+  "name": "Budget Ring",
+  "slug": "appaday-024-budget-ring",
+  "glyph": "pie-chart",
+  "color": "#B8860B"
+ },
+ {
+  "num": "025",
+  "cat": "C",
+  "name": "Chroma",
+  "slug": "appaday-025-chroma",
+  "glyph": "palette",
+  "color": "#A63D9E"
+ },
+ {
+  "num": "026",
+  "cat": "U",
+  "name": "Tippy Tip",
+  "slug": "appaday-026-tippy-tip",
+  "glyph": "receipt",
+  "color": "#289664"
+ },
+ {
+  "num": "027",
+  "cat": "P",
+  "name": "Habit Heatmap",
+  "slug": "appaday-027-habit-heatmap",
+  "glyph": "calendar-check",
+  "color": "#C8401A"
+ },
+ {
+  "num": "028",
+  "cat": "G",
+  "name": "Pixel Quest",
+  "slug": "appaday-028-pixel-quest",
+  "glyph": "gamepad-2",
+  "color": "#276EB7"
+ },
+ {
+  "num": "029",
+  "cat": "P",
+  "name": "Life Advocate",
+  "slug": "appaday-029-life-advocate",
+  "glyph": "heart-handshake",
+  "color": "#C8401A"
+ },
+ {
+  "num": "030",
+  "cat": "H",
+  "name": "Sleep Curve",
+  "slug": "appaday-030-sleep-curve",
+  "glyph": "moon",
+  "color": "#D14D72"
+ },
+ {
+  "num": "031",
+  "cat": "S",
+  "name": "Saints of the Day",
+  "slug": "appaday-031-saints-of-the-day",
+  "glyph": "crown",
+  "color": "#6A4C93"
+ },
+ {
+  "num": "032",
+  "cat": "G",
+  "name": "Duck Season",
+  "slug": "appaday-032-duck-season",
+  "glyph": "crosshair",
+  "color": "#276EB7"
+ },
+ {
+  "num": "033",
+  "cat": "U",
+  "name": "Convert It",
+  "slug": "appaday-033-convert-it",
+  "glyph": "arrow-left-right",
+  "color": "#289664"
+ },
+ {
+  "num": "034",
+  "cat": "G",
+  "name": "LCR Dice",
+  "slug": "appaday-034-lcr-dice",
+  "glyph": "dices",
+  "color": "#276EB7"
+ },
+ {
+  "num": "035",
+  "cat": "P",
+  "name": "Meeting Distiller",
+  "slug": "appaday-035-meeting-distiller",
+  "glyph": "file-text",
+  "color": "#C8401A"
+ },
+ {
+  "num": "036",
+  "cat": "E",
+  "name": "Sivam Nocab",
+  "slug": "appaday-036-sivam-nocab",
+  "glyph": "flip-horizontal",
+  "color": "#1F7A8C"
+ },
+ {
+  "num": "037",
+  "cat": "G",
+  "name": "Last Call",
+  "slug": "appaday-037-last-call",
+  "glyph": "bell",
+  "color": "#276EB7"
+ },
+ {
+  "num": "038",
+  "cat": "S",
+  "name": "Relics of Rome",
+  "slug": "appaday-038-relics-of-rome",
+  "glyph": "landmark",
+  "color": "#6A4C93"
+ },
+ {
+  "num": "039",
+  "cat": "G",
+  "name": "Firefly Catcher",
+  "slug": "appaday-039-firefly-catcher",
+  "glyph": "bug",
+  "color": "#276EB7"
+ },
+ {
+  "num": "040",
+  "cat": "U",
+  "name": "Kitchen Tamer",
+  "slug": "appaday-040-kitchen-tamer",
+  "glyph": "cooking-pot",
+  "color": "#289664"
+ },
+ {
+  "num": "041",
+  "cat": "C",
+  "name": "Frame By Frame",
+  "slug": "appaday-041-frame-by-frame",
+  "glyph": "film",
+  "color": "#A63D9E"
+ },
+ {
+  "num": "042",
+  "cat": "H",
+  "name": "Breath Guide",
+  "slug": "appaday-042-breath-guide",
+  "glyph": "wind",
+  "color": "#D14D72"
+ },
+ {
+  "num": "043",
+  "cat": "P",
+  "name": "Chore Quest",
+  "slug": "appaday-043-chore-quest",
+  "glyph": "list-checks",
+  "color": "#C8401A"
+ },
+ {
+  "num": "044",
+  "cat": "G",
+  "name": "Quarters Master",
+  "slug": "appaday-044-quarters-master",
+  "glyph": "coins",
+  "color": "#276EB7"
+ },
+ {
+  "num": "045",
+  "cat": "H",
+  "name": "Water Reminder",
+  "slug": "appaday-045-water-reminder",
+  "glyph": "droplet",
+  "color": "#D14D72"
+ },
+ {
+  "num": "046",
+  "cat": "H",
+  "name": "Time to Sober",
+  "slug": "appaday-046-time-to-sober",
+  "glyph": "wine-off",
+  "color": "#D14D72"
+ },
+ {
+  "num": "047",
+  "cat": "G",
+  "name": "Hop Runner",
+  "slug": "appaday-047-hop-runner",
+  "glyph": "rabbit",
+  "color": "#276EB7"
+ },
+ {
+  "num": "048",
+  "cat": "G",
+  "name": "Tilt Racer",
+  "slug": "appaday-048-tilt-racer",
+  "glyph": "car",
+  "color": "#276EB7"
+ },
+ {
+  "num": "049",
+  "cat": "H",
+  "name": "Pace Planner",
+  "slug": "appaday-049-pace-planner",
+  "glyph": "footprints",
+  "color": "#D14D72"
+ },
+ {
+  "num": "050",
+  "cat": "H",
+  "name": "Training Log",
+  "slug": "appaday-050-training-log",
+  "glyph": "dumbbell",
+  "color": "#D14D72"
+ },
+ {
+  "num": "051",
+  "cat": "H",
+  "name": "Pace + Log",
+  "slug": "appaday-051-pace-log",
+  "glyph": "activity",
+  "color": "#D14D72"
+ },
+ {
+  "num": "052",
+  "cat": "U",
+  "name": "QR Forge",
+  "slug": "appaday-052-qr-forge",
+  "glyph": "qr-code",
+  "color": "#289664"
+ },
+ {
+  "num": "053",
+  "cat": "P",
+  "name": "The Decider",
+  "slug": "appaday-053-the-decider",
+  "glyph": "split",
+  "color": "#C8401A"
+ },
+ {
+  "num": "054",
+  "cat": "S",
+  "name": "Examen",
+  "slug": "appaday-054-daily-examen",
+  "glyph": "moon-star",
+  "color": "#6A4C93"
+ },
+ {
+  "num": "055",
+  "cat": "S",
+  "name": "Morning Offering",
+  "slug": "appaday-055-morning-offering",
+  "glyph": "sunrise",
+  "color": "#6A4C93"
+ },
+ {
+  "num": "056",
+  "cat": "D",
+  "name": "Enrollment Funnel",
+  "slug": "appaday-056-enrollment-funnel",
+  "glyph": "filter",
+  "color": "#B8860B"
+ },
+ {
+  "num": "057",
+  "cat": "I",
+  "name": "Liberty Lights",
+  "slug": "appaday-057-liberty-lights",
+  "glyph": "sparkles",
+  "color": "#5B4BC4"
+ },
+ {
+  "num": "058",
+  "cat": "E",
+  "name": "Civics Interview Practice",
+  "slug": "appaday-058-civics-interview",
+  "glyph": "scale",
+  "color": "#1F7A8C"
+ },
+ {
+  "num": "059",
+  "cat": "C",
+  "name": "Mad Lib Parlor",
+  "slug": "appaday-059-mad-lib-parlor",
+  "glyph": "pencil",
+  "color": "#A63D9E"
+ },
+ {
+  "num": "060",
+  "cat": "P",
+  "name": "Task Manager",
+  "slug": "appaday-060-task-manager",
+  "glyph": "check-square",
+  "color": "#C8401A"
+ },
+ {
+  "num": "061",
+  "cat": "E",
+  "name": "Language Flashcard Sprint",
+  "slug": "appaday-061-language-flashcard-sprint",
+  "glyph": "layers",
+  "color": "#1F7A8C"
+ },
+ {
+  "num": "062",
+  "cat": "H",
+  "name": "Restore",
+  "slug": "appaday-062-restore",
+  "glyph": "battery-charging",
+  "color": "#D14D72"
+ },
+ {
+  "num": "063",
+  "cat": "E",
+  "name": "Bleeding Edge",
+  "slug": "appaday-063-bleeding-edge",
+  "glyph": "cpu",
+  "color": "#1F7A8C"
+ },
+ {
+  "num": "064",
+  "cat": "I",
+  "name": "Zen Garden",
+  "slug": "appaday-064-zen-garden",
+  "glyph": "flower",
+  "color": "#5B4BC4"
+ },
+ {
+  "num": "065",
+  "cat": "D",
+  "name": "Currents",
+  "slug": "appaday-065-currents",
+  "glyph": "trending-up",
+  "color": "#B8860B"
+ },
+ {
+  "num": "066",
+  "cat": "S",
+  "name": "Confiteor",
+  "slug": "appaday-066-confiteor",
+  "glyph": "hand-heart",
+  "color": "#6A4C93"
+ },
+ {
+  "num": "067",
+  "cat": "I",
+  "name": "Thought Chisel",
+  "slug": "appaday-067-thought-chisel",
+  "glyph": "hammer",
+  "color": "#5B4BC4"
+ },
+ {
+  "num": "068",
+  "cat": "E",
+  "name": "Ten Lessons",
+  "slug": "appaday-068-ten-lessons",
+  "glyph": "graduation-cap",
+  "color": "#1F7A8C"
+ },
+ {
+  "num": "069",
+  "cat": "G",
+  "name": "Labyrinth",
+  "slug": "appaday-069-labyrinth",
+  "glyph": "route",
+  "color": "#276EB7"
+ },
+ {
+  "num": "070",
+  "cat": "U",
+  "name": "Flatbed",
+  "slug": "appaday-070-flatbed",
+  "glyph": "truck",
+  "color": "#289664"
+ },
+ {
+  "num": "071",
+  "cat": "D",
+  "name": "Payoff Ledger",
+  "slug": "appaday-071-payoff-ledger",
+  "glyph": "banknote",
+  "color": "#B8860B"
+ },
+ {
+  "num": "072",
+  "cat": "U",
+  "name": "Fix-It Lens",
+  "slug": "appaday-072-fix-it-lens",
+  "glyph": "wrench",
+  "color": "#289664"
+ },
+ {
+  "num": "073",
+  "cat": "E",
+  "name": "Explain It Three Ways",
+  "slug": "appaday-073-three-ways",
+  "glyph": "columns-3",
+  "color": "#1F7A8C"
+ },
+ {
+  "num": "074",
+  "cat": "U",
+  "name": "Tap & Can Manager",
+  "slug": "appaday-074-tap-can-manager",
+  "glyph": "cup-soda",
+  "color": "#289664"
+ },
+ {
+  "num": "075",
+  "cat": "G",
+  "name": "Fiefdom",
+  "slug": "appaday-075-fiefdom",
+  "glyph": "castle",
+  "color": "#276EB7"
+ },
+ {
+  "num": "076",
+  "cat": "D",
+  "name": "Time Audit",
+  "slug": "appaday-076-time-audit",
+  "glyph": "clock",
+  "color": "#B8860B"
+ },
+ {
+  "num": "077",
+  "cat": "D",
+  "name": "Tilt Sentinel",
+  "slug": "appaday-077-tilt-sentinel",
+  "glyph": "gauge",
+  "color": "#B8860B"
+ },
+ {
+  "num": "078",
+  "cat": "P",
+  "name": "Red Team This",
+  "slug": "appaday-078-red-team-this",
+  "glyph": "swords",
+  "color": "#C8401A"
+ },
+ {
+  "num": "079",
+  "cat": "C",
+  "name": "Rosette",
+  "slug": "appaday-079-rosette",
+  "glyph": "flower-2",
+  "color": "#A63D9E"
+ },
+ {
+  "num": "080",
+  "cat": "S",
+  "name": "Rosary Companion",
+  "slug": "appaday-080-rosary-companion",
+  "glyph": "cross",
+  "color": "#6A4C93"
+ },
+ {
+  "num": "081",
+  "cat": "H",
+  "name": "Desk Reset",
+  "slug": "appaday-081-desk-reset",
+  "glyph": "armchair",
+  "color": "#D14D72"
+ },
+ {
+  "num": "082",
+  "cat": "G",
+  "name": "Memory Grid",
+  "slug": "appaday-082-memory-grid",
+  "glyph": "grid-2x2",
+  "color": "#276EB7"
+ },
+ {
+  "num": "083",
+  "cat": "C",
+  "name": "Homebrew Label Lab",
+  "slug": "appaday-083-homebrew-label-lab",
+  "glyph": "tag",
+  "color": "#A63D9E"
+ },
+ {
+  "num": "084",
+  "cat": "P",
+  "name": "Meeting Cost Ticker",
+  "slug": "appaday-084-meeting-cost-ticker",
+  "glyph": "circle-dollar-sign",
+  "color": "#C8401A"
+ },
+ {
+  "num": "085",
+  "cat": "I",
+  "name": "Constellation Drawer",
+  "slug": "appaday-085-constellation-drawer",
+  "glyph": "star",
+  "color": "#5B4BC4"
+ },
+ {
+  "num": "086",
+  "cat": "P",
+  "name": "Subject Line Lab",
+  "slug": "appaday-086-subject-line-lab",
+  "glyph": "mail",
+  "color": "#C8401A"
+ },
+ {
+  "num": "087",
+  "cat": "S",
+  "name": "Angelus Companion",
+  "slug": "appaday-087-angelus-companion",
+  "glyph": "bell-ring",
+  "color": "#6A4C93"
+ },
+ {
+  "num": "088",
+  "cat": "U",
+  "name": "Brew Math",
+  "slug": "appaday-088-brew-math",
+  "glyph": "calculator",
+  "color": "#289664"
+ },
+ {
+  "num": "089",
+  "cat": "I",
+  "name": "Ink Trace",
+  "slug": "appaday-089-ink-trace",
+  "glyph": "pen-tool",
+  "color": "#5B4BC4"
+ },
+ {
+  "num": "090",
+  "cat": "E",
+  "name": "Syllabus Skimmer",
+  "slug": "appaday-090-syllabus-skimmer",
+  "glyph": "file-search",
+  "color": "#1F7A8C"
+ },
+ {
+  "num": "091",
+  "cat": "D",
+  "name": "Grade Runway",
+  "slug": "appaday-091-grade-runway",
+  "glyph": "bar-chart-3",
+  "color": "#B8860B"
+ },
+ {
+  "num": "092",
+  "cat": "D",
+  "name": "Semester Forecast",
+  "slug": "appaday-092-semester-forecast",
+  "glyph": "line-chart",
+  "color": "#B8860B"
+ },
+ {
+  "num": "093",
+  "cat": "C",
+  "name": "Scam Text Tormentor",
+  "slug": "appaday-093-scam-text-tormentor",
+  "glyph": "message-square-warning",
+  "color": "#A63D9E"
+ },
+ {
+  "num": "094",
+  "cat": "C",
+  "name": "Monogram Maker",
+  "slug": "appaday-094-monogram-maker",
+  "glyph": "type",
+  "color": "#A63D9E"
+ },
+ {
+  "num": "095",
+  "cat": "U",
+  "name": "Contrast Checker",
+  "slug": "appaday-095-contrast-checker",
+  "glyph": "contrast",
+  "color": "#289664"
+ },
+ {
+  "num": "096",
+  "cat": "G",
+  "name": "Card Duel",
+  "slug": "appaday-096-card-duel",
+  "glyph": "spade",
+  "color": "#276EB7"
+ },
+ {
+  "num": "097",
+  "cat": "E",
+  "name": "Field Marks",
+  "slug": "appaday-097-field-marks",
+  "glyph": "binoculars",
+  "color": "#1F7A8C"
+ },
+ {
+  "num": "098",
+  "cat": "I",
+  "name": "Newton's Cradle",
+  "slug": "appaday-098-newtons-cradle",
+  "glyph": "atom",
+  "color": "#5B4BC4"
+ },
+ {
+  "num": "099",
+  "cat": "P",
+  "name": "Social Post Responder",
+  "slug": "appaday-099-social-post-responder",
+  "glyph": "message-circle",
+  "color": "#C8401A"
+ },
+ {
+  "num": "100",
+  "cat": "D",
+  "name": "Signal Desk",
+  "slug": "appaday-100-signal-desk",
+  "glyph": "radar",
+  "color": "#B8860B"
+ },
+ {
+  "num": "101",
+  "cat": "S",
+  "name": "Liturgical Season Companion",
+  "slug": "appaday-101-liturgical-season-companion",
+  "glyph": "calendar-heart",
+  "color": "#6A4C93"
+ },
+ {
+  "num": "102",
+  "cat": "U",
+  "name": "Reel Splitter",
+  "slug": "appaday-102-reel-splitter",
+  "glyph": "scissors",
+  "color": "#289664"
+ },
+ {
+  "num": "103",
+  "cat": "I",
+  "name": "Bracket Maker",
+  "slug": "appaday-103-bracket-maker",
+  "glyph": "network",
+  "color": "#5B4BC4"
+ },
+ {
+  "num": "104",
+  "cat": "S",
+  "name": "Giving Tree",
+  "slug": "appaday-104-giving-tree",
+  "glyph": "trees",
+  "color": "#6A4C93"
+ },
+ {
+  "num": "105",
+  "cat": "S",
+  "name": "Scripture Verse Card Maker",
+  "slug": "appaday-105-scripture-verse-card-maker",
+  "glyph": "book-marked",
+  "color": "#6A4C93"
+ },
+ {
+  "num": "106",
+  "cat": "E",
+  "name": "Python Discombobulator",
+  "slug": "appaday-106-python-discombobulator",
+  "glyph": "braces",
+  "color": "#1F7A8C"
+ },
+ {
+  "num": "107",
+  "cat": "E",
+  "name": "Knot Locker",
+  "slug": "appaday-107-knot-locker",
+  "glyph": "link",
+  "color": "#1F7A8C"
+ },
+ {
+  "num": "108",
+  "cat": "U",
+  "name": "Meteor Shower Tracker",
+  "slug": "appaday-108-meteor-shower-tracker",
+  "glyph": "telescope",
+  "color": "#289664"
+ },
+ {
+  "num": "109",
+  "cat": "D",
+  "name": "Subscription Creep Tracker",
+  "slug": "appaday-109-subscription-creep-tracker",
+  "glyph": "credit-card",
+  "color": "#B8860B"
+ },
+ {
+  "num": "110",
+  "cat": "C",
+  "name": "Album Cover Generator",
+  "slug": "appaday-110-album-cover-generator",
+  "glyph": "disc-3",
+  "color": "#A63D9E"
+ },
+ {
+  "num": "111",
+  "cat": "P",
+  "name": "Application Gap Analysis",
+  "slug": "appaday-111-application-gap-analysis",
+  "glyph": "file-check",
+  "color": "#C8401A"
+ },
+ {
+  "num": "112",
+  "cat": "P",
+  "name": "Temptation Ledger",
+  "slug": "appaday-112-temptation-ledger",
+  "glyph": "notebook-pen",
+  "color": "#C8401A"
+ },
+ {
+  "num": "113",
+  "cat": "P",
+  "name": "Pause Point",
+  "slug": "appaday-113-pause-point",
+  "glyph": "pause",
+  "color": "#C8401A"
+ },
+ {
+  "num": "114",
+  "cat": "P",
+  "name": "Posture Check",
+  "slug": "appaday-114-posture-check",
+  "glyph": "person-standing",
+  "color": "#C8401A"
+ },
+ {
+  "num": "115",
+  "cat": "D",
+  "name": "Basket Ledger",
+  "slug": "appaday-115-basket-ledger",
+  "glyph": "shopping-basket",
+  "color": "#B8860B"
+ },
+ {
+  "num": "116",
+  "cat": "E",
+  "name": "Latin Phrase of the Day",
+  "slug": "appaday-116-latin-phrase-of-the-day",
+  "glyph": "scroll",
+  "color": "#1F7A8C"
+ },
+ {
+  "num": "117",
+  "cat": "H",
+  "name": "Daily Mood and Symptom Journal",
+  "slug": "appaday-117-daily-mood-symptom-journal",
+  "glyph": "heart-pulse",
+  "color": "#D14D72"
+ }
+]
