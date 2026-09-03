@@ -1,1282 +1,1779 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!--
+  ===================================================================
+  APPADAY PORTAL - CUSTOM FEATURE MANIFEST  (read before any rebuild)
+  Do NOT regenerate this file from a template or from memory. Always
+  fetch the LIVE file, read the actual code below, preserve every
+  feature here, and change it only with small targeted edits.
+  Verify each of these still works after ANY change:
+    1. Milestone markers - entries may carry `milestone:true`, rendered
+       by .card-milestone-badge + the mBadge string in makeCard().
+       Currently flagged: App 075 (Fiefdom), App 100 (Signal Desk).
+       The "Milestone" filter button (data-filter="milestone") shows a
+       flat, app-number-sorted grid of every milestone:true entry, with
+       an empty-state fallback if none are flagged. Any app given
+       milestone:true in the future is automatically picked up here,
+       no other wiring needed.
+    2. Starring - localStorage key "appaday-starred", .card-star toggle
+       buttons on every live card, the "Starred" filter button, and the
+       initDefault() logic that opens Starred on load when any exist,
+       else All. The Starred view is GROUPED BY CATEGORY in CAT_ORDER
+       with .section-header blocks, matching the All view, rather than
+       listed flat in app-number order. Any category not in CAT_ORDER is
+       appended after the known ones so a starred app can never vanish.
+    3. coming_soon entries, AI badges (app.ai), per-category color
+       overrides, and the og-image / twitter ?v=N cache-buster.
+    4. New tab - localStorage key "appaday-newseen" holds the latest app
+       date the visitor has acknowledged. The "New" filter button + its
+       .new-count badge show apps whose date is newer than that marker;
+       opening the New view advances the marker so the badge clears, and
+       the set stays fixed for the rest of that session. A first-ever
+       visit is baselined to the latest date (caught up, empty New).
+    5. Search - #search-input in .filter-inner runs runSearch(), a flat
+       keyword match over num/name/desc/category with light suffix stemming
+       (stemToken, so "brewing" matches "brew"), plus a type-ahead
+       suggestion listbox (#search-suggest, buildSuggestions from app
+       names + category words) that completes what is typed. It overrides the filter
+       view WITHOUT changing currentFilter; clearing the box (#search-clear
+       or emptying it) restores the active filter, and clicking any filter
+       button clears the search.
+  Update this manifest whenever a new portal feature is added.
+  ==================================================================
+-->
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<title>Room Read - Interior Design Assistant</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<link rel="apple-touch-icon" href="https://augustineiacopelli.github.io/appaday/icons/portfolio.png">
+<meta name="apple-mobile-web-app-title" content="AppADay">
+<title>AppADay — Augustine Iacopelli</title>
+<meta name="description" content="One complete, functional, mobile-friendly web app, designed and shipped every day. A public archive of daily builds by Augustine Iacopelli, inspired by Jonathan Mann's Song A Day.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="AppADay — Augustine Iacopelli">
+<meta property="og:description" content="One complete, functional, mobile-friendly web app, designed and shipped every day. A public archive of daily builds, inspired by Jonathan Mann's Song A Day.">
+<meta property="og:url" content="https://augustineiacopelli.github.io/appaday/">
+<meta property="og:image" content="https://augustineiacopelli.github.io/appaday/og-image.png?v=3">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="AppADay — one complete app shipped every day">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AppADay — Augustine Iacopelli">
+<meta name="twitter:description" content="One complete, functional, mobile-friendly web app, designed and shipped every day.">
+<meta name="twitter:image" content="https://augustineiacopelli.github.io/appaday/og-image.png?v=3">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23f5f0e8'/%3E%3Ctext x='32' y='47' font-family='Georgia,serif' font-size='40' text-anchor='middle' fill='%230f0e0c'%3EA%3C/text%3E%3Crect x='16' y='51' width='32' height='4' fill='%23c8401a'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg:#f6f1ea;
-    --panel:#ffffff;
-    --ink:#2b2622;
-    --ink-soft:#6b6058;
-    --accent:#b4623f;
-    --accent-soft:#e7cdbd;
-    --sage:#7d8f6f;
-    --line:#e4dbd0;
-    --danger:#b0403a;
-    --radius:16px;
-    --gap:clamp(12px,3vw,20px);
+  :root {
+    --ink: #0f0e0c;
+    --paper: #f5f0e8;
+    --paper-dark: #ede8df;
+    --accent: #c8401a;
+    --accent-dim: rgba(200, 64, 26, 0.12);
+    --accent-mid: rgba(200, 64, 26, 0.35);
+    --gold: #b8860b;
+    --muted: #7a7468;
+    --rule: rgba(15,14,12,0.12);
+    --card-bg: rgba(255,253,248,0.9);
+    --shadow: 0 2px 16px rgba(15,14,12,0.08), 0 1px 3px rgba(15,14,12,0.06);
+    --shadow-hover: 0 8px 32px rgba(15,14,12,0.14), 0 2px 8px rgba(15,14,12,0.08);
   }
-  *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;}
-  body{
-    min-height:100svh;
-    background:var(--bg);
-    color:var(--ink);
-    font-family:'Inter',system-ui,-apple-system,sans-serif;
-    display:flex;
-    flex-direction:column;
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background-color: var(--paper);
+    color: var(--ink);
+    min-height: 100dvh;
+    overflow-x: hidden;
   }
-  h1,h2,h3{font-family:'Fraunces',Georgia,serif;font-weight:600;margin:0;}
-  .app-header{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:clamp(10px,3vw,16px) clamp(14px,4vw,24px);
-    background:var(--panel);
-    border-bottom:1px solid var(--line);
-    position:sticky;
-    top:0;
-    z-index:20;
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
   }
-  .app-header .brand{
-    display:flex;
-    flex-direction:column;
-    gap:2px;
+
+  header {
+    position: relative;
+    z-index: 10;
+    padding: 64px 48px 48px;
+    border-bottom: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 24px;
+    align-items: end;
+    max-width: 1280px;
+    margin: 0 auto;
   }
-  .app-header .brand a{
-    font-size:clamp(11px,2.4vw,12px);
-    color:var(--ink-soft);
-    text-decoration:none;
+
+  .header-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
   }
-  .app-header .title{
-    font-size:clamp(18px,4.5vw,22px);
-    color:var(--ink);
+
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(48px, 8vw, 96px);
+    line-height: 0.92;
+    letter-spacing: -0.02em;
+    color: var(--ink);
   }
-  .icon-btn{
-    min-width:44px;
-    min-height:44px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:transparent;
-    border:1px solid var(--line);
-    border-radius:12px;
-    cursor:pointer;
-    font-size:18px;
-    color:var(--ink);
+
+  h1 em {
+    font-style: italic;
+    color: var(--accent);
   }
-  main{
-    flex:1;
-    width:100%;
-    max-width:640px;
-    margin:0 auto;
-    padding:var(--gap) var(--gap) clamp(40px,8vh,64px);
-    display:flex;
-    flex-direction:column;
-    gap:var(--gap);
+
+  .header-sub {
+    font-size: 15px;
+    color: var(--muted);
+    margin-top: 20px;
+    max-width: 440px;
+    line-height: 1.6;
+    font-weight: 300;
   }
-  .card{
-    background:var(--panel);
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    padding:clamp(16px,4vw,24px);
+
+  .header-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: flex-end;
+    padding-bottom: 4px;
   }
-  label{
-    display:block;
-    font-size:13px;
-    font-weight:600;
-    color:var(--ink-soft);
-    margin-bottom:6px;
-    text-transform:uppercase;
-    letter-spacing:0.04em;
+
+  .stat-block { text-align: right; }
+
+  .stat-number {
+    font-family: 'DM Serif Display', serif;
+    font-size: 40px;
+    line-height: 1;
+    color: var(--ink);
   }
-  input[type="text"],input[type="number"],textarea{
-    width:100%;
-    font-family:inherit;
-    font-size:16px;
-    padding:12px 14px;
-    border:1px solid var(--line);
-    border-radius:10px;
-    background:#fbf8f4;
-    color:var(--ink);
-    min-height:44px;
+
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 2px;
   }
-  textarea{resize:vertical;min-height:80px;}
-  .field{margin-bottom:16px;}
-  .field:last-child{margin-bottom:0;}
-  button{
-    font-family:inherit;
-    font-size:15px;
-    font-weight:600;
-    cursor:pointer;
-    border:none;
-    border-radius:12px;
-    min-height:44px;
-    padding:12px 20px;
+
+  .filter-zone {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: rgba(245, 240, 232, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--rule);
   }
-  .btn-primary{
-    background:var(--accent);
-    color:#fff;
-    width:100%;
+
+  .filter-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 12px 48px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
   }
-  .btn-primary:disabled{background:#c9b3a6;cursor:not-allowed;}
-  .btn-secondary{
-    background:transparent;
-    border:1px solid var(--line);
-    color:var(--ink);
-    width:100%;
+
+  .filter-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-right: 4px;
   }
-  .btn-text{
-    background:transparent;
-    color:var(--accent);
-    padding:8px 4px;
+
+  .filter-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    padding: 5px 12px;
+    border-radius: 2px;
+    border: 1px solid var(--rule);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-transform: uppercase;
   }
-  .btn-danger{
-    background:transparent;
-    border:1px solid var(--danger);
-    color:var(--danger);
-    width:100%;
+
+  .filter-btn:hover {
+    border-color: var(--accent-mid);
+    color: var(--accent);
+    background: var(--accent-dim);
   }
-  .row-gap{display:flex;flex-direction:column;gap:10px;}
-  .empty-state{
-    text-align:center;
-    padding:clamp(30px,8vh,60px) 16px;
-    color:var(--ink-soft);
+
+  .filter-btn.active {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--paper);
   }
-  .empty-state h2{margin-bottom:8px;color:var(--ink);}
-  .history-item{
-    display:flex;
-    align-items:center;
-    gap:14px;
-    padding:12px;
-    border:1px solid var(--line);
-    border-radius:12px;
-    background:var(--panel);
-    cursor:pointer;
-    min-height:44px;
+
+  .search-wrap {
+    display: flex;
+    align-items: center;
+    position: relative;
+    margin-left: auto;
   }
-  .history-item img{
-    width:56px;height:56px;border-radius:10px;object-fit:cover;flex-shrink:0;background:var(--accent-soft);
+  .search-input {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    padding: 6px 24px 6px 28px;
+    width: 190px;
+    max-width: 46vw;
+    border-radius: 2px;
+    border: 1px solid var(--rule);
+    background: var(--paper);
+    color: var(--ink);
+    transition: all 0.15s ease;
+    -webkit-appearance: none;
+    appearance: none;
   }
-  .history-item .meta{flex:1;min-width:0;}
-  .history-item .meta .name{font-weight:600;font-size:15px;}
-  .history-item .meta .date{font-size:13px;color:var(--ink-soft);}
-  .photo-preview{
-    width:100%;
-    border-radius:var(--radius);
-    display:block;
-    margin-bottom:14px;
-    background:var(--accent-soft);
+  .search-input::placeholder {
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
   }
-  .photo-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:10px;
-    margin-bottom:14px;
+  .search-input:focus {
+    outline: none;
+    border-color: var(--accent-mid);
+    box-shadow: 0 0 0 3px var(--accent-dim);
   }
-  .photo-thumb-wrap{
-    position:relative;
-    aspect-ratio:1/1;
-    border-radius:12px;
-    overflow:hidden;
-    background:var(--accent-soft);
+  .search-input::-webkit-search-decoration,
+  .search-input::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; }
+  .search-icon {
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 13px;
+    height: 13px;
+    color: var(--muted);
+    pointer-events: none;
   }
-  .photo-thumb{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    display:block;
+  .search-clear {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 15px;
+    line-height: 1;
+    padding: 0;
+    display: none;
   }
-  .photo-remove{
-    position:absolute;
-    top:6px;
-    right:6px;
-    width:28px;
-    height:28px;
-    min-height:28px;
-    padding:0;
-    border-radius:50%;
-    background:rgba(43,38,34,0.72);
-    color:#fff;
-    font-size:14px;
-    line-height:1;
-    display:flex;
-    align-items:center;
-    justify-content:center;
+  .search-clear:hover { color: var(--accent); }
+  .search-clear.show { display: block; }
+  .search-suggest {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    box-shadow: var(--shadow);
+    z-index: 40;
+    overflow: hidden;
+    display: none;
   }
-  .file-drop{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    gap:8px;
-    border:2px dashed var(--line);
-    border-radius:var(--radius);
-    padding:clamp(24px,8vh,48px) 16px;
-    text-align:center;
-    color:var(--ink-soft);
-    min-height:44px;
-    cursor:pointer;
+  .search-suggest.show { display: block; }
+  .suggest-row {
+    display: block;
+    width: 100%;
+    text-align: left;
+    border: none;
+    border-bottom: 1px solid var(--rule);
+    background: transparent;
+    padding: 9px 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+    cursor: pointer;
+    transition: background 0.12s ease;
   }
-  .spinner{
-    width:40px;height:40px;
-    border-radius:50%;
-    border:4px solid var(--accent-soft);
-    border-top-color:var(--accent);
-    margin:0 auto;
-    animation:spin 0.9s linear infinite;
+  .suggest-row:last-child { border-bottom: none; }
+  .suggest-row.active, .suggest-row:hover { background: var(--accent-dim); }
+  .sg-head { color: var(--muted); }
+  .sg-tail { color: var(--accent); font-weight: 500; }
+
+  main {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 48px 48px 96px;
+    position: relative;
+    z-index: 5;
   }
-  @keyframes spin{to{transform:rotate(360deg);}}
-  .analyzing-wrap{
-    text-align:center;
-    padding:clamp(50px,14vh,90px) 16px;
-    color:var(--ink-soft);
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 28px;
+    margin-top: 56px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--rule);
   }
-  .analyzing-wrap p{margin-top:18px;font-size:15px;}
-  .section-title{
-    font-size:clamp(16px,4vw,19px);
-    margin-bottom:10px;
+
+  .section-header:first-child { margin-top: 0; }
+
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    letter-spacing: -0.01em;
   }
-  .observation-list{margin:0;padding-left:20px;}
-  .observation-list li{margin-bottom:8px;line-height:1.5;}
-  .punch-item{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    padding:12px;
-    border:1px solid var(--line);
-    border-radius:12px;
-    margin-bottom:8px;
-    min-height:44px;
-    cursor:pointer;
-    background:#fbf8f4;
+
+  .section-code {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
   }
-  .punch-item.done{opacity:0.55;}
-  .punch-item.done .punch-text{text-decoration:line-through;}
-  .punch-check{
-    width:22px;height:22px;
-    border-radius:6px;
-    border:2px solid var(--accent);
-    flex-shrink:0;
-    display:flex;align-items:center;justify-content:center;
-    font-size:14px;color:#fff;
+
+  .section-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-left: auto;
   }
-  .punch-check.checked{background:var(--accent);}
-  .punch-text{flex:1;font-size:15px;line-height:1.4;}
-  .swatch{
-    width:22px;height:22px;
-    border-radius:6px;
-    border:1px solid var(--line);
-    flex-shrink:0;
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
   }
-  .style-card{
-    border:1px solid var(--line);
-    border-radius:14px;
-    padding:14px;
-    margin-bottom:12px;
-    background:#fbf8f4;
+
+  .app-card {
+    background: var(--card-bg);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: var(--shadow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    overflow: hidden;
+    animation: fadeUp 0.4s ease both;
   }
-  .style-card h3{font-size:16px;margin-bottom:4px;}
-  .style-card p{font-size:14px;color:var(--ink-soft);margin:0 0 10px;line-height:1.5;}
-  .style-images{
-    display:flex;
-    gap:8px;
-    flex-wrap:wrap;
+
+  .app-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s ease;
   }
-  .style-images img{
-    width:calc(33.333% - 6px);
-    aspect-ratio:1/1;
-    object-fit:cover;
-    border-radius:8px;
-    background:var(--line);
-    flex-shrink:0;
+
+  .app-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+    border-color: rgba(15,14,12,0.18);
   }
-  .raw-fallback{
-    white-space:pre-wrap;
-    font-family:ui-monospace,monospace;
-    font-size:13px;
-    background:#fbf8f4;
-    border:1px solid var(--line);
-    border-radius:10px;
-    padding:12px;
-    max-height:300px;
-    overflow:auto;
+
+  .app-card:hover::after { transform: scaleX(1); }
+
+  .card-number {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--muted);
   }
-  .modal-backdrop{
-    position:fixed;
-    inset:0;
-    background:rgba(43,38,34,0.5);
-    display:flex;
-    align-items:flex-end;
-    justify-content:center;
-    z-index:50;
+
+  .card-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: var(--ink);
   }
-  .modal-sheet{
-    background:var(--panel);
-    width:100%;
-    max-width:640px;
-    border-radius:20px 20px 0 0;
-    padding:clamp(18px,5vw,26px);
-    max-height:85svh;
-    overflow-y:auto;
+
+  .card-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.55;
+    font-weight: 300;
+    flex: 1;
   }
-  .modal-head{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom:16px;
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 4px;
   }
-  .footer-back{
-    text-align:center;
-    padding:20px 16px clamp(24px,6vh,40px);
-    font-size:13px;
-    color:var(--ink-soft);
+
+  .card-cat {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 2px;
+    background: var(--accent-dim);
+    color: var(--accent);
   }
-  .footer-back a{color:var(--accent);text-decoration:none;font-weight:600;}
-  .hint{font-size:13px;color:var(--ink-soft);margin-top:6px;}
-  .confirm-note{font-size:13px;color:var(--danger);margin-top:8px;text-align:center;}
-  .room-card{
-    display:flex;
-    align-items:center;
-    gap:14px;
-    padding:12px;
-    border:1px solid var(--line);
-    border-radius:12px;
-    background:var(--panel);
-    cursor:pointer;
-    min-height:44px;
-    position:relative;
+
+  .card-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
   }
-  .room-card img{
-    width:56px;height:56px;border-radius:10px;object-fit:cover;flex-shrink:0;background:var(--accent-soft);
+
+  .card-arrow {
+    position: absolute;
+    top: 20px; right: 56px;
+    font-size: 14px;
+    color: var(--muted);
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: opacity 0.2s, transform 0.2s;
   }
-  .room-card .room-thumb-empty{
-    width:56px;height:56px;border-radius:10px;flex-shrink:0;background:var(--accent-soft);
+
+  .app-card:hover .card-arrow { opacity: 1; transform: translateX(0); }
+
+  .empty-state {
+    grid-column: 1 / -1;
+    padding: 64px 0;
+    text-align: center;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.08em;
   }
-  .room-card .meta{flex:1;min-width:0;}
-  .room-card .meta .name{font-weight:600;font-size:15px;}
-  .status-badge{
-    display:inline-block;
-    font-size:12px;
-    font-weight:600;
-    padding:3px 9px;
-    border-radius:999px;
-    margin-top:4px;
-    text-transform:uppercase;
-    letter-spacing:0.03em;
+
+  footer {
+    position: relative;
+    z-index: 5;
+    border-top: 1px solid var(--rule);
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 32px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
-  .status-draft{background:var(--line);color:var(--ink-soft);}
-  .status-ready{background:var(--accent-soft);color:var(--accent);}
-  .status-analyzing{background:#e5e0d8;color:var(--ink-soft);}
-  .status-done{background:#dbe4d4;color:var(--sage);}
-  .status-error{background:#f2d9d6;color:var(--danger);}
-  .room-remove{
-    position:absolute;
-    top:8px;
-    right:8px;
-    width:28px;
-    height:28px;
-    min-height:28px;
-    padding:0;
-    border-radius:50%;
-    background:rgba(43,38,34,0.72);
-    color:#fff;
-    font-size:13px;
-    line-height:1;
-    display:flex;
-    align-items:center;
-    justify-content:center;
+
+  .footer-motto {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--muted);
   }
-  .tab-bar{
-    display:flex;
-    gap:8px;
-    overflow-x:auto;
-    padding-bottom:4px;
-    margin-bottom:var(--gap);
+
+  .footer-link {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.15s;
   }
-  .tab-btn{
-    flex-shrink:0;
-    background:var(--panel);
-    border:1px solid var(--line);
-    color:var(--ink-soft);
-    border-radius:999px;
-    padding:9px 16px;
-    font-size:14px;
-    min-height:40px;
-    white-space:nowrap;
+
+  .footer-link:hover { color: var(--accent); }
+
+  /* category color overrides */
+  [data-cat="G"] .card-cat { background: rgba(39,110,183,0.1); color: #276EB7; }
+  [data-cat="U"] .card-cat { background: rgba(40,150,100,0.1); color: #289664; }
+  [data-cat="A"] .card-cat { background: rgba(140,50,180,0.1); color: #8C32B4; }
+  [data-cat="D"] .card-cat { background: rgba(184,134,11,0.1); color: var(--gold); }
+  [data-cat="P"] .card-cat { background: rgba(200,64,26,0.1); color: var(--accent); }
+
+  [data-cat="G"] .app-card::after { background: #276EB7; }
+  [data-cat="U"] .app-card::after { background: #289664; }
+  [data-cat="A"] .app-card::after { background: #8C32B4; }
+  [data-cat="D"] .app-card::after { background: var(--gold); }
+  [data-cat="P"] .app-card::after { background: var(--accent); }
+
+  /* coming-soon cards */
+  .app-card.coming-soon {
+    pointer-events: none;
+    cursor: default;
+    border: 1.5px dashed rgba(0,0,0,0.3);
+    box-shadow: none;
+    background: #c8c8c8 !important;
+    color: #888 !important;
   }
-  .tab-btn.active{
-    background:var(--accent);
-    border-color:var(--accent);
-    color:#fff;
+  .app-card.coming-soon .card-number,
+  .app-card.coming-soon .card-name,
+  .app-card.coming-soon .card-desc,
+  .app-card.coming-soon .card-date,
+  .app-card.coming-soon .card-cat { color: #888 !important; background: rgba(0,0,0,0.06) !important; }
+  .app-card.coming-soon .card-arrow { display: none; }
+  .card-coming-badge {
+    display: inline-block;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: rgba(0,0,0,0.08);
+    color: #666;
+    border-radius: 4px;
+    padding: 2px 7px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  .card-ai-badge {
+    display: inline-block;
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: rgba(200,64,26,0.12);
+    color: var(--accent);
+    border-radius: 4px;
+    padding: 2px 6px;
+    margin-left: 7px;
+    vertical-align: middle;
+    border: 1px solid rgba(200,64,26,0.25);
+  }
+
+  .card-milestone-badge {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: rgba(184,134,11,0.12);
+    color: var(--gold);
+    border: 1px solid rgba(184,134,11,0.3);
+    border-radius: 4px;
+    padding: 2px 6px;
+    margin-left: 7px;
+    vertical-align: middle;
+  }
+  .card-milestone-badge svg { vertical-align: -1px; margin-right: 3px; }
+  .app-card.milestone { border-color: rgba(184,134,11,0.4); }
+  .app-card.milestone::after { background: var(--gold); }
+
+  .card-star {
+    position: absolute;
+    top: 14px; right: 14px;
+    width: 34px; height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 4;
+    transition: color 0.15s ease, background 0.15s ease, transform 0.1s ease;
+  }
+  .card-star svg { fill: none; stroke: currentColor; stroke-width: 1.6; }
+  .card-star:hover { color: var(--gold); background: rgba(184,134,11,0.12); }
+  .card-star:active { transform: scale(0.9); }
+  .card-star.is-starred { color: var(--gold); }
+  .card-star.is-starred svg { fill: currentColor; }
+  .card-star:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+  .filter-star .star-count { margin-left: 4px; opacity: 0.75; }
+  .filter-new .new-count {
+    margin-left: 5px;
+    display: inline-block;
+    min-width: 16px;
+    padding: 0 5px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: var(--paper);
+    font-size: 10px;
+    line-height: 16px;
+    text-align: center;
+    vertical-align: baseline;
+  }
+  .filter-new .new-count:empty { display: none; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 768px) {
+    header { grid-template-columns: 1fr; padding: 40px 20px 32px; }
+    .header-stats { flex-direction: row; align-items: flex-start; gap: 32px; }
+    .stat-block { text-align: left; }
+    .filter-inner { padding: 10px 20px; }
+    main { padding: 32px 20px 80px; }
+    footer { padding: 24px 20px; flex-direction: column; gap: 12px; align-items: flex-start; }
+    .card-grid { grid-template-columns: 1fr; }
+    .search-wrap { margin-left: 0; width: 100%; margin-top: 2px; }
+    .search-input { width: 100%; max-width: none; }
   }
 </style>
 </head>
 <body>
-<header class="app-header">
-  <div class="brand">
-    <div class="title" id="header-title">Room Read</div>
-    <a href="https://augustineiacopelli.github.io/appaday/">AppADay #119</a>
+
+<header>
+  <div class="header-left">
+    <div class="header-eyebrow">Augustine Iacopelli · Started May 8, 2026</div>
+    <h1>App<em>A</em><br>Day</h1>
+    <p class="header-sub">One complete, functional, mobile-friendly web app built and shipped every single day. Inspired by Jonathan Mann's Song A Day.</p>
   </div>
-  <button class="icon-btn" id="settings-btn" aria-label="Settings">&#9881;</button>
+  <div class="header-stats">
+    <div class="stat-block">
+      <div class="stat-number" id="total-count">0</div>
+      <div class="stat-label">Apps Shipped</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-number" id="streak-count">0</div>
+      <div class="stat-label">Day Streak</div>
+    </div>
+  </div>
 </header>
-<main id="app-root"></main>
-<div id="modal-root"></div>
+
+<div class="filter-zone">
+  <div class="filter-inner">
+    <span class="filter-label">Filter</span>
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn filter-new" data-filter="new">New <span class="new-count" id="new-count"></span></button>
+    <button class="filter-btn filter-star" data-filter="starred">&#9733; Starred <span class="star-count" id="star-count"></span></button>
+    <button class="filter-btn" data-filter="milestone">Milestone</button>
+    <button class="filter-btn" data-filter="C">Creative</button>
+    <button class="filter-btn" data-filter="D">Data</button>
+    <button class="filter-btn" data-filter="E">Educational</button>
+    <button class="filter-btn" data-filter="G">Games</button>
+    <button class="filter-btn" data-filter="H">Health</button>
+    <button class="filter-btn" data-filter="I">Interactive</button>
+    <button class="filter-btn" data-filter="P">Productivity</button>
+    <button class="filter-btn" data-filter="S">Spirituality</button>
+    <button class="filter-btn" data-filter="U">Utility</button>
+    <div class="search-wrap">
+      <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 21l-4.3-4.3M11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <input id="search-input" class="search-input" type="search" placeholder="Search" aria-label="Search apps by keyword" autocomplete="off" aria-autocomplete="list">
+      <button id="search-clear" class="search-clear" type="button" aria-label="Clear search">&#215;</button>
+      <div class="search-suggest" id="search-suggest" role="listbox" aria-label="Search suggestions"></div>
+    </div>
+  </div>
+</div>
+
+<main id="main-content"></main>
+
+<footer>
+  <span class="footer-motto">Ship something every day. It compounds.</span>
+  <a class="footer-link" href="https://github.com/augustineiacopelli" target="_blank" rel="noopener">GitHub ↗</a>
+</footer>
 
 <script>
-(function(){
-  "use strict";
+// ============================================================
+//  APP REGISTRY — append new objects here to add apps
+//  cat codes: C = Creative · D = Data · E = Educational · G = Games · H = Health · I = Interactive · P = Productivity · S = Spirituality · U = Utility
+// ============================================================
+const APPS = [
+  {
+    num:"001", name:"Reaction Timer", cat:"G", date:"2026-05-08",
+    desc:"Wait for the screen to flash green — then tap as fast as you can. Tracks your last 5 attempts with a live bar chart and a running average. Under 180ms is elite.",
+    url:"https://augustineiacopelli.github.io/appaday-001-reaction-timer/"
+  },
+  {
+    num:"002", name:"Stream Cleaner", cat:"G", date:"2026-05-09",
+    desc:"Blast a colored deodorizing screen clean with a pressure washer before time runs out. Drag to aim — the stream arcs up and away, landing further back as you aim higher. Clear 80% to advance through 5 levels with increasing aim sway and a leaderboard that rewards speed.",
+    url:"https://augustineiacopelli.github.io/appaday-002-stream-cleaner/"
+  },
+  {
+    num:"003", name:"Daily Scripture", cat:"S", date:"2026-05-10",
+    desc:"A daily scripture companion that surfaces a random Bible verse from 50 passages spanning both Testaments. Tap for a new verse, see the reference and testament label.",
+    url:"https://augustineiacopelli.github.io/appaday-003-daily-scripture/"
+  },
+  {
+    num:"004", name:"Tube Sort", cat:"U", date:"2026-05-11",
+    desc:"Snap a screenshot of any Ball Sort puzzle and let AI parse the tubes automatically. Fill in unknowns with ?, step through the BFS solution move by move, or enter tubes manually.",
+    url:"https://augustineiacopelli.github.io/appaday-004-tube-sort/",
+    ai:true
+  },
+  {
+    num:"005", name:"Dad Joke Generator", cat:"C", date:"2026-05-12",
+    desc:"Uses the Claude API to generate fresh, original dad jokes on demand. The punchline is hidden until you're ready — because the beat before the groan is half the joke. A groan meter scores each joke from 1 to 100.",
+    url:"https://augustineiacopelli.github.io/appaday-005-dad-joke-generator/",
+    ai:true
+  },
+  {
+    num:"006", name:"Life Calendar", cat:"D", date:"2026-05-13",
+    desc:"Enter your birthdate and a life expectancy. Every week of your life rendered as a single mark — gold for weeks lived, red for the week you're in now, dark for the weeks still ahead.",
+    url:"https://augustineiacopelli.github.io/appaday-006-life-calendar/"
+  },
+  {
+    num:"007", name:"Still Standing", cat:"I", date:"2026-05-14",
+    desc:"A personal encouragement app. Type what is weighing on your heart and receive a word of warmth drawn from 100 curated messages — each paired with a scripture verse. The input and response flip like a physical card.",
+    url:"https://augustineiacopelli.github.io/appaday-007-Still-Standing/"
+  },
+  {
+    num:"008", name:"Number Neighbors", cat:"G", date:"2026-05-15",
+    desc:"The classic 15-puzzle across three grid sizes: 3×3, 4×4, and 5×5. Every shuffle is guaranteed solvable via parity checking. Tracks move count, elapsed time, and personal best per grid size.",
+    url:"https://augustineiacopelli.github.io/appaday-008-number-neighbors/"
+  },
+  {
+    num:"009", name:"Focus Timer", cat:"H", date:"2026-05-16",
+    desc:"A Pomodoro-style focus timer with configurable work and break intervals, a circular progress ring, and a clean fullscreen mode.",
+    url:"https://augustineiacopelli.github.io/appaday-009-focus-timer/"
+  },
+  {
+    num:"010", name:"Magic 8 Ball", cat:"I", date:"2026-05-17",
+    desc:"All 20 classic responses rendered inside a glowing blue triangle window — exactly as on the real toy. A history strip tracks your last five verdicts, color-coded by outcome type.",
+    url:"https://augustineiacopelli.github.io/appaday-010-magic-8-ball/"
+  },
+  {
+    num:"011", name:"Password Sculptor", cat:"U", date:"2026-05-18",
+    desc:"Generates secure passwords using the browser's Web Crypto API. Control length, character sets, and ambiguous character exclusion. A live strength meter calculates Shannon entropy and labels the result from Very Weak through Fortress.",
+    url:"https://augustineiacopelli.github.io/appaday-011-password-sculptor/"
+  },
+  {
+    num:"012", name:"Prayer Intentions", cat:"S", date:"2026-05-19",
+    desc:"A quiet, devotional app for capturing and praying through personal intentions. Add the names and intentions of those you're carrying in prayer, then work through them one card at a time.",
+    url:"https://augustineiacopelli.github.io/appaday-012-prayer-intentions/"
+  },
+  {
+    num:"013", name:"Flick", cat:"G", date:"2026-05-20",
+    desc:"Two players take turns flicking pucks across a divided board. A gold blast token appears randomly — hit it to trigger a shockwave that sends every puck flying. Most pucks in the opponent's zone when all pucks are played wins.",
+    url:"https://augustineiacopelli.github.io/appaday-013-flick/"
+  },
+  {
+    num:"014", name:"Countdown Wall", cat:"P", date:"2026-05-21",
+    desc:"A personal countdown tracker built for your phone's home screen. Add named events, assign a color, and see every upcoming date as a big, beautiful day count. Cards sort automatically — soonest first, past events last.",
+    url:"https://augustineiacopelli.github.io/appaday-014-countdown-wall/"
+  },
+  {
+    num:"015", name:"Quest Log", cat:"P", date:"2026-05-22",
+    desc:"A Minecraft-inspired homework tracker where assignments become quests. Check one off and earn a randomized achievement toast with XP. Level up to unlock new badge tiers — from Starter all the way to Grandmaster.",
+    url:"https://augustineiacopelli.github.io/appaday-015-quest-log/"
+  },
+  {
+    num:"016", name:"Chug Roulette", cat:"G", date:"2026-05-23",
+    desc:"A spin-the-wheel party drinking game inspired by the Beer Mile. Spin for a random challenge — chugs, waterfalls, rule-making, swaps, or a full DNF penalty. Add your group as Runners and the wheel cycles through players by name.",
+    url:"https://augustineiacopelli.github.io/appaday-016-chug-roulette/"
+  },
+  {
+    num:"017", name:"Session Scribe", cat:"P", date:"2026-05-24",
+    desc:"Record any conference session in the browser. The Web Speech API transcribes audio in real time. When you stop, Claude returns structured notes: a summary, Roman-numeral outline, key takeaways, notable quotes, and follow-up questions. Must be run in browser rather than as a web app.",
+    url:"https://augustineiacopelli.github.io/appaday-017-session-scribe/",
+    ai:true
+  },
+  {
+    num:"018", name:"Still Water", cat:"I", date:"2026-05-25",
+    desc:"A meditative tap-to-explore experience. A dark, living pond with subtle caustic shimmer lines. Tap anywhere to cast ripples. Eight hidden objects wait to be found — land close enough and they surface with a glow. No timer. No fail state.",
+    url:"https://augustineiacopelli.github.io/appaday-018-still-water/"
+  },
+  {
+    num:"019", name:"Tone Translator", cat:"U", date:"2026-05-26",
+    desc:"Paste any text and translate it into a different tone. Four options: Formal, Casual, Direct, and Warm. Claude rewrites your text while preserving the core meaning.",
+    url:"https://augustineiacopelli.github.io/appaday-019-tone-translator/",
+    ai:true
+  },
+  {
+    num:"020", name:"Rainbow Readers", cat:"E", date:"2026-05-27",
+    desc:"A four-level phonics game for early readers ages 4–7. Tap the correct starting letter, identify full words, trace guide letters in rainbow ink with your finger, and progress through whole words one letter at a time.",
+    url:"https://augustineiacopelli.github.io/appaday-020-rainbow-readers/"
+  },
+  {
+    num:"021", name:"Bolt Patrol", cat:"G", date:"2026-05-28",
+    desc:"A Sonic-inspired side-scrolling runner. Roll through 8 zones, stomp enemies, collect rings, and survive long enough to destroy the Death Egg.",
+    url:"https://augustineiacopelli.github.io/appaday-021-bolt-patrol/"
+  },
+  {
+    num:"022", name:"Haiku Engine", cat:"C", date:"2026-05-29",
+    desc:"Enter any topic or mood — morning fog, grief, a long flight home — and receive an original 5-7-5 haiku with a short reflection on the imagery choices that shaped it.",
+    url:"https://augustineiacopelli.github.io/appaday-022-haiku-engine/",
+    ai:true
+  },
+  {
+    num:"023", name:"Beer Tasting Scorecard", cat:"U", date:"2026-05-30",
+    desc:"Rate beers one at a time on four attributes with large tap-friendly sliders. Built for group tastings on the go — bus tours, tap rooms, homebrew club events.",
+    url:"https://augustineiacopelli.github.io/appaday-023-beer-tasting-scorecard/"
+  },
+  {
+    num:"024", name:"Budget Ring", cat:"D", date:"2026-05-31",
+    desc:"A spending visualizer that renders up to 8 budget categories as a live donut chart with percentage labels. Enter category names and amounts, watch the ring update instantly, and email yourself a plain-text report with one tap.",
+    url:"https://augustineiacopelli.github.io/appaday-024-budget-ring/"
+  },
+  {
+    num:"025", name:"Chroma", cat:"C", date:"2026-06-01",
+    desc:"Extract a full set of color palettes from any input color. Five ways to enter a color, seven palette sections generated instantly, every hex value click-to-copy, and a one-tap email to send your palette anywhere.",
+    url:"https://augustineiacopelli.github.io/appaday-025-chroma/"
+  },
+  {
+    num:"026", name:"Tippy Tip", cat:"U", date:"2026-06-02",
+    desc:"A mobile-friendly Italian tipping guide for travelers. Select your situation, enter relevant details, and get culturally accurate tip guidance — including whether a tip is expected, optional, or not needed, plus a phrase to say in Italian.",
+    url:"https://augustineiacopelli.github.io/appaday-026-tippy-tip/"
+  },
+  {
+    num:"027", name:"Habit Heatmap", cat:"P", date:"2026-06-03",
+    desc:"Track up to five daily habits across the month with a GitHub-style heatmap grid. Tap any day to mark it done, watch your streak climb, and switch between habits instantly with the tab bar. Data lives in your browser — no account needed.",
+    url:"https://augustineiacopelli.github.io/appaday-027-habit-heatmap/"
+  },
+  // — Add new apps below this line —
+  {
+    num:"028", name:"Pixel Quest", cat:"G", date:"2026-06-04",
+    desc:"A full overworld RPG with a 60x38 tile world map, two castles with interior sub-maps, two villages with weapon shops and inns, eight enemy types, an XP and leveling system, equipment slots, and a final Lich King boss battle.",
+    url:"https://augustineiacopelli.github.io/appaday-028-pixel-quest/"
+  },
+  {
+    num:"029", name:"Life Advocate", cat:"P", date:"2026-06-05",
+    desc:"An AI-powered male advocate chat for men facing an unexpected pregnancy — guiding with love toward life-affirming decisions and connecting users to verified pro-life pregnancy resource centers nationwide.",
+    url:"https://augustineiacopelli.github.io/appaday-029-life-advocate/",
+    ai:true
+  },
+  {
+    num:"030", name:"Sleep Curve", cat:"H", date:"2026-06-06",
+    desc:"Log your bedtime and wake time each night and watch your sleep curve take shape. Color-coded durations, a 7-hour target line, nightly stats, and iOS Shortcuts support for one-tap automatic logging.",
+    url:"https://augustineiacopelli.github.io/appaday-030-sleep-curve/"
+  },
+  {
+    num:"031", name:"Saints of the Day", cat:"S", date:"2026-06-07",
+    desc:"A daily companion to the Roman Martyrology. Browse the principal saint for any day of the year, read their biography and a signature quote, and pray a monthly collect. Full 366-day coverage with a date picker and prev/next navigation.",
+    url:"https://augustineiacopelli.github.io/appaday-031-saints-of-the-day/"
+  },
+  {
+    num:"032", name:"Duck Season", cat:"G", date:"2026-06-08",
+    desc:"A Duck Hunt-style browser game with canvas-drawn pixel art sprites and 8 weather scenes. Shoot ducks before they escape — 3 shared shots per wave, 5 waves per round, 24 rounds total. Miss over 50% of your shots and it's game over.",
+    url:"https://augustineiacopelli.github.io/appaday-032-duck-season/"
+  },
+  {
+    num:"033", name:"Convert It", cat:"U", date:"2026-06-09",
+    desc:"Instant unit conversion across 8 categories: Length, Weight, Temperature, Volume, Speed, Area, Data, and Time. Pick a category, choose your units, type a value, and get an instant result with the conversion formula displayed.",
+    url:"https://augustineiacopelli.github.io/appaday-033-convert-it/"
+  },
+  {
+    num:"034", name:"LCR Dice", cat:"G", date:"2026-06-10",
+    desc:"A full-featured browser version of the classic dice game Left Center Right. 3–8 players, circular table layout, configurable house rules (Dot-Dot-Dot, LCR Jackpot, Triple L/R/C), adjustable starting chips, and a lifetime chip bank that persists across sessions.",
+    url:"https://augustineiacopelli.github.io/appaday-034-lcr-dice/"
+  },
+  {
+    num:"035", name:"Meeting Distiller", cat:"P", date:"2026-06-11",
+    desc:"Paste raw meeting notes and get an instant structured breakdown: summary, decisions, action items with owners and deadlines, and open questions. Then send each person their tasks directly via email with one tap.",
+    url:"https://augustineiacopelli.github.io/appaday-035-meeting-distiller/",
+    ai:true
+  },
+  {
+    num:"036",
+    name:"Sivam Nocab",
+    cat:"E",
+    date:"2026-06-12",
+    desc:"A retro CRT-styled typing trainer with 7 lesson tracks covering home row, top row, full alphabet, numbers, common words, sentences, and symbols. Tracks live WPM and accuracy, grades each run S through D, and persists your best WPM and completion streak across sessions.",
+    url:"https://augustineiacopelli.github.io/appaday-036-sivam-nocab/"
+  },
+  {
+    num:"037",
+    name:"Last Call",
+    cat:"G",
+    date:"2026-06-13",
+    desc:"A bar-themed Pac-Man clone starring a bartender chasing barley kernels past four barfly ghosts with classic chase, ambush, patrol, and flee AI. Hop cones turn the hunt around, pretzels add bonus points, and four themed venues — Tap Room, Biergarten, Nightclub, Venue — escalate the speed each level.",
+    url:"https://augustineiacopelli.github.io/appaday-037-last-call/"
+  },
+  {
+    num: "038",
+    name: "Relics of Rome",
+    cat: "S",
+    date: "2026-06-14",
+    desc: "A pilgrimage map of fifty Roman churches and sites holding saint relics, from St. Peter’s tomb and the True Cross fragments to St. Monica’s tomb and the martyrdom sites of the Appian Way. Tap pins for the relic story and address. Filter by Apostles, Passion, Marian, or Saints’ Tombs. Add personal pins (your hotel, a meeting spot) with My Places.",
+    url:"https://augustineiacopelli.github.io/appaday-038-relics-of-rome/"
+  },
+  {
+    num:"039",
+    name:"Firefly Catcher",
+    cat:"G",
+    date:"2026-06-15",
+    desc:"Tap glowing fireflies drifting across a summer night sky to catch them in your jar. Each tap sends a firefly arcing into a glass jar at the bottom of the screen, where caught fireflies accumulate and pulse. Three difficulty levels with adjustable time limits.",
+    url:"https://augustineiacopelli.github.io/appaday-039-firefly-catcher/"
+  },
+  {
+    num:"040", name:"Kitchen Tamer", cat:"U", date:"2026-06-16",
+    desc:"Upload photos of your fridge, freezer, and pantry — multiple shots per space — and Kitchen Tamer generates a realistic multi-day meal plan using what you already have, plus a shopping list for what’s missing. Email the plan directly from the app via Google Apps Script.",
+    url:"https://augustineiacopelli.github.io/appaday-040-kitchen-tamer/",
+    ai:true
+  },
+  {
+    num:"041", name:"Frame By Frame", cat:"C", date:"2026-06-17",
+    desc:"A photo slideshow with five decorative frame styles — Polaroid, Gallery Mat, Film Strip, Gilded, and Borderless. Load photos from your device, set your interval, and let it run. Hide the UI for a clean full-screen view. Photos persist between sessions.",
+    url:"https://augustineiacopelli.github.io/appaday-041-frame-by-frame/"
+  },
+  {
+    num:"042", name:"Breath Guide", cat:"H", date:"2026-06-18",
+    desc:"Meditative breathing guide with six researched patterns — Box, 4-7-8, Coherent, Wim Hof, Diaphragmatic, and Contemplative. An animated orb breathes with you. A built-in calendar tracks every day you practice and shows your current streak.",
+    url:"https://augustineiacopelli.github.io/appaday-042-breath-guide/"
+  },
+  {
+    num:"043", name:"Chore Quest", cat:"P", date:"2026-06-19",
+    desc:"Gamified chore manager for kids. Parents assign quests with XP rewards and daily, weekly, or one-time frequency. Kids level up by completing chores and compete on a live sibling scoreboard.",
+    url:"https://augustineiacopelli.github.io/appaday-043-chore-quest/"
+  },
+  {
+    num:"044", name:"Quarters Master", cat:"G", date:"2026-06-20",
+    desc:"A bar-game skill challenge with three modes: solo Practice with an escalating-difficulty streak, 2-Player Pass and Play, and 2-Player vs CPU across four difficulty tiers. Two timed taps lock your power and aim — land the coin in the cup for a make, hit the bright zone for a perfect, and race to 7 cups.",
+    url:"https://augustineiacopelli.github.io/appaday-044-quarters-master/"
+  },
+  {
+    num:"045", name:"Water Reminder", cat:"H", date:"2026-06-21",
+    desc:"Tracks your hydration by comparing photos of your glass over time. Snap a photo, and Claude estimates the current fill level; compared against your last check-in, it calculates what you actually drank, asking about refills when needed. A filling glass shows progress toward your daily goal.",
+    url:"https://augustineiacopelli.github.io/appaday-045-water-reminder/",
+    ai:true
+  },
+  {
+    num:"046", name:"Time to Sober", cat:"H", date:"2026-06-22",
+    desc:"A blood alcohol estimator and live drinking-session tracker. Log drinks with start/finish times, watch a real-time BAC curve, and see live countdowns to the legal limit and to 0.000%. Includes a gender-aware what-you-may-be-feeling guide and saves your session automatically.",
+    url:"https://augustineiacopelli.github.io/appaday-046-time-to-sober/"
+  },
+  {
+    num:"047", name:"Hop Runner", cat:"G", date:"2026-06-23",
+    desc:"A Mario-style side-scrolling platformer set in a brewery universe. Play as a mustachioed brewer running through hop gardens, malt caves, and fermentation factories — beer mug perpetually raised.",
+    url:"https://augustineiacopelli.github.io/appaday-047-hop-runner/"
+  },
+  {
+    num:"048", name:"Tilt Racer", cat:"G", date:"2026-06-24",
+    desc:"A 3D arcade racer you steer by tilting your device. Race 6,000m against 7 opponents on a winding neon-lit track. Side swipes, spin-outs, and a checkered finish line await.",
+    url:"https://augustineiacopelli.github.io/appaday-048-tilt-racer/"
+  },
+  {
+    num:"049", name:"Pace Planner", cat:"H", date:"2026-06-25",
+    desc:"Select a race distance from 5K to 50K, enter your goal time and fitness level, and get a personalized week-by-week training plan. Includes pace targets, a mileage ramp chart, and daily workout breakdowns across four research-backed training styles.",
+    url:"https://augustineiacopelli.github.io/appaday-049-pace-planner/"
+  },
+  {
+    num:"050", name:"Training Log", cat:"H", date:"2026-06-26",
+    desc:"A personal run tracker with a weekly mileage bar chart, per-day dot summary, and full run history. Log distance, duration, workout type, feel, shoes, and notes. Stats update live: total miles, run count, this-week miles, and average pace.",
+    url:"https://augustineiacopelli.github.io/appaday-050-training-log/"
+  },
+  {
+    num:"051", name:"Pace + Log", cat:"H", date:"2026-06-27",
+    desc:"The complete running companion: build a personalized training plan by start date or race date, log every run against it, and track your pace vs. goal. Includes base training, mid-week onramp weeks, one-off day adjustments, and a live Today card showing today's prescribed workout.",
+    url:"https://augustineiacopelli.github.io/appaday-051-pace-log/"
+  },
+  {
+    num:"052", name:"QR Forge", cat:"U", date:"2026-06-27",
+    desc:"Turn any URL or text into a scannable QR code. Set size, pick foreground and background colors, upload a center logo, and download a PNG in one tap.",
+    url:"https://augustineiacopelli.github.io/appaday-052-qr-forge/"
+  },
+  {
+    num:"053", name:"The Decider", cat:"P", date:"2026-06-29",
+    desc:"A weighted spinning wheel for any decision. Set odds for unlimited options, watch the wheel spin, and let it choose. Locked until your percentages add up to exactly 100%.",
+    url:"https://augustineiacopelli.github.io/appaday-053-the-decider/"
+  },
+  {
+    num:"054", name:"Examen", cat:"S", date:"2026-06-30", ai:true,
+    desc:"A nightly Ignatian Examen, five quiet movements from gratitude through grace. Breathe with a flickering candle through each step, explore the seven virtues before naming tomorrow's grace, and optionally reflect on the Sorrow movement with AI confession prep organized by the Ten Commandments.",
+    url:"https://augustineiacopelli.github.io/appaday-054-daily-examen/"
+  },
+  {
+    num:"055", name:"Morning Offering", cat:"S", date:"2026-07-01",
+    desc:"A guided five-movement Morning Offering: silence and a slow breath, the full offering prayer revealed line by line, intentions for family and one named person, a seven-virtue choice for the day with a modal explaining each, and a closing invocation, paced by a sun rising from night to gold.",
+    url:"https://augustineiacopelli.github.io/appaday-055-morning-offering/"
+  },
+  {
+    num:"056", name:"Enrollment Funnel", cat:"D", date:"2026-07-02",
+    desc:"A funnel chart for any multi-stage pipeline, from 2 to 8 customizable stages. Enter counts per stage and watch conversion rates compute live between steps. Paste rows to import data, adjust stages and labels from the settings gear, then export the finished funnel as a JPG. Styled in WSU black and Shocker Yellow.",
+    url:"https://augustineiacopelli.github.io/appaday-056-enrollment-funnel/"
+  },
+  {
+    num:"057", name:"Liberty Lights", cat:"I", date:"2026-07-03",
+    desc:"Tap the night sky to launch fireworks in six burst styles, from a gold Peony to a tri-color 250 Salute honoring the original colonies, or let Random Mix pick for you. Record a full show, play it back, and save or load it as a file. Auto Show, live sound, and a countdown to America's 250th.",
+    url:"https://augustineiacopelli.github.io/appaday-057-liberty-lights/"
+  },
+  {
+    num:"058", name:"Civics Interview Practice", cat:"E", date:"2026-07-04",
+    desc:"Civics Interview Practice recreates the real naturalization interview: choose the 2008 test, ten of one hundred questions, pass at six, or the 2025 test, twenty of one hundred twenty-eight, pass at twelve. Missed questions get reviewed afterward, best scores are tracked per version, and every session closes with a stamped federal notice of the result.",
+    url:"https://augustineiacopelli.github.io/appaday-058-civics-interview/"
+  },
+  {
+    num:"059", name:"Mad Lib Parlor", cat:"C", date:"2026-07-05",
+    desc:"Mad Lib Parlor turns four true-to-life stories, a parish potluck, a homebrew day, a campus meeting, a pilgrimage, into fill-in-the-blank mayhem. Pick a tale, feed it nouns and verbs, and watch it type itself out on parlor-game paper. Copy your masterpiece and share it.",
+    url:"https://augustineiacopelli.github.io/appaday-059-mad-lib-parlor/"
+  },
+  {
+    num:"060", name:"Task Manager", cat:"P", date:"2026-07-06",
+    desc:"A full task manager rebuilt from a Google Apps Script tool into a standalone GitHub app. Add tasks with priority, location, minutes, and repeat rules, mark them done or snooze them, export an ICS event, and back up your list with a smart Merge or full Replace import. Optional cloud sync reconciles multiple devices through your own Apps Script Web App.",
+    url:"https://augustineiacopelli.github.io/appaday-060-task-manager/"
+  },
+  {
+    num:"061", name:"Language Flashcard Sprint", cat:"E", date:"2026-07-07", ai:true,
+    desc:"Language Flashcard Sprint delivers five fresh vocabulary cards a day in a language of your choice, generated live by Claude. Flip each index card to reveal the translation and an example sentence, mark it known or still learning, and watch a chalkboard streak stamp grow as your word history builds day by day.",
+    url:"https://augustineiacopelli.github.io/appaday-061-language-flashcard-sprint/"
+  },
+  {
+    num:"062", name:"Restore", cat:"H", date:"2026-07-08",
+    desc:"A guided stretching and prayer app for winding down body and mind. Choose a cooldown, evening, or quick reset routine, follow a breathing halo through thirteen illustrated stretches, and close each hold with a scripture verse and short prayer. Tracks streaks, session count, and minutes locally.",
+    url:"https://augustineiacopelli.github.io/appaday-062-restore/"
+  },
+  {
+    num:"063", name:"Bleeding Edge", cat:"E", date:"2026-07-09", ai:true,
+    desc:"Name any subject and Bleeding Edge maps its research frontier from the live web: where the field stands, what was just published and whether it was truly peer-reviewed, methods worth borrowing from neighboring fields, and the questions nobody has claimed. Chart a course from any gap, then re-scan for what is new.",
+    url:"https://augustineiacopelli.github.io/appaday-063-bleeding-edge/"
+  },
+  {
+    num:"064", name:"Zen Garden", cat:"I", date:"2026-07-10",
+    desc:"A karesansui you rake with your finger. Carve grooves in raked sand with a finger, three-tine, or six-tine rake, drop a smoothing brush over what you want gone, and tap ripples that wrap around whatever they meet. Set stones, mossy stones, pebbles, maple leaves, blossoms, and a stone lantern, then drag them and watch the sand furrow behind. Save the garden as an image.",
+    url:"https://augustineiacopelli.github.io/appaday-064-zen-garden/"
+  },
+  {
+    num:"065", name:"Currents", cat:"D", date:"2026-07-11",
+    desc:"Currents turns a list of source-to-target amounts into a proportional Sankey diagram that redraws as you type. Columns arrange by depth, ribbons run from each source's hue to its target's, and hovering traces any path. Import CSV, TSV, or JSON, or start from a budget, day, or admissions preset, then export as SVG or PNG.",
+    url:"https://augustineiacopelli.github.io/appaday-065-currents/"
+  },
+  {
+    num:"066", name:"Confiteor", cat:"S", date:"2026-07-12",
+    desc:"A private, offline companion for Confession. Examine your conscience through the Ten Commandments, flagging sins with counts, notes, and a mortal-or-venial classifier that weighs knowledge and consent. Walk the rite step by step, with a large-type confessional mode, a confession log, and encrypted backups. Nothing ever leaves your device.",
+    url:"https://augustineiacopelli.github.io/appaday-066-confiteor/"
+  },
+  {
+    num:"067", name:"Thought Chisel", cat:"I", ai:true, date:"2026-07-13",
+    desc:"A voice-powered Socratic idea refiner. Speak your raw thought aloud, and Claude distills it into one sharp sentence, then asks a pointed follow-up question read aloud via Speech Synthesis. Three rounds of speak-listen-refine chisel your ramble into a razor-sharp concept with key tensions worth exploring. Must be run in browser rather than as a web app.",
+    url:"https://augustineiacopelli.github.io/appaday-067-thought-chisel/"
+  },
+  {
+    num:"068", name:"Ten Lessons", cat:"E", ai:true, date:"2026-07-14",
+    desc:"Name any subject and Claude designs a ten-lesson path from first principles to real proficiency. Each lesson is a selectable module that generates on demand and saves durably in your browser, so you can stop and pick up anytime. Finish all ten to earn a Commencement certificate, collected on a Skills page. Progress lives in IndexedDB with one-tap backup export.",
+    url:"https://augustineiacopelli.github.io/appaday-068-ten-lessons/"
+  },
+  {
+    num:"069", name:"Labyrinth", cat:"G", date:"2026-07-15",
+    desc:"Tilt your phone and a steel ball rolls across a wooden board with real gravity behind it. Six hand-cut mazes drilled with holes that pull before they swallow. Prise 48 brass tacks out of the wood and spend them at a workbench: felt the walls, swap the ball for brass or boxwood, fit a magnet knob, carry beeswax plugs. Five hidden maker's marks unlock a board with no walls at all.",
+    url:"https://augustineiacopelli.github.io/appaday-069-labyrinth/"
+  },
+  {
+    num:"070", name:"Flatbed", cat:"U", date:"2026-07-16",
+    desc:"A pocket flatbed scanner in a browser tab. Point at a page and it finds the four corners, waits for your hands to go still, then fires on its own. A lamp sweeps while the perspective squares up. Adaptive B/W keeps text crisp. Drag a corner if it guessed wrong. Out as a PDF, JPGs, or a Mail draft.",
+    url:"https://augustineiacopelli.github.io/appaday-070-flatbed/"
+  },
+  {
+    num:"071", name:"Payoff Ledger", cat:"D", date:"2026-07-17",
+    desc:"Most amortization calculators show you one loan. This one plots up to six on the same chart, with recurring extras, lump sums, and biweekly payments. It marks the month principal finally overtakes interest, and asks the question the others skip: at your assumed return, would investing that extra have beaten paying the loan down?",
+    url:"https://augustineiacopelli.github.io/appaday-071-payoff-ledger/"
+  },
+  {
+    num:"072", name:"Fix-It Lens", cat:"U", ai:true, date:"2026-07-18",
+    desc:"Point your phone at something broken, add a sentence, and Claude reads the photo like a cautious contractor: what it sees, how sure it is, the supplies and tools you need, the fix step by step, and the safety flags that matter. Answer its follow-up questions and it re-diagnoses from the same photo to sharpen the plan.",
+    url:"https://augustineiacopelli.github.io/appaday-072-fix-it-lens/"
+  },
+  {
+    num:"073", name:"Explain It Three Ways", cat:"E", ai:true, date:"2026-07-19",
+    desc:"Type any concept and it refracts into three explanations at once: an analogy-driven version for a child, a plain-language version for a curious friend, and a precise technical one for an expert. Each panel carries a headline and a level-specific note, and a follow-up sharpens all three together.",
+    url:"https://augustineiacopelli.github.io/appaday-073-three-ways/"
+  },
+  {
+    num:"074", name:"Tap &amp; Can Manager", cat:"U", date:"2026-07-20",
+    desc:"A keezer board for your home taproom. Track every keg by real volume, pour it down in 4 to 32oz servings, or estimate what is left from the keg weight on a scale. Levels turn amber then red before a keg kicks. Organize taps across multiple keezers and keep a cold-can inventory alongside.",
+    url:"https://augustineiacopelli.github.io/appaday-074-tap-can-manager/"
+  },
+  {
+    num:"075", name:"Fiefdom", cat:"G", milestone:true, date:"2026-07-21",
+    desc:"A deep strategy game of land and sea. Claim a Voronoi world map, farm crops, forge steel, refine gas, and feed your armies or watch them desert. Raise fleets to invade islands, then build nukes, interceptors, and rockets. One to six players, hotseat plus AI. Outlast every house to rule.",
+    url:"https://augustineiacopelli.github.io/appaday-075-fiefdom/"
+  },
+  {
+    num:"076", name:"Time Audit", cat:"D", date:"2026-07-22",
+    desc:"Read a calendar export and see where the hours actually went. Every event is painted onto a strip chart of your days, then sorted into keyword categories you control. Hours, share, and averages per category, weekly totals, day-of-week load, and biggest commitments. Nothing leaves the browser.",
+    url:"https://augustineiacopelli.github.io/appaday-076-time-audit/"
+  },
+  {
+    num:"077", name:"Tilt Sentinel", cat:"D", date:"2026-07-23",
+    desc:"Turn a Tilt hydrometer's Google Sheet into a live fermentation dashboard: current gravity and temperature, a dual-axis chart, and computed OG, attenuation, ABV, and days fermenting with comment markers. Track multiple batches and get phone alerts for stalls, temp swings, and stale readings.",
+    url:"https://augustineiacopelli.github.io/appaday-077-tilt-sentinel/"
+  },
+  {
+    num:"078", name:"Red Team This", cat:"P", ai:true, date:"2026-07-24",
+    desc:"Paste a document, email, or argument before you send it and Claude reads it like a hostile reviewer: the single weakest claim and how to shore it up, every number you can't back yet, and the one hard question you cannot answer. Your adversarial pre-send pass, turned into a tool.",
+    url:"https://augustineiacopelli.github.io/appaday-078-red-team-this/"
+  },
+  {
+    num:"079", name:"Rosette", cat:"C", date:"2026-07-25",
+    desc:"A drawing pad that mirrors every stroke into a rose window. Drag from the center and your line blooms across 6 to 16 petals at once, glowing like leaded cathedral glass on deep indigo. Auto-cycle the jewel palette or hold one color, size the brush, then save your rosette as a PNG.",
+    url:"https://augustineiacopelli.github.io/appaday-079-rosette/"
+  },
+  {
+    num:"080", name:"Rosary Companion", cat:"S", date:"2026-07-26",
+    desc:"A guided rosary that walks you bead by bead through the whole structure, from the Sign of the Cross and Creed to the closing Hail Holy Queen, each prayer and mystery shown as you tap. It sets the day's mysteries by weekday and by liturgical season, with a filling bead ring and resumable progress.",
+    url:"https://augustineiacopelli.github.io/appaday-080-rosary-companion/"
+  },
+  {
+    num:"081", name:"Desk Reset", cat:"H", date:"2026-07-27",
+    desc:"A five-minute reset for a stiff body and tired eyes, run without leaving your chair. Rotating seated stretches and a 20-20-20 eye break, each with one plain cue and a calm countdown over a breathing dusk horizon. Pick 3, 5, or 8 minutes and it remembers your choice.",
+    url:"https://augustineiacopelli.github.io/appaday-081-desk-reset/"
+  },
+  {
+    num:"082", name:"Memory Grid", cat:"G", date:"2026-07-28",
+    desc:"Memory Grid is a tap-to-flip matching game. Pick Easy, Medium, or Hard, then turn cards two at a time to find every pair. A live move counter and timer track each run, best times save per difficulty, and generated flip and match sounds keep it satisfying. Built touch-first.",
+    url:"https://augustineiacopelli.github.io/appaday-082-memory-grid/"
+  },
+  {
+    num:"083", name:"Homebrew Label Lab", cat:"C", date:"2026-07-29",
+    desc:"Design a print-ready craft beer label in the browser. Describe your beer and Claude art-directs the name, motif, and palette, or build it by hand. Five motifs, eight color schemes, and bottle, can, and tap-handle formats with real-world size presets and print-accurate PNG export.",
+    url:"https://augustineiacopelli.github.io/appaday-083-homebrew-label-lab/",
+    ai:true
+  },
+  {
+    num:"084", name:"Meeting Cost Ticker", cat:"P", date:"2026-07-30",
+    desc:"Watch a meeting's dollar cost tick up live. Set the head count and an average hourly rate, or switch to By Person and enter each attendee's actual salary, annual or hourly. A per-second ticker, per-minute and per-hour burn rates, and a running what-could-you-buy tally. All on-device.",
+    url:"https://augustineiacopelli.github.io/appaday-084-meeting-cost-ticker/"
+  },
+  {
+    num:"085", name:"Constellation Drawer", cat:"I", date:"2026-07-31",
+    desc:"Tap points on a night sky to place glowing stars and link them into a constellation. Anchor to any star to branch, name your figure, and save a shareable PNG with the name set in a star-chart serif. A calm, single-purpose creative toy that keeps your sketch on-device.",
+    url:"https://augustineiacopelli.github.io/appaday-085-constellation-drawer/"
+  },
+  {
+    num:"086", name:"Subject Line Lab", cat:"P", ai:true, date:"2026-08-01",
+    desc:"Paste an email body and get five subject-line candidates, each measured for predicted open rate. Every line names its technique, shows a live score gauge and character count, and flags the top pick. Bring your own Anthropic API key; only the request leaves your browser.",
+    url:"https://augustineiacopelli.github.io/appaday-086-subject-line-lab/"
+  },
+  {
+    num:"087", name:"Angelus Companion", cat:"S", date:"2026-08-02",
+    desc:"A guided Angelus and Regina Caeli. Pray along with the versicles, responses, and Hail Marys step by step or as full text, with a traditional 3-3-3-9 bell chime at 6 AM, noon, and 6 PM. Auto-switches to the Regina Caeli through Eastertide via the Computus. A quiet daily pause for the Incarnation.",
+    url:"https://augustineiacopelli.github.io/appaday-087-angelus-companion/"
+  },
+  {
+    num:"088", name:"Brew Math", cat:"U", date:"2026-08-03",
+    desc:"A one-screen homebrew calculator. Enter original and final gravity to read ABV, apparent and real attenuation, and rough calories per 12 and 16 oz. Refractometer mode applies your wort factor plus an alcohol correction so a Brix final reading becomes a true gravity. Everything stays on-device.",
+    url:"https://augustineiacopelli.github.io/appaday-088-brew-math/"
+  },
+  {
+    num:"089", name:"Ink Trace", cat:"I", date:"2026-08-04",
+    desc:"Type a short phrase and watch it write itself as a single-stroke ink drawing, one pen path at a time. Five scripts from sans to blackletter, custom ink and paper, adjustable weight, speed, and nib, plus an inked finish and paper grain. Replay, share a styled link, and export a still or animation.",
+    url:"https://augustineiacopelli.github.io/appaday-089-ink-trace/"
+  },
+  {
+    num:"090", name:"Syllabus Skimmer", cat:"E", date:"2026-08-05",
+    desc:"Paste a course syllabus and Claude pulls out what matters: every key date on a filterable timeline, the grading breakdown as a weighted bar that flags when the percentages do not add up, required versus optional materials, and the attendance, late work, and AI policies in plain view.",
+    url:"https://augustineiacopelli.github.io/appaday-090-syllabus-skimmer/",
+    ai:true
+  },
+  {
+    num:"091", name:"Grade Runway", cat:"D", date:"2026-08-06",
+    desc:"Drop in a syllabus PDF and Claude pulls out the grading table. From there: your weighted grade across every course, a rail showing points earned, lost, and still open, and the exact average you need on the work that is left to land your target.",
+    url:"https://augustineiacopelli.github.io/appaday-091-grade-runway/",
+    ai:true
+  },
+  {
+    num:"092", name:"Semester Forecast", cat:"D", date:"2026-08-07",
+    desc:"Feed in every syllabus for the term and Claude turns them into one picture: a week by week bar of estimated effort stacked by course, the crunch weeks and the breathing room called out by name, every deliverable with an hours estimate, and the weighted grade math for what is still open.",
+    url:"https://augustineiacopelli.github.io/appaday-092-semester-forecast/",
+    ai:true
+  },
+  {
+    num:"093", name:"Scam Text Tormentor", cat:"C", date:"2026-08-08",
+    desc:"Paste the scam text that showed up uninvited, cast a performer, and Claude writes the reply. A confused grandpa, an over-eager buyer, a bureaucrat who needs Form 27-B, a parish volunteer who thinks it is about the fish fry. Keep pasting what they write back and the whole bit builds into a thread.",
+    url:"https://augustineiacopelli.github.io/appaday-093-scam-text-tormentor/",
+    ai:true
+  },
+  {
+    num:"094", name:"Monogram Maker", cat:"C", date:"2026-08-09",
+    desc:"Three initials, a hand you like, a frame and a palette, and the whole thing comes off the screen as a real SVG. Ten frames from a plain circle to a shield to an art deco border, six typefaces, eight palettes, four arrangements. The font rides inside the file so it looks right anywhere.",
+    url:"https://augustineiacopelli.github.io/appaday-094-monogram-maker/"
+  },
+  {
+    num:"095", name:"Contrast Checker", cat:"U", date:"2026-08-10",
+    desc:"Set a text color and a background color and the WCAG ratio moves as you type, with pass or fail marks for normal text, large text, and interface elements. When a pair falls short it hands back the nearest color that would clear AA or AAA, one click to apply. Live preview, saved pairs, shareable link."
+    ,url:"https://augustineiacopelli.github.io/appaday-095-contrast-checker/"
+  },
+  {
+    num:"096", name:"Card Duel", cat:"G", date:"2026-08-11",
+    desc:"Two players, one phone. Twelve creatures, each with an attack number and a health number. Send one out, let it wake up, then trade blows. Every knockout takes a star off the other trainer, and an undefended trainer loses one outright. Six stars ends it. A curtain hides your hand between turns.",
+    url:"https://augustineiacopelli.github.io/appaday-096-card-duel/"
+  },
+  {
+    num:"097", name:"Field Marks", cat:"E", date:"2026-08-12",
+    desc:"Photograph a bird, plant, insect, or fungus and get a field record back: the marks that name it, the species it is confused with, taxonomy, habitat, and range. Hazards are ranked by the worst plausible match, never the likeliest. Invasive plants get a removal plan, ailing ones a care plan. Logged by group.",
+    url:"https://augustineiacopelli.github.io/appaday-097-field-marks/",
+    ai:true
+  },
+  {
+    num:"098", name:"Newton's Cradle", cat:"I", date:"2026-08-13",
+    desc:"Five brass balls on short strings. Pull one aside and let it go and the one at the far end leaps out while the middle four never stir. Lift two and two answer. Real pendulum physics, not a loop: drag any ball, set the gravity and how fast the energy bleeds off, and count the transfers.",
+    url:"https://augustineiacopelli.github.io/appaday-098-newtons-cradle/"
+  },
+  {
+    num:"099", name:"Social Post Responder", cat:"P", date:"2026-08-14",
+    desc:"Paste a batch of feed posts and get an honest triage back: which ones you can actually add something to, the exact line worth answering, and a short reply drafted in your voice. A cliche scanner flags anything that sounds like everyone else, and sent replies build a seven day outreach streak.",
+    url:"https://augustineiacopelli.github.io/appaday-099-social-post-responder/",
+    ai:true
+  },
+  {
+    num:"100", name:"Signal Desk", cat:"D", milestone:true, date:"2026-08-15",
+    desc:"Drop in any CSV and get the first hour of analysis back. Signal Desk infers every column type, profiles distributions, scores data quality, correlates measures, builds pivots, compares segments, and charts cohort retention. Tap any number to see the arithmetic and the rows behind it.",
+    url:"https://augustineiacopelli.github.io/appaday-100-signal-desk/",
+    ai:true
+  },
+  {
+    num:"101", name:"Liturgical Season Companion", cat:"S", date:"2026-08-16",
+    desc:"Open it and see today's place in the Church year: the season and the vestment color worn, the week, the Sunday cycle A/B/C and weekday cycle I/II, and the next solemnity or feast. The full calendar down through the optional memorials, every date computed on-device from the Computus.",
+    url:"https://augustineiacopelli.github.io/appaday-101-liturgical-season-companion/"
+  },
+  {
+    num:"102", name:"Reel Splitter", cat:"U", date:"2026-08-17",
+    desc:"Split a long MP4 into smaller playable files in the browser, or pull the audio out on its own. It rewrites the index and copies every frame byte for byte, so nothing is re-encoded and nothing leaves your device. Cuts land on keyframes. A long lecture drops to an audio file small enough to upload.",
+    url:"https://augustineiacopelli.github.io/appaday-102-reel-splitter/"
+  },
+  {
+    num:"103", name:"Bracket Maker", cat:"I", date:"2026-08-18",
+    desc:"Type in the names, then tap the winner of each match. Single elimination with real seeding, byes to the top seeds, optional regions each seeded 1 to 16, and a round robin play-in that sets the seed line without eliminating anyone. Shareable by link, printable as a clean draw sheet.",
+    url:"https://augustineiacopelli.github.io/appaday-103-bracket-maker/"
+  },
+  {
+    num:"104", name:"Giving Tree", cat:"S", date:"2026-08-19",
+    desc:"Set giving goals as a percentage of household income, split between your parish and other charities, then log each gift and watch a tree fill in: leaves for the church goal, ripening fruit for the rest. Pace tells you if you are ahead or behind for the year. Import past giving from a CSV.",
+    url:"https://augustineiacopelli.github.io/appaday-104-giving-tree/"
+  },
+  {
+    num:"105", name:"Scripture Verse Card Maker", cat:"S", date:"2026-08-20",
+    desc:"Turn any Scripture verse into a shareable image card. Pick from four templates, solid, gradient, dotted pattern, or framed, toggle dark or light mode, then export a PNG or copy the finished card straight to your clipboard.",
+    url:"https://augustineiacopelli.github.io/appaday-105-scripture-verse-card-maker/"
+  },
+  {
+    num:"106", name:"Python Discombobulator", cat:"E", date:"2026-08-21",
+    desc:"Paste Python code or a traceback and get it explained. Choose summary or line-by-line depth, beginner to terse tone, and code or traceback mode with soft auto-detection. Runs a live client-side syntax check before any explanation is requested.",
+    url:"https://augustineiacopelli.github.io/appaday-106-python-discombobulator/",
+    ai:true
+  },
+  {
+    num:"107", name:"Knot Locker", cat:"E", date:"2026-08-22",
+    desc:"A field guide and quiz for five essential scout knots: bowline, clove hitch, taut-line hitch, square knot, and two half hitches. Filter by use case, step through tie diagrams, then drill yourself with a five question quiz that scores you and flags any missed knots. Works fully offline.",
+    url:"https://augustineiacopelli.github.io/appaday-107-knot-locker/"
+  },
+  {
+    num:"108", name:"Meteor Shower Tracker", cat:"U", date:"2026-08-23",
+    desc:"An honest meteor shower planner covering twelve major annual showers. Countdown to the next peak, a corrected hourly rate for your latitude, Bortle class and moonlight, a session planner with real odds, an eleven-night best-night finder, and a full-year calendar. Red or amber night-vision styling.",
+    url:"https://augustineiacopelli.github.io/appaday-108-meteor-shower-tracker/"
+  },
+  {
+    num:"109", name:"Subscription Creep Tracker", cat:"D", date:"2026-08-24",
+    desc:"Tracks recurring subscriptions and converts every billing cadence, weekly, monthly, quarterly, yearly, into one honest monthly-equivalent total. A Chart.js breakdown toggles category vs. service, the list sorts by name, cost, or renewal date, and anything due within a week gets flagged before it sneaks past you.",
+    url:"https://augustineiacopelli.github.io/appaday-109-subscription-creep-tracker/"
+  },
+  {
+    num:"110", name:"Album Cover Generator", cat:"C", date:"2026-08-25",
+    ai:true,
+    desc:"Describe a mood and get a full fictional album cover back: Claude invents a band name and song title while Pollinations paints the artwork, running independently so a failure on one side never blocks the other. Download the finished cover art with one tap.",
+    url:"https://augustineiacopelli.github.io/appaday-110-album-cover-generator/"
+  },
+  {
+    num:"111", name:"Application Gap Analysis", cat:"P", date:"2026-08-26",
+    ai:true,
+    desc:"Paste a resume and a job posting. Claude extracts every real requirement from the posting, then checks the resume against each one with a client-computed match score, an expandable gap grid with evidence and rewrites, structural resume flags, and interview-fit questions.",
+    url:"https://augustineiacopelli.github.io/appaday-111-application-gap-analysis/"
+  },
+  {
+    num:"112", name:"Temptation Ledger", cat:"P", date:"2026-08-27",
+    desc:"A private ledger for resisting temptation. Log a trigger and reason, sit through a timestamp-based sixty-second pause, then mark the moment held or yielded. Tracks a live streak and charts the held-vs-yielded ratio, a 14-day trend, top triggers, and time-of-day patterns from local history.",
+    url:"https://augustineiacopelli.github.io/appaday-112-temptation-ledger/"
+  },
+  {
+    num:"113", name:"Pause Point", cat:"P", date:"2026-08-28",
+    desc:"A companion Manifest V3 browser extension to Temptation Ledger. Block a domain from the toolbar popup; visiting it redirects to a sixty-second pause screen with a reason prompt instead of loading. Tracks a held streak, grants a timed pass on override, and enforces entirely offline via declarativeNetRequest.",
+    url:"https://augustineiacopelli.github.io/appaday-113-pause-point/"
+  },
+  {
+    num:"114", name:"Posture Check", cat:"P", date:"2026-08-29",
+    desc:"A background reminder app that nudges you to check your posture and stretch on a set interval. Choose a preset or custom minute interval, get an in-tab card plus optional system notification, sound, and vibration, and build a daily streak by acknowledging each check.",
+    url:"https://augustineiacopelli.github.io/appaday-114-posture-check/"
+  },
+  {
+    num:"115", name:"Basket Ledger", cat:"D", date:"2026-08-30",
+    desc:"Log grocery prices as you shop, or scan a receipt photo and let Claude read off the store, date, and each item's price for you to review before adding. Tracks price trends per item over time and ranks your stores by average price.",
+    url:"https://augustineiacopelli.github.io/appaday-115-basket-ledger/",
+    ai:true
+  },
+  {
+    num:"116", name:"Latin Phrase of the Day", cat:"E", date:"2026-08-31",
+    desc:"A daily Latin phrase drawn from liturgy, law, philosophy, and mottoes, each with translation, phonetic pronunciation, and a short note on its use. Favorite today's pick, or browse the archive by category with day-by-day paging and expandable entries.",
+    url:"https://augustineiacopelli.github.io/appaday-116-latin-phrase-of-the-day/"
+  },
+  {
+    num:"117", name:"Daily Mood and Symptom Journal", cat:"H", date:"2026-09-01",
+    desc:"Log as many mood and symptom check-ins as a day needs. Mood and Likert-scale symptoms average per day, count-based symptoms add up, each symptom can be skipped per entry, and a dual-axis 30-day chart traces every trend alongside a logging streak.",
+    url:"https://augustineiacopelli.github.io/appaday-117-daily-mood-symptom-journal/"
+  },
+  {
+    num:"118", name:"Divine Mercy Chaplet Companion", cat:"S", date:"2026-09-02",
+    desc:"A guided, tap-through companion for praying the Chaplet of Divine Mercy: the opening prayers, all five decades with the offering and ten petitions each, the triple Holy God, and the closing prayer, with a running progress line.",
+    url:"https://augustineiacopelli.github.io/appaday-118-divine-mercy-chaplet/"
+  },
+  {
+    num:"119", name:"Room Read", cat:"U", date:"2026-09-03",
+    desc:"Photograph a room from a few angles and get a Claude-generated design read: a critique, observations, a tappable punch list with color swatches, and style directions paired with live Openverse reference photos. Group several rooms into one project and flip between results with tabs.",
+    url:"https://augustineiacopelli.github.io/appaday-119-room-read/",
+    ai:true
+  }
+];
 
-  var CLAUDE_MODEL = 'claude-sonnet-5';
-  var STORAGE_KEY_HISTORY = 'roomread_history';
-  var STORAGE_KEY_SETTINGS = 'roomread_settings';
-  var MAX_PHOTOS = 6;
-  var MAX_ROOMS = 8;
+// ============================================================
+//  CATEGORY METADATA
+// ============================================================
+const CATS = {
+  C: { label: "Creative",           plural: "Creative" },
+  D: { label: "Data Viz",           plural: "Data" },
+  E: { label: "Educational",        plural: "Educational" },
+  G: { label: "Games",              plural: "Games" },
+  H: { label: "Health & Wellness",  plural: "Health" },
+  I: { label: "Interactive",        plural: "Interactive" },
+  P: { label: "Productivity",       plural: "Productivity" },
+  S: { label: "Spirituality",       plural: "Spirituality" },
+  U: { label: "Utility Tools",      plural: "Utility" },
+};
+const CAT_ORDER = ["C","D","E","G","H","I","P","S","U"];
 
-  var state = {
-    currentScreen: 'home',
-    project: null,
-    activeRoomIndex: null,
-    activeResultRoomIndex: 0,
-    viewingFromHistory: false,
-    history: [],
-    settingsOpen: false,
-    apiKey: '',
-    sessionName: '',
-    defaultStylePref: '',
-    clearConfirm: false,
-    errorMsg: '',
-    analyzingLabel: 'Reading the rooms.'
+// ============================================================
+//  HELPERS
+// ============================================================
+function formatDate(iso) {
+  const [y,m,d] = iso.split("-");
+  return new Date(y, m-1, d).toLocaleDateString("en-US", { month:"short", day:"numeric", year:"numeric" });
+}
+
+function calcStreak() {
+  // Streak = number of shipped apps with no gap in sequential numbering
+  const nums = [...APPS]
+    .filter(a => !a.coming_soon)
+    .map(a => parseInt(a.num, 10))
+    .sort((a,b) => b - a);
+  let streak = 0;
+  for (let i = 0; i < nums.length; i++) {
+    if (i === 0) { streak = 1; continue; }
+    if (nums[i-1] - nums[i] === 1) { streak++; } else break;
+  }
+  return streak;
+}
+
+// ============================================================
+//  STARRING
+// ============================================================
+const STAR_KEY = "appaday-starred";
+let currentFilter = "all";
+function loadStars() {
+  try { const r = localStorage.getItem(STAR_KEY); return r ? new Set(JSON.parse(r)) : new Set(); }
+  catch (e) { return new Set(); }
+}
+function saveStars() {
+  try { localStorage.setItem(STAR_KEY, JSON.stringify([...starred])); } catch (e) {}
+}
+let starred = loadStars();
+function updateStarCount() {
+  const el = document.getElementById("star-count");
+  if (!el) return;
+  const n = APPS.filter(a => !a.coming_soon && starred.has(a.num)).length;
+  el.textContent = n > 0 ? `(${n})` : "";
+}
+function toggleStar(num, name, btn) {
+  if (starred.has(num)) starred.delete(num); else starred.add(num);
+  saveStars();
+  const on = starred.has(num);
+  if (btn) {
+    btn.classList.toggle("is-starred", on);
+    btn.setAttribute("aria-pressed", on ? "true" : "false");
+    btn.setAttribute("aria-label", (on ? "Unstar " : "Star ") + name);
+  }
+  updateStarCount();
+  if (currentFilter === "starred") buildCards("starred");
+}
+
+// ============================================================
+//  NEW  (apps published since the visitor last checked)
+// ============================================================
+const SEEN_KEY = "appaday-newseen";
+function loadSeen() { try { return localStorage.getItem(SEEN_KEY) || ""; } catch (e) { return ""; } }
+function saveSeen(v) { try { localStorage.setItem(SEEN_KEY, v); } catch (e) {} }
+function latestDate() {
+  let latest = "";
+  APPS.forEach(a => { if (!a.coming_soon && a.date > latest) latest = a.date; });
+  return latest;
+}
+function computeNew(seen) {
+  if (!seen) return [];
+  return APPS.filter(a => !a.coming_soon && a.date > seen).sort((x, y) => (x.num < y.num ? 1 : -1));
+}
+let sessionNew = [];
+let newViewed = false;
+function updateNewCount() {
+  const el = document.getElementById("new-count");
+  if (!el) return;
+  const n = newViewed ? 0 : sessionNew.length;
+  el.textContent = n > 0 ? String(n) : "";
+}
+function initNew() {
+  const seen = loadSeen();
+  if (!seen) { saveSeen(latestDate()); sessionNew = []; }
+  else { sessionNew = computeNew(seen); }
+  updateNewCount();
+}
+
+// ============================================================
+//  CARD FACTORY
+// ============================================================
+function makeCard(app, index) {
+  const a = document.createElement("a");
+  a.className = app.coming_soon ? "app-card coming-soon" : (app.milestone ? "app-card milestone" : "app-card");
+  a.href = app.coming_soon ? "#" : app.url;
+  if (!app.coming_soon) { a.target = "_blank"; a.rel = "noopener"; }
+  a.setAttribute("data-cat", app.cat);
+  a.style.animationDelay = `${index * 35}ms`;
+  const badge = app.coming_soon ? `<span class="card-coming-badge">Coming ${formatDate(app.date)}</span>` : "";
+  const aiBadge = app.ai ? `<span class="card-ai-badge">AI</span>` : "";
+  const mBadge = app.milestone ? `<span class="card-milestone-badge"><svg viewBox="0 0 24 24" width="9" height="9" aria-hidden="true"><path d="M12 2l2.9 6.1 6.6.9-4.8 4.6 1.2 6.6L12 18.6 5.9 20.9l1.2-6.6L2.3 9l6.6-.9z" fill="currentColor"/></svg>Milestone</span>` : "";
+  const isOn = starred.has(app.num);
+  const starBtn = app.coming_soon ? "" : `<button type="button" class="card-star${isOn ? " is-starred" : ""}" aria-pressed="${isOn ? "true" : "false"}" aria-label="${isOn ? "Unstar " : "Star "}${app.name}"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 2l2.9 6.1 6.6.9-4.8 4.6 1.2 6.6L12 18.6 5.9 20.9l1.2-6.6L2.3 9l6.6-.9z"/></svg></button>`;
+  a.innerHTML = `
+    <span class="card-arrow">↗</span>
+    ${starBtn}
+    <div class="card-number">${app.num}</div>
+    <div class="card-name">${app.name}${badge}${aiBadge}${mBadge}</div>
+    <div class="card-desc">${app.desc}</div>
+    <div class="card-footer">
+      <span class="card-cat">${CATS[app.cat].plural}</span>
+      <span class="card-date">${formatDate(app.date)}</span>
+    </div>
+  `;
+  if (!app.coming_soon) {
+    const sb = a.querySelector(".card-star");
+    if (sb) sb.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); toggleStar(app.num, app.name, sb); });
+  }
+  return a;
+}
+
+// ============================================================
+//  RENDER
+// ============================================================
+function buildCards(filter) {
+  currentFilter = filter;
+  const main = document.getElementById("main-content");
+  main.innerHTML = "";
+
+  if (filter === "all") {
+    CAT_ORDER.forEach(cat => {
+      const group = APPS.filter(a => a.cat === cat);
+      if (!group.length) return;
+      const sec = document.createElement("div");
+      sec.setAttribute("data-cat", cat);
+      const hdr = document.createElement("div");
+      hdr.className = "section-header";
+      hdr.innerHTML = `
+        <span class="section-title">${CATS[cat].label}</span>
+        <span class="section-code">${cat}</span>
+        <span class="section-count">${group.length} app${group.length !== 1 ? "s" : ""}</span>
+      `;
+      sec.appendChild(hdr);
+      const grid = document.createElement("div");
+      grid.className = "card-grid";
+      group.forEach((app, i) => grid.appendChild(makeCard(app, i)));
+      sec.appendChild(grid);
+      main.appendChild(sec);
+    });
+  } else if (filter === "starred") {
+    const list = APPS.filter(a => !a.coming_soon && starred.has(a.num));
+    if (!list.length) {
+      const grid = document.createElement("div");
+      grid.className = "card-grid";
+      const emp = document.createElement("div");
+      emp.className = "empty-state";
+      emp.textContent = "No starred apps yet. Tap the star on any app to save it here.";
+      grid.appendChild(emp);
+      main.appendChild(grid);
+    } else {
+      // Starred is grouped by category, same section shape as the All view.
+      const seenCats = [...CAT_ORDER, ...list.map(a => a.cat).filter(k => CAT_ORDER.indexOf(k) === -1)];
+      seenCats.forEach(cat => {
+        const group = list.filter(a => a.cat === cat);
+        if (!group.length) return;
+        const sec = document.createElement("div");
+        sec.setAttribute("data-cat", cat);
+        const hdr = document.createElement("div");
+        hdr.className = "section-header";
+        hdr.innerHTML = `
+        <span class="section-title">${CATS[cat] ? CATS[cat].label : cat}</span>
+        <span class="section-code">${cat}</span>
+        <span class="section-count">${group.length} app${group.length !== 1 ? "s" : ""}</span>
+      `;
+        sec.appendChild(hdr);
+        const grid = document.createElement("div");
+        grid.className = "card-grid";
+        group.forEach((app, i) => grid.appendChild(makeCard(app, i)));
+        sec.appendChild(grid);
+        main.appendChild(sec);
+      });
+    }
+  } else if (filter === "milestone") {
+    const grid = document.createElement("div");
+    grid.className = "card-grid";
+    const list = APPS.filter(a => a.milestone).sort((a, b) => a.num.localeCompare(b.num));
+    if (!list.length) {
+      const emp = document.createElement("div");
+      emp.className = "empty-state";
+      emp.textContent = "No milestone apps flagged yet.";
+      grid.appendChild(emp);
+    } else {
+      list.forEach((app, i) => grid.appendChild(makeCard(app, i)));
+    }
+    main.appendChild(grid);
+  } else if (filter === "new") {
+    const grid = document.createElement("div");
+    grid.className = "card-grid";
+    if (!newViewed) { newViewed = true; saveSeen(latestDate()); }
+    if (!sessionNew.length) {
+      const emp = document.createElement("div");
+      emp.className = "empty-state";
+      emp.textContent = "You're all caught up. Apps published since your last visit will appear here.";
+      grid.appendChild(emp);
+    } else {
+      sessionNew.forEach((app, i) => grid.appendChild(makeCard(app, i)));
+    }
+    main.appendChild(grid);
+  } else {
+    const grid = document.createElement("div");
+    grid.className = "card-grid";
+    const visible = APPS.filter(a => a.cat === filter);
+    if (!visible.length) {
+      const emp = document.createElement("div");
+      emp.className = "empty-state";
+      emp.textContent = "No apps in this category yet.";
+      grid.appendChild(emp);
+    } else {
+      visible.forEach((app, i) => grid.appendChild(makeCard(app, i)));
+    }
+    main.appendChild(grid);
+  }
+
+  const liveApps = APPS.filter(a => !a.coming_soon);
+  document.getElementById("total-count").textContent = liveApps.length;
+  document.getElementById("streak-count").textContent = calcStreak();
+  updateStarCount();
+  updateNewCount();
+}
+
+// ============================================================
+//  SEARCH  (keyword lookup across number, name, desc, category)
+//  Overrides the filter view without changing currentFilter, so
+//  clearing the box restores whatever filter was active.
+// ============================================================
+const searchInput = document.getElementById("search-input");
+const searchClear = document.getElementById("search-clear");
+let searchQuery = "";
+
+function appHaystack(app) {
+  const meta = CATS[app.cat] || { label: "", plural: "" };
+  return [app.num, app.name, app.desc, app.cat, meta.label, meta.plural].join(" ").toLowerCase();
+}
+function stemToken(w) {
+  if (w.length < 5) return w;
+  const suf = ["ings", "ies", "ing", "ers", "ied", "es", "ed", "er", "ly", "s"];
+  for (let i = 0; i < suf.length; i++) {
+    const s = suf[i];
+    if (w.length > s.length && w.slice(-s.length) === s) {
+      const st = w.slice(0, w.length - s.length);
+      if (st.length >= 4) return st;
+    }
+  }
+  return w;
+}
+function tokenMatches(hay, t) {
+  if (hay.indexOf(t) !== -1) return true;
+  const st = stemToken(t);
+  return st !== t && hay.indexOf(st) !== -1;
+}
+function matchesQuery(app, tokens) {
+  const hay = appHaystack(app);
+  return tokens.every(t => tokenMatches(hay, t));
+}
+function refreshStats() {
+  document.getElementById("total-count").textContent = APPS.filter(a => !a.coming_soon).length;
+  document.getElementById("streak-count").textContent = calcStreak();
+  updateStarCount();
+  updateNewCount();
+}
+function runSearch(q) {
+  const main = document.getElementById("main-content");
+  main.innerHTML = "";
+  const tokens = q.toLowerCase().split(/\s+/).filter(Boolean);
+  const results = APPS.filter(a => matchesQuery(a, tokens));
+
+  const hdr = document.createElement("div");
+  hdr.className = "section-header";
+  const t = document.createElement("span"); t.className = "section-title"; t.textContent = "Search";
+  const code = document.createElement("span"); code.className = "section-code"; code.textContent = q;
+  const cnt = document.createElement("span"); cnt.className = "section-count";
+  cnt.textContent = results.length + " result" + (results.length !== 1 ? "s" : "");
+  hdr.appendChild(t); hdr.appendChild(code); hdr.appendChild(cnt);
+  main.appendChild(hdr);
+
+  const grid = document.createElement("div");
+  grid.className = "card-grid";
+  if (!results.length) {
+    const emp = document.createElement("div");
+    emp.className = "empty-state";
+    emp.textContent = "No apps match that keyword. Try another word or clear the search.";
+    grid.appendChild(emp);
+  } else {
+    results.forEach((app, i) => grid.appendChild(makeCard(app, i)));
+  }
+  main.appendChild(grid);
+  refreshStats();
+}
+function clearActiveButtons() {
+  document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+}
+function restoreActiveButton() {
+  document.querySelectorAll(".filter-btn").forEach(b => b.classList.toggle("active", b.dataset.filter === currentFilter));
+}
+function onSearchInput() {
+  searchQuery = searchInput.value.trim();
+  searchClear.classList.toggle("show", searchQuery.length > 0);
+  updateSuggest(searchInput.value);
+  if (searchQuery) { clearActiveButtons(); runSearch(searchQuery); }
+  else { restoreActiveButton(); buildCards(currentFilter); }
+}
+function clearSearchInput() {
+  searchInput.value = "";
+  searchQuery = "";
+  searchClear.classList.remove("show");
+  hideSuggest();
+}
+// --- type-ahead suggestions (vocabulary from app names + categories) ---
+const SUGGEST = (function () {
+  const words = new Set();
+  const names = [];
+  const addWords = (str) => str.toLowerCase().split(/[^a-z0-9]+/).forEach(w => { if (w.length >= 3) words.add(w); });
+  APPS.forEach(a => { names.push(a.name); addWords(a.name); });
+  Object.keys(CATS).forEach(k => { addWords(CATS[k].label); addWords(CATS[k].plural); });
+  return { words: [...words].sort(), names: names };
+})();
+let activeIndex = -1;
+
+function buildSuggestions(raw) {
+  const full = raw.trim().toLowerCase();
+  if (full.length < 2) return [];
+  const out = [];
+  const seen = new Set();
+  const add = (disp) => {
+    const key = disp.toLowerCase();
+    if (key === full || seen.has(key)) return;
+    seen.add(key); out.push(disp);
   };
-
-  function loadSettings(){
-    try{
-      var raw = localStorage.getItem(STORAGE_KEY_SETTINGS);
-      if(raw){
-        var parsed = JSON.parse(raw);
-        state.apiKey = parsed.apiKey || '';
-        state.sessionName = parsed.sessionName || '';
-        state.defaultStylePref = parsed.defaultStylePref || '';
-      }
-    }catch(e){ /* ignore corrupt settings */ }
+  SUGGEST.names.filter(nm => nm.toLowerCase().startsWith(full))
+    .sort((a, b) => a.length - b.length).forEach(add);
+  const parts = full.split(/\s+/);
+  const last = parts[parts.length - 1];
+  const head = parts.slice(0, -1).join(" ");
+  if (last.length >= 2) {
+    SUGGEST.words.filter(v => v.startsWith(last) && v !== last)
+      .sort((a, b) => a.length - b.length)
+      .forEach(v => add((head ? head + " " : "") + v));
   }
-
-  function saveSettings(){
-    try{
-      localStorage.setItem(STORAGE_KEY_SETTINGS, JSON.stringify({ apiKey: state.apiKey, sessionName: state.sessionName, defaultStylePref: state.defaultStylePref }));
-    }catch(e){ /* storage unavailable */ }
-  }
-
-  function loadHistory(){
-    try{
-      var raw = localStorage.getItem(STORAGE_KEY_HISTORY);
-      state.history = raw ? JSON.parse(raw) : [];
-    }catch(e){ state.history = []; }
-  }
-
-  function persistHistory(){
-    try{
-      localStorage.setItem(STORAGE_KEY_HISTORY, JSON.stringify(state.history));
-    }catch(e){ /* storage unavailable */ }
-  }
-
-  function el(tag, attrs, children){
-    var node = document.createElement(tag);
-    attrs = attrs || {};
-    for(var k in attrs){
-      if(k === 'class'){ node.className = attrs[k]; }
-      else if(k === 'html'){ node.innerHTML = attrs[k]; }
-      else if(k.indexOf('on') === 0 && typeof attrs[k] === 'function'){
-        node.addEventListener(k.slice(2), attrs[k]);
-      } else {
-        node.setAttribute(k, attrs[k]);
-      }
-    }
-    (children || []).forEach(function(c){
-      if(c === null || c === undefined) return;
-      if(typeof c === 'string'){ node.appendChild(document.createTextNode(c)); }
-      else { node.appendChild(c); }
-    });
-    return node;
-  }
-
-  function clearNode(node){
-    while(node.firstChild){
-      node.removeChild(node.firstChild);
-    }
-  }
-
-  function backLink(fn){
-    return el('button', { class: 'btn-text', onclick: fn }, ['Back']);
-  }
-
-  function goHome(){
-    state.currentScreen = 'home';
-    state.viewingFromHistory = false;
-    render();
-  }
-
-  function makeRoom(){
-    return {
-      roomName: '',
-      budget: '',
-      fixedElements: '',
-      stylePref: state.defaultStylePref || '',
-      photos: [],
-      result: null,
-      rawFallback: null,
-      status: 'draft'
-    };
-  }
-
-  function newProject(){
-    state.project = { id: null, projectName: '', rooms: [] };
-    state.activeRoomIndex = null;
-    state.viewingFromHistory = false;
-    state.currentScreen = 'project';
-    render();
-  }
-
-  // ---------- HOME / HISTORY ----------
-  function renderHome(){
-    var wrap = el('div', { class: 'row-gap' }, []);
-    var startBtn = el('button', { class: 'btn-primary', onclick: newProject }, ['New Project']);
-    wrap.appendChild(startBtn);
-
-    if(state.history.length === 0){
-      wrap.appendChild(el('div', { class: 'empty-state' }, [
-        el('h2', {}, ['No analyses yet']),
-        el('div', {}, ['Start a project above. A project can hold one room or several, each with its own photos and read.'])
-      ]));
-    } else {
-      wrap.appendChild(el('h2', { class: 'section-title' }, ['Past Projects']));
-      var list = el('div', { class: 'row-gap' }, []);
-      var sorted = state.history.slice().sort(function(a,b){ return Number(b.id) - Number(a.id); });
-      sorted.forEach(function(entry){
-        var roomCount = (entry.rooms || []).length;
-        var item = el('div', { class: 'history-item', onclick: function(){
-          openHistoryProject(entry);
-        }}, [
-          entry.thumbnail ? el('img', { src: entry.thumbnail, alt: '' }, []) : el('div', { class: 'room-thumb-empty' }, []),
-          el('div', { class: 'meta' }, [
-            el('div', { class: 'name' }, [entry.projectName || 'Untitled Project']),
-            el('div', { class: 'date' }, [entry.date + ' \u00b7 ' + roomCount + (roomCount === 1 ? ' room' : ' rooms')])
-          ])
-        ]);
-        list.appendChild(item);
-      });
-      wrap.appendChild(list);
-    }
-    return wrap;
-  }
-
-  function openHistoryProject(entry){
-    state.project = {
-      id: entry.id,
-      projectName: entry.projectName,
-      rooms: (entry.rooms || []).map(function(r){
-        return { roomName: r.roomName, budget: '', fixedElements: '', stylePref: '', photos: [], result: r.data, rawFallback: null, status: 'done' };
-      })
-    };
-    state.viewingFromHistory = true;
-    state.activeResultRoomIndex = 0;
-    state.currentScreen = 'results';
-    render();
-  }
-
-  // ---------- PROJECT OVERVIEW ----------
-  function renderProject(){
-    var wrap = el('div', { class: 'row-gap' }, []);
-    var card = el('div', { class: 'card' }, []);
-    card.appendChild(el('h2', { class: 'section-title' }, ['Project']));
-    var nameField = el('div', { class: 'field' }, [
-      el('label', {}, ['Project Name']),
-      el('input', { type: 'text', id: 'proj-name', value: state.project.projectName, placeholder: 'e.g. Downtown Apartment', onchange: function(e){
-        state.project.projectName = e.target.value.trim();
-      }}, [])
-    ]);
-    card.appendChild(nameField);
-    wrap.appendChild(card);
-
-    var rooms = state.project.rooms;
-    if(rooms.length === 0){
-      wrap.appendChild(el('div', { class: 'empty-state' }, [
-        el('h2', {}, ['No rooms yet']),
-        el('div', {}, ['Add a room to get started. You can add up to ' + MAX_ROOMS + ' rooms to one project.'])
-      ]));
-    } else {
-      var list = el('div', { class: 'row-gap' }, []);
-      rooms.forEach(function(room, idx){
-        var thumb = room.photos.length ? el('img', { src: room.photos[0].thumbBase64, alt: '' }, []) : el('div', { class: 'room-thumb-empty' }, []);
-        var badge = el('span', { class: 'status-badge status-' + room.status }, [statusLabel(room.status)]);
-        var card2 = el('div', { class: 'room-card', onclick: function(){ openRoomFromProject(idx); } }, [
-          thumb,
-          el('div', { class: 'meta' }, [
-            el('div', { class: 'name' }, [room.roomName || ('Room ' + (idx + 1))]),
-            badge
-          ])
-        ]);
-        if(room.status !== 'analyzing'){
-          var removeBtn = el('button', { class: 'room-remove', onclick: function(e){
-            e.stopPropagation();
-            rooms.splice(idx, 1);
-            render();
-          }}, ['\u2715']);
-          card2.appendChild(removeBtn);
-        }
-        list.appendChild(card2);
-      });
-      wrap.appendChild(list);
-    }
-
-    if(rooms.length < MAX_ROOMS){
-      wrap.appendChild(el('button', { class: 'btn-secondary', onclick: function(){
-        var nameInput = document.getElementById('proj-name');
-        if(nameInput){ state.project.projectName = nameInput.value.trim(); }
-        rooms.push(makeRoom());
-        state.activeRoomIndex = rooms.length - 1;
-        state.currentScreen = 'context';
-        render();
-      }}, ['Add Room']));
-    }
-
-    var readyCount = rooms.filter(function(r){ return r.photos.length > 0 && (r.status === 'ready' || r.status === 'error'); }).length;
-    var analyzeBtn = el('button', {
-      class: 'btn-primary',
-      disabled: readyCount > 0 ? null : 'disabled',
-      onclick: function(){
-        if(!state.apiKey){
-          state.errorMsg = 'Add your Claude API key in Settings before analyzing.';
-          render();
-          return;
-        }
-        state.errorMsg = '';
-        analyzeAllRooms();
-      }
-    }, ['Analyze All Rooms' + (readyCount > 0 ? ' (' + readyCount + ')' : '')]);
-    if(readyCount === 0){ analyzeBtn.disabled = true; }
-    wrap.appendChild(analyzeBtn);
-
-    if(state.errorMsg){
-      wrap.appendChild(el('div', { class: 'confirm-note' }, [state.errorMsg]));
-    }
-    wrap.appendChild(backLink(goHome));
-    return wrap;
-  }
-
-  function statusLabel(status){
-    if(status === 'draft'){ return 'Needs Photos'; }
-    if(status === 'ready'){ return 'Ready'; }
-    if(status === 'analyzing'){ return 'Analyzing'; }
-    if(status === 'done'){ return 'Done'; }
-    if(status === 'error'){ return 'Error'; }
-    return status;
-  }
-
-  function openRoomFromProject(idx){
-    var room = state.project.rooms[idx];
-    if(room.status === 'done' || room.status === 'error'){
-      state.activeResultRoomIndex = idx;
-      state.currentScreen = 'results';
-      render();
-      return;
-    }
-    state.activeRoomIndex = idx;
-    state.currentScreen = 'context';
-    render();
-  }
-
-  // ---------- CONTEXT FORM ----------
-  function activeRoom(){
-    if(state.activeRoomIndex === null || !state.project) return null;
-    return state.project.rooms[state.activeRoomIndex];
-  }
-
-  function renderContext(){
-    var room = activeRoom();
-    var wrap = el('div', { class: 'card' }, []);
-    wrap.appendChild(el('h2', { class: 'section-title' }, ['Tell us about this room']));
-
-    var nameField = el('div', { class: 'field' }, [
-      el('label', {}, ['Room Name']),
-      el('input', { type: 'text', id: 'ctx-room', value: room.roomName, placeholder: 'e.g. Living Room' }, [])
-    ]);
-    var budgetField = el('div', { class: 'field' }, [
-      el('label', {}, ['Budget']),
-      el('input', { type: 'text', id: 'ctx-budget', value: room.budget, placeholder: 'e.g. $500 or flexible' }, [])
-    ]);
-    var fixedField = el('div', { class: 'field' }, [
-      el('label', {}, ['Fixed Elements to Keep']),
-      el('textarea', { id: 'ctx-fixed', placeholder: 'e.g. the sofa, the rug, the built-in shelving' }, [room.fixedElements])
-    ]);
-    var styleField = el('div', { class: 'field' }, [
-      el('label', {}, ['Style Preference']),
-      el('input', { type: 'text', id: 'ctx-style', value: room.stylePref, placeholder: 'e.g. warm minimalist, coastal, mid-century modern' }, []),
-      el('div', { class: 'hint' }, ['Optional. Steers the critique and style directions toward this aesthetic. Set a default in Settings to skip retyping it each time.'])
-    ]);
-
-    wrap.appendChild(nameField);
-    wrap.appendChild(budgetField);
-    wrap.appendChild(fixedField);
-    wrap.appendChild(styleField);
-
-    var continueBtn = el('button', { class: 'btn-primary', onclick: function(){
-      room.roomName = document.getElementById('ctx-room').value.trim();
-      room.budget = document.getElementById('ctx-budget').value.trim();
-      room.fixedElements = document.getElementById('ctx-fixed').value.trim();
-      room.stylePref = document.getElementById('ctx-style').value.trim();
-      state.currentScreen = 'photo';
-      render();
-    }}, ['Continue to Photos']);
-
-    var outer = el('div', { class: 'row-gap' }, [wrap, continueBtn, backLink(function(){ state.currentScreen = 'project'; render(); })]);
-    return outer;
-  }
-
-  // ---------- PHOTO CAPTURE ----------
-  function renderPhoto(){
-    var room = activeRoom();
-    var wrap = el('div', { class: 'row-gap' }, []);
-    var card = el('div', { class: 'card' }, []);
-    card.appendChild(el('h2', { class: 'section-title' }, ['Photograph ' + (room.roomName || 'this room')]));
-    card.appendChild(el('div', { class: 'hint' }, ['Add a few shots of the space: the full room, each wall, the floor, the ceiling, and any furnishings worth a closer look. Up to ' + MAX_PHOTOS + ' photos.']));
-
-    if(room.photos.length){
-      var grid = el('div', { class: 'photo-grid' }, []);
-      room.photos.forEach(function(p, idx){
-        var thumbWrap = el('div', { class: 'photo-thumb-wrap' }, [
-          el('img', { class: 'photo-thumb', src: p.workingBase64, alt: 'Room photo ' + (idx + 1) }, []),
-          el('button', { class: 'photo-remove', onclick: function(){
-            room.photos.splice(idx, 1);
-            render();
-          }}, ['\u2715'])
-        ]);
-        grid.appendChild(thumbWrap);
-      });
-      card.appendChild(grid);
-    }
-
-    var fileInput = el('input', { type: 'file', accept: 'image/*', capture: 'environment', multiple: 'multiple', id: 'photo-input', style: 'display:none;' }, []);
-    fileInput.addEventListener('change', function(e){
-      var files = e.target.files;
-      if(files && files.length){ handlePhotoFiles(room, files); }
-      fileInput.value = '';
-    });
-
-    var remaining = MAX_PHOTOS - room.photos.length;
-    var dropLabel;
-    if(remaining <= 0){ dropLabel = 'Photo limit reached'; }
-    else if(room.photos.length === 0){ dropLabel = 'Tap to take or choose photos'; }
-    else { dropLabel = 'Add another photo'; }
-
-    var dropZone = el('div', { class: 'file-drop', onclick: function(){
-      if(remaining > 0){ fileInput.click(); }
-    }}, [dropLabel]);
-
-    card.appendChild(dropZone);
-    card.appendChild(fileInput);
-    wrap.appendChild(card);
-
-    var hasPhotos = room.photos.length > 0;
-    var doneBtn = el('button', {
-      class: 'btn-primary',
-      disabled: hasPhotos ? null : 'disabled',
-      onclick: function(){
-        room.status = room.photos.length > 0 ? 'ready' : 'draft';
-        state.activeRoomIndex = null;
-        state.currentScreen = 'project';
-        render();
-      }
-    }, ['Save Room to Project']);
-    if(!hasPhotos){ doneBtn.disabled = true; }
-
-    wrap.appendChild(doneBtn);
-    wrap.appendChild(backLink(function(){ state.currentScreen = 'context'; render(); }));
-    return wrap;
-  }
-
-  function handlePhotoFiles(room, fileList){
-    var files = Array.prototype.slice.call(fileList);
-    var slotsLeft = MAX_PHOTOS - room.photos.length;
-    if(slotsLeft <= 0){ return; }
-    files = files.slice(0, slotsLeft);
-    files.forEach(function(file){
-      var reader = new FileReader();
-      reader.onload = function(e){
-        var img = new Image();
-        img.onload = function(){
-          room.photos.push({
-            workingBase64: compressToDataUrl(img, 1024, 0.82),
-            thumbBase64: compressToDataUrl(img, 150, 0.7)
-          });
-          render();
-        };
-        img.src = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    });
-  }
-
-  function compressToDataUrl(img, maxDim, quality){
-    var w = img.width, h = img.height;
-    if(w >= h){
-      if(w > maxDim){ h = Math.round(h * (maxDim / w)); w = maxDim; }
-    } else {
-      if(h > maxDim){ w = Math.round(w * (maxDim / h)); h = maxDim; }
-    }
-    var canvas = document.createElement('canvas');
-    canvas.width = w;
-    canvas.height = h;
-    var ctx = canvas.getContext('2d');
-    ctx.drawImage(img, 0, 0, w, h);
-    return canvas.toDataURL('image/jpeg', quality);
-  }
-
-  // ---------- ANALYZING ----------
-  function renderAnalyzing(){
-    return el('div', { class: 'analyzing-wrap' }, [
-      el('div', { class: 'spinner' }, []),
-      el('p', {}, [state.analyzingLabel])
-    ]);
-  }
-
-  function stripCodeFences(text){
-    var t = text.trim();
-    t = t.replace(/^```(?:json)?\s*/i, '');
-    t = t.replace(/```\s*$/,'');
-    return t.trim();
-  }
-
-  function buildSystemPrompt(){
-    return 'You are an interior design assistant. You will be shown one or more photos of the same room, ' +
-      'taken from different angles so together they may cover the walls, floor, ceiling, and furnishings. ' +
-      'Treat all photos as views of a single space and synthesize one unified read across all of them. ' +
-      'Respond with ONLY valid JSON and nothing else, no markdown code fences, no commentary before or after. ' +
-      'Match exactly this schema: {"critique": "string", "observations": ["string", "..."], ' +
-      '"punch_list": [{"item": "string", "hex": "string or null"}], ' +
-      '"style_directions": [{"name": "string", "description": "string", "search_query": "string"}]}. ' +
-      'Provide one paragraph for critique, three to five observations, four to eight punch list items ' +
-      '(include a hex color code only when the item is specifically a paint or accent color suggestion, otherwise null), ' +
-      'and two to three style directions. The search_query field should be a short phrase suitable for searching ' +
-      'stock interior photography of that style, such as "scandinavian living room" or "warm minimalist bedroom".';
-  }
-
-  function buildContextLines(room){
-    var photoNote = room.photos.length > 1
-      ? ('These ' + room.photos.length + ' photos are different views of the same room.')
-      : 'This photo shows the room.';
-    return [
-      'Room: ' + (room.roomName || 'Unspecified'),
-      'Budget: ' + (room.budget || 'Unspecified'),
-      'Fixed elements to keep: ' + (room.fixedElements || 'None specified'),
-      'Style preference: ' + (room.stylePref || 'None specified, use your best judgment for the space'),
-      '',
-      photoNote,
-      'Analyze the attached room photo(s) as one space and provide a critique, observations, an actionable punch list, and style direction options. If a style preference is given, let it steer the critique and make sure at least one style direction reflects it, but still offer variety across the style directions.'
-    ].join('\n');
-  }
-
-  function callClaudeForRoom(room){
-    var content = room.photos.map(function(p){
-      return { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: p.workingBase64.split(',')[1] } };
-    });
-    content.push({ type: 'text', text: buildContextLines(room) });
-
-    return fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': state.apiKey,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
-      },
-      body: JSON.stringify({
-        model: CLAUDE_MODEL,
-        max_tokens: 2000,
-        system: buildSystemPrompt(),
-        messages: [{ role: 'user', content: content }]
-      })
-    }).then(function(resp){
-      return resp.json().then(function(data){
-        if(!resp.ok){
-          var msg = (data && data.error && data.error.message) ? data.error.message : 'Request failed';
-          throw new Error(msg);
-        }
-        return data;
-      });
-    }).then(function(data){
-      var textBlock = (data.content || []).filter(function(b){ return b.type === 'text'; }).map(function(b){ return b.text; }).join('\n');
-      var cleaned = stripCodeFences(textBlock);
-      try{
-        var parsed = JSON.parse(cleaned);
-        parsed.punch_list = (parsed.punch_list || []).map(function(p){
-          return { item: p.item || '', hex: p.hex || null, done: false };
-        });
-        parsed.observations = parsed.observations || [];
-        parsed.style_directions = parsed.style_directions || [];
-        return { result: parsed, rawFallback: null };
-      }catch(e){
-        return { result: null, rawFallback: textBlock };
-      }
-    });
-  }
-
-  function analyzeAllRooms(){
-    var rooms = state.project.rooms;
-    var toAnalyze = rooms.filter(function(r){ return r.photos.length > 0 && (r.status === 'ready' || r.status === 'error'); });
-    var total = toAnalyze.length;
-    if(total === 0){ return; }
-
-    state.currentScreen = 'analyzing';
-    state.analyzingLabel = 'Reading the rooms.';
-    render();
-
-    var doneCount = 0;
-
-    function runNext(i){
-      if(i >= rooms.length){
-        var firstIdx = rooms.findIndex(function(r){ return r.status === 'done' || r.status === 'error'; });
-        state.activeResultRoomIndex = firstIdx >= 0 ? firstIdx : 0;
-        state.currentScreen = 'results';
-        render();
-        return;
-      }
-      var room = rooms[i];
-      if(room.photos.length === 0 || (room.status !== 'ready' && room.status !== 'error')){
-        runNext(i + 1);
-        return;
-      }
-      room.status = 'analyzing';
-      doneCount++;
-      state.analyzingLabel = 'Analyzing room ' + doneCount + ' of ' + total + ': ' + (room.roomName || 'Room ' + (i + 1));
-      render();
-
-      callClaudeForRoom(room).then(function(outcome){
-        if(outcome.result){
-          room.result = outcome.result;
-          room.rawFallback = null;
-          room.status = 'done';
-          fetchStyleImagesForRoom(room);
-        } else {
-          room.result = null;
-          room.rawFallback = outcome.rawFallback;
-          room.status = 'error';
-        }
-        runNext(i + 1);
-      }).catch(function(err){
-        room.result = null;
-        room.rawFallback = 'Request failed: ' + (err && err.message ? err.message : String(err));
-        room.status = 'error';
-        runNext(i + 1);
-      });
-    }
-
-    runNext(0);
-  }
-
-  function retryRoom(idx){
-    var room = state.project.rooms[idx];
-    if(!room || room.photos.length === 0) { return; }
-    room.status = 'analyzing';
-    state.currentScreen = 'analyzing';
-    state.analyzingLabel = 'Re-analyzing ' + (room.roomName || 'this room') + '.';
-    render();
-    callClaudeForRoom(room).then(function(outcome){
-      if(outcome.result){
-        room.result = outcome.result;
-        room.rawFallback = null;
-        room.status = 'done';
-        fetchStyleImagesForRoom(room);
-      } else {
-        room.result = null;
-        room.rawFallback = outcome.rawFallback;
-        room.status = 'error';
-      }
-      state.activeResultRoomIndex = idx;
-      state.currentScreen = 'results';
-      render();
-    }).catch(function(err){
-      room.result = null;
-      room.rawFallback = 'Request failed: ' + (err && err.message ? err.message : String(err));
-      room.status = 'error';
-      state.activeResultRoomIndex = idx;
-      state.currentScreen = 'results';
-      render();
-    });
-  }
-
-  function fetchStyleImagesForRoom(room){
-    var directions = room.result ? room.result.style_directions : [];
-    (directions || []).forEach(function(dir){
-      var q = encodeURIComponent(dir.search_query || dir.name || 'interior design');
-      fetch('https://api.openverse.org/v1/images/?q=' + q + '&page_size=3')
-        .then(function(r){ return r.json(); })
-        .then(function(json){
-          dir.images = (json.results || []).slice(0, 3).map(function(r){ return r.thumbnail || r.url; }).filter(Boolean);
-          if(state.currentScreen === 'results'){ render(); }
-        })
-        .catch(function(){
-          dir.images = [];
-        });
-    });
-  }
-
-  // ---------- RESULTS ----------
-  function renderResults(){
-    var wrap = el('div', { class: 'row-gap' }, []);
-    var rooms = state.project.rooms;
-    var tabRooms = [];
-    rooms.forEach(function(r, idx){
-      if(r.status === 'done' || r.status === 'error'){ tabRooms.push(idx); }
-    });
-
-    if(tabRooms.length === 0){
-      wrap.appendChild(el('div', { class: 'empty-state' }, [el('h2', {}, ['Nothing analyzed yet'])]));
-      wrap.appendChild(backLink(function(){ state.currentScreen = 'project'; render(); }));
-      return wrap;
-    }
-
-    if(tabRooms.indexOf(state.activeResultRoomIndex) === -1){
-      state.activeResultRoomIndex = tabRooms[0];
-    }
-
-    if(tabRooms.length > 1){
-      var tabBar = el('div', { class: 'tab-bar' }, tabRooms.map(function(idx){
-        var r = rooms[idx];
-        return el('button', { class: 'tab-btn' + (idx === state.activeResultRoomIndex ? ' active' : ''), onclick: function(){
-          state.activeResultRoomIndex = idx;
-          render();
-        }}, [r.roomName || ('Room ' + (idx + 1))]);
-      }));
-      wrap.appendChild(tabBar);
-    }
-
-    var room = rooms[state.activeResultRoomIndex];
-
-    if(room.status === 'error'){
-      wrap.appendChild(el('div', { class: 'card' }, [
-        el('h2', { class: 'section-title' }, ['Could not parse a clean result']),
-        el('div', { class: 'raw-fallback' }, [room.rawFallback || ''])
-      ]));
-      if(!state.viewingFromHistory){
-        var idxCopy = state.activeResultRoomIndex;
-        wrap.appendChild(el('button', { class: 'btn-primary', onclick: function(){ retryRoom(idxCopy); } }, ['Retry This Room']));
-      }
-      wrap.appendChild(backLink(function(){ state.currentScreen = 'project'; render(); }));
-      return wrap;
-    }
-
-    var result = room.result;
-    if(!result){
-      wrap.appendChild(el('div', { class: 'empty-state' }, [el('h2', {}, ['Nothing to show']) ]));
-      wrap.appendChild(backLink(goHome));
-      return wrap;
-    }
-
-    wrap.appendChild(el('div', { class: 'card' }, [
-      el('h2', { class: 'section-title' }, ['Critique']),
-      el('div', {}, [result.critique || ''])
-    ]));
-
-    if(result.observations && result.observations.length){
-      var obsList = el('ul', { class: 'observation-list' }, result.observations.map(function(o){
-        return el('li', {}, [o]);
-      }));
-      wrap.appendChild(el('div', { class: 'card' }, [
-        el('h2', { class: 'section-title' }, ['Observations']),
-        obsList
-      ]));
-    }
-
-    if(result.punch_list && result.punch_list.length){
-      var punchCard = el('div', { class: 'card' }, []);
-      punchCard.appendChild(el('h2', { class: 'section-title' }, ['Punch List']));
-      result.punch_list.forEach(function(item){
-        var row = el('div', { class: 'punch-item' + (item.done ? ' done' : '') }, [
-          el('div', { class: 'punch-check' + (item.done ? ' checked' : '') }, [item.done ? '\u2713' : '']),
-          el('div', { class: 'punch-text' }, [item.item]),
-          item.hex ? el('div', { class: 'swatch', style: 'background:' + item.hex + ';' }, []) : null
-        ]);
-        row.addEventListener('click', function(){
-          item.done = !item.done;
-          render();
-        });
-        punchCard.appendChild(row);
-      });
-      wrap.appendChild(punchCard);
-    }
-
-    if(result.style_directions && result.style_directions.length){
-      var styleCard = el('div', { class: 'card' }, []);
-      styleCard.appendChild(el('h2', { class: 'section-title' }, ['Style Directions']));
-      result.style_directions.forEach(function(dir){
-        var inner = el('div', { class: 'style-card' }, [
-          el('h3', {}, [dir.name || '']),
-          el('p', {}, [dir.description || ''])
-        ]);
-        if(dir.images && dir.images.length){
-          var imgRow = el('div', { class: 'style-images' }, dir.images.map(function(src){
-            return el('img', { src: src, alt: dir.name || '' }, []);
-          }));
-          inner.appendChild(imgRow);
-        }
-        styleCard.appendChild(inner);
-      });
-      wrap.appendChild(styleCard);
-    }
-
-    if(!state.viewingFromHistory){
-      var doneRooms = rooms.filter(function(r){ return r.status === 'done'; }).length;
-      var stillPending = rooms.some(function(r){ return r.photos.length > 0 && (r.status === 'ready' || r.status === 'analyzing'); });
-      if(doneRooms > 0 && !stillPending){
-        wrap.appendChild(el('button', { class: 'btn-primary', onclick: saveProject }, ['Save Project to History']));
-      } else if(doneRooms > 0){
-        wrap.appendChild(el('div', { class: 'hint' }, ['Finish analyzing the remaining rooms, then save the whole project from here.']));
-      }
-    }
-
-    wrap.appendChild(backLink(function(){
-      if(state.viewingFromHistory){ goHome(); }
-      else { state.currentScreen = 'project'; render(); }
-    }));
-    return wrap;
-  }
-
-  function saveProject(){
-    var rooms = state.project.rooms.filter(function(r){ return r.status === 'done' && r.result; });
-    if(rooms.length === 0){ return; }
-    var thumbnail = null;
-    for(var i = 0; i < state.project.rooms.length; i++){
-      if(state.project.rooms[i].photos.length){
-        thumbnail = state.project.rooms[i].photos[0].thumbBase64;
-        break;
-      }
-    }
-    var storedRooms = rooms.map(function(r){
-      var strippedResult = JSON.parse(JSON.stringify(r.result));
-      (strippedResult.style_directions || []).forEach(function(d){ delete d.images; });
-      return { roomName: r.roomName || 'Room', data: strippedResult };
-    });
-    var entry = {
-      id: Date.now().toString(),
-      date: new Date().toISOString().slice(0, 10),
-      projectName: state.project.projectName || 'Untitled Project',
-      thumbnail: thumbnail,
-      rooms: storedRooms
-    };
-    state.history.push(entry);
-    persistHistory();
-    goHome();
-  }
-
-  // ---------- SETTINGS MODAL ----------
-  function renderSettingsModal(){
-    var backdrop = el('div', { class: 'modal-backdrop', onclick: function(e){
-      if(e.target === backdrop){ state.settingsOpen = false; render(); }
-    }}, []);
-
-    var sheet = el('div', { class: 'modal-sheet' }, []);
-    sheet.appendChild(el('div', { class: 'modal-head' }, [
-      el('h2', {}, ['Settings']),
-      el('button', { class: 'icon-btn', onclick: function(){ state.settingsOpen = false; render(); } }, ['\u2715'])
-    ]));
-
-    sheet.appendChild(el('div', { class: 'field' }, [
-      el('label', {}, ['Session Name']),
-      el('input', { type: 'text', id: 'set-session', value: state.sessionName, placeholder: 'Optional label' }, [])
-    ]));
-
-    sheet.appendChild(el('div', { class: 'field' }, [
-      el('label', {}, ['Claude API Key']),
-      el('input', { type: 'text', id: 'set-apikey', value: state.apiKey, placeholder: 'sk-ant-...' }, []),
-      el('div', { class: 'hint' }, ['Stored only in this browser. Never sent anywhere except Anthropic\u2019s API.'])
-    ]));
-
-    sheet.appendChild(el('div', { class: 'field' }, [
-      el('label', {}, ['Default Style Preference']),
-      el('input', { type: 'text', id: 'set-style', value: state.defaultStylePref, placeholder: 'e.g. warm minimalist' }, []),
-      el('div', { class: 'hint' }, ['Pre-fills the Style Preference field on every new room. You can still change it per room.'])
-    ]));
-
-    sheet.appendChild(el('button', { class: 'btn-primary', onclick: function(){
-      state.sessionName = document.getElementById('set-session').value.trim();
-      state.apiKey = document.getElementById('set-apikey').value.trim();
-      state.defaultStylePref = document.getElementById('set-style').value.trim();
-      saveSettings();
-      state.settingsOpen = false;
-      render();
-    }}, ['Save Settings']));
-
-    var clearWrap = el('div', {}, []);
-    if(state.clearConfirm){
-      clearWrap.appendChild(el('button', { class: 'btn-danger', onclick: function(){
-        state.history = [];
-        persistHistory();
-        state.clearConfirm = false;
-        render();
-      }}, ['Tap again to confirm clear']));
-      clearWrap.appendChild(el('div', { class: 'confirm-note' }, ['This deletes all saved history permanently.']));
-    } else {
-      clearWrap.appendChild(el('button', { class: 'btn-danger', onclick: function(){
-        state.clearConfirm = true;
-        render();
-      }}, ['Clear History']));
-    }
-    sheet.appendChild(el('div', { class: 'field' }, [clearWrap]));
-
-    backdrop.appendChild(sheet);
-    return backdrop;
-  }
-
-  // ---------- ROOT RENDER ----------
-  function render(){
-    var root = document.getElementById('app-root');
-    clearNode(root);
-
-    var headerTitle = document.getElementById('header-title');
-    headerTitle.textContent = state.sessionName ? state.sessionName : 'Room Read';
-
-    var view;
-    if(state.currentScreen === 'home'){ view = renderHome(); }
-    else if(state.currentScreen === 'project'){ view = renderProject(); }
-    else if(state.currentScreen === 'context'){ view = renderContext(); }
-    else if(state.currentScreen === 'photo'){ view = renderPhoto(); }
-    else if(state.currentScreen === 'analyzing'){ view = renderAnalyzing(); }
-    else if(state.currentScreen === 'results'){ view = renderResults(); }
-    else { view = renderHome(); }
-
-    root.appendChild(view);
-
-    var modalRoot = document.getElementById('modal-root');
-    clearNode(modalRoot);
-    if(state.settingsOpen){
-      modalRoot.appendChild(renderSettingsModal());
-    }
-
-    var footer = document.getElementById('main-footer');
-    if(!footer){
-      footer = el('div', { id: 'main-footer', class: 'footer-back' }, [
-        'Part of ',
-        el('a', { href: 'https://augustineiacopelli.github.io/appaday/' }, ['AppADay']),
-        ' \u2014 one app, every day.'
-      ]);
-      document.body.appendChild(footer);
-    }
-  }
-
-  document.getElementById('settings-btn').addEventListener('click', function(){
-    state.clearConfirm = false;
-    state.settingsOpen = true;
-    render();
+  return out.slice(0, 6);
+}
+function renderSuggestions(list, raw) {
+  const box = document.getElementById("search-suggest");
+  box.innerHTML = "";
+  if (!list.length) { box.classList.remove("show"); activeIndex = -1; return; }
+  const typedLen = raw.trim().length;
+  list.forEach((disp, i) => {
+    const row = document.createElement("button");
+    row.type = "button";
+    row.className = "suggest-row" + (i === 0 ? " active" : "");
+    row.setAttribute("role", "option");
+    row.dataset.value = disp;
+    const h = document.createElement("span"); h.className = "sg-head"; h.textContent = disp.slice(0, typedLen);
+    const t = document.createElement("span"); t.className = "sg-tail"; t.textContent = disp.slice(typedLen);
+    row.appendChild(h); row.appendChild(t);
+    row.addEventListener("pointerdown", (e) => { e.preventDefault(); acceptSuggestion(disp); });
+    box.appendChild(row);
   });
+  box.classList.add("show");
+  activeIndex = 0;
+}
+function updateSuggest(raw) { renderSuggestions(buildSuggestions(raw), raw); }
+function hideSuggest() {
+  const box = document.getElementById("search-suggest");
+  if (!box) return;
+  box.classList.remove("show"); box.innerHTML = ""; activeIndex = -1;
+}
+function setActiveRow(rows) {
+  rows.forEach((r, i) => r.classList.toggle("active", i === activeIndex));
+  const el = rows[activeIndex];
+  if (el && el.scrollIntoView) el.scrollIntoView({ block: "nearest" });
+}
+function acceptSuggestion(disp) {
+  searchInput.value = disp;
+  searchQuery = disp.trim();
+  searchClear.classList.add("show");
+  hideSuggest();
+  clearActiveButtons();
+  runSearch(searchQuery);
+  searchInput.focus();
+}
 
-  loadSettings();
-  loadHistory();
-  render();
+if (searchInput) {
+  searchInput.addEventListener("input", onSearchInput);
+  searchInput.addEventListener("keydown", (e) => {
+    const box = document.getElementById("search-suggest");
+    const rows = [].slice.call(box.querySelectorAll(".suggest-row"));
+    if (!box.classList.contains("show") || !rows.length) return;
+    if (e.key === "ArrowDown") { e.preventDefault(); activeIndex = (activeIndex + 1) % rows.length; setActiveRow(rows); }
+    else if (e.key === "ArrowUp") { e.preventDefault(); activeIndex = (activeIndex - 1 + rows.length) % rows.length; setActiveRow(rows); }
+    else if (e.key === "Enter" || e.key === "Tab") { if (activeIndex >= 0) { e.preventDefault(); acceptSuggestion(rows[activeIndex].dataset.value); } }
+    else if (e.key === "Escape") { hideSuggest(); }
+  });
+  searchInput.addEventListener("blur", () => { setTimeout(hideSuggest, 120); });
+  searchClear.addEventListener("click", () => {
+    clearSearchInput();
+    restoreActiveButton();
+    buildCards(currentFilter);
+    searchInput.focus();
+  });
+}
+
+// ============================================================
+//  FILTER BUTTONS
+// ============================================================
+document.querySelectorAll(".filter-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    clearSearchInput();
+    document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    buildCards(btn.dataset.filter);
+  });
+});
+
+// Initialize the "New since last visit" badge before the first render.
+initNew();
+
+// On load, open the Starred view if the visitor has starred anything; otherwise All.
+(function initDefault(){
+  const hasStarred = APPS.some(a => !a.coming_soon && starred.has(a.num));
+  const initial = hasStarred ? "starred" : "all";
+  document.querySelectorAll(".filter-btn").forEach(b => b.classList.toggle("active", b.dataset.filter === initial));
+  buildCards(initial);
 })();
 </script>
 </body>
