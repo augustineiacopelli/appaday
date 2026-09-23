@@ -1,43 +1,29 @@
-# AppADay
+# 139. Static Sleep Mixer
 
-**One complete, functional, mobile-friendly, visually polished web app, designed and shipped every single day.**
+**Live app:** https://augustineiacopelli.github.io/appaday-139-static-sleep-mixer/
 
-**Live portfolio:** https://augustineiacopelli.github.io/appaday/
+**Part of AppADay:** https://augustineiacopelli.github.io/appaday/
 
-AppADay is a daily discipline and public portfolio project by Augustine Iacopelli, inspired by Jonathan Mann's Song A Day. Every day one standalone app is designed, built, and published to GitHub Pages before midnight. Scope is always cut to fit the time; quality never is. Each app is single-purpose, usable on a 375px phone, intentionally designed, and live at its own URL the day it is built.
+Static Sleep Mixer blends white, pink, and brown noise into one continuous sleep sound, with a sleep timer that fades the mix to silence.
 
-Every app is a single self-contained file of vanilla HTML, CSS, and JavaScript with no build step and no dependencies beyond Google Fonts. The AI-powered apps call the Anthropic API directly from the browser with the user's own key. Each carries a link back to this portfolio.
+## What it does
 
-## The count
+Tap play and pink noise starts within a moment. Each of the three layers has its own toggle and volume slider, and a master volume sits beneath them. Layers fade in and out rather than switching abruptly, and every volume change is smoothed so there are no clicks or zipper noise. Choose a sleep timer of 15, 30, 45, 60, or 90 minutes and the sound holds steady, then eases down to silence over the final stretch before stopping. The screen uses a dim navy and amber palette so it does not light up a dark bedroom. Your mix, volumes, and timer choice are saved in the browser and restored on your next visit, without starting any sound until you tap play.
 
-**All 138 shipped apps, numbered 001 through 138 with no gaps in the sequence.** Building since May 2026.
+## How it works
 
-Of the 138, forty are AI-powered. The nine categories are spread as follows.
+The noise is generated in the browser with the Web Audio API. Nothing is downloaded. When you first tap play, the app creates an audio context and builds three eight second noise buffers at the device's sample rate. White noise is plain random samples. Pink noise uses Paul Kellet's refined filter. Brown noise uses a leaky integrator so the random walk never drifts. Each buffer has its end crossfaded into its beginning with an equal power curve, which removes the thump that would otherwise mark the loop point, most noticeably in brown noise.
 
-| Category | Code | Shipped |
-| --- | --- | --- |
-| Creative | C | 13 |
-| Data | D | 14 |
-| Educational | E | 14 |
-| Games | G | 19 |
-| Health | H | 15 |
-| Interactive | I | 11 |
-| Productivity | P | 20 |
-| Spirituality | S | 14 |
-| Utility | U | 18 |
+All three sources loop continuously for the life of the session, and layers are switched purely by gain, which avoids start latency. A limiter on the output keeps the combined layers from clipping. The sleep timer fade is scheduled on the audio thread itself, so it completes on time even when the phone is locked and the browser slows down page scripts.
 
-## How it is organized
+## Notes
 
-The repository root holds this README and the portal `index.html`, which lists every app by number with its name, category, and live link. Each app lives in its own repository, `appaday-[NNN]-[name]`, published to GitHub Pages at `augustineiacopelli.github.io/appaday-[NNN]-[name]/`. The portal is the front door to the whole archive.
+On iPhone and iPad, the ring/silent switch mutes web audio. The app shows a reminder to flip it to ring on those devices.
 
-## Finding your way around
+## Built with
 
-The portal opens with every app grouped by category, and a filter bar narrows the view to any single category. A search box in the same bar finds any app by keyword, matching its number, name, description, and category, with type-ahead suggestions that complete what you type and light stemming so a word like brewing still finds brew. Clearing it returns you to whatever filter was active. A few standout builds are flagged as milestones and carry a small gold badge on the card. Every live app also has a star in its corner: tap it to save the app to a personal Starred view, which is kept in your browser so it persists between visits. Once you have starred anything, the portal opens to that Starred view on your next visit; otherwise it opens to the full archive. A New filter collects anything published since your last visit and shows a small count on the tab, which clears once you open it.
-
-## The rules
-
-One app ships every day, with no skip days and no carryover. An app counts only when it is functional, single-purpose, mobile-friendly, visually polished, and publicly live before midnight. If a build runs long, features are removed rather than the day extended. If something ships broken, it is fixed and republished the same day.
+A single `index.html` file of vanilla HTML, CSS, and JavaScript, using the Web Audio API and the Outfit typeface from Google Fonts. No frameworks, no build step, and no API key required.
 
 ---
 
-*Ship something every day. It compounds.*
+Built on 2026-09-23 as app 139 of AppADay by Augustine Iacopelli.
