@@ -19,9 +19,9 @@ Of the 142, forty-two are AI-powered. The nine categories are spread as follows.
 | Creative | C | 13 |
 | Data | D | 14 |
 | Educational | E | 14 |
-| Games | G | 20 |
+| Games | G | 19 |
 | Health | H | 15 |
-| Interactive | I | 11 |
+| Interactive | I | 12 |
 | Productivity | P | 23 |
 | Spirituality | S | 14 |
 | Utility | U | 18 |
