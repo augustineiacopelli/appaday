@@ -40,6 +40,13 @@
        view WITHOUT changing currentFilter; clearing the box (#search-clear
        or emptying it) restores the active filter, and clicking any filter
        button clears the search.
+    6. AI Powered + Chronological views - filter buttons data-filter="ai"
+       and data-filter="chrono". "AI Powered" is a flat, app-number-sorted
+       grid of every entry with ai:true (coming_soon excluded), with a
+       count header. "Chronological" lists every app in one flat grid by
+       app number, newest first by default; the .sort-toggle button in its
+       header flips to oldest first (state in chronoNewestFirst, resets on
+       reload). Neither view touches currentFilter rules for search.
   Update this manifest whenever a new portal feature is added.
   ==================================================================
 -->
@@ -227,6 +234,29 @@
     border-color: var(--ink);
     color: var(--paper);
   }
+
+  .view-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 4px;
+  }
+  .view-head .section-header { margin-bottom: 0; flex: 1 1 auto; }
+  .sort-toggle {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    min-height: 36px;
+    padding: 5px 12px;
+    border-radius: 2px;
+    border: 1px solid var(--accent-mid);
+    background: var(--accent-dim);
+    color: var(--accent);
+    cursor: pointer;
+  }
+  .sort-toggle:hover { background: var(--ink); border-color: var(--ink); color: var(--paper); }
 
   .search-wrap {
     display: flex;
@@ -668,6 +698,8 @@
     <button class="filter-btn filter-new" data-filter="new">New <span class="new-count" id="new-count"></span></button>
     <button class="filter-btn filter-star" data-filter="starred">&#9733; Starred <span class="star-count" id="star-count"></span></button>
     <button class="filter-btn" data-filter="milestone">Milestone</button>
+    <button class="filter-btn" data-filter="ai">AI Powered</button>
+    <button class="filter-btn" data-filter="chrono">Chronological</button>
     <button class="filter-btn" data-filter="C">Creative</button>
     <button class="filter-btn" data-filter="D">Data</button>
     <button class="filter-btn" data-filter="E">Educational</button>
@@ -1484,6 +1516,7 @@ function calcStreak() {
 // ============================================================
 const STAR_KEY = "appaday-starred";
 let currentFilter = "all";
+let chronoNewestFirst = true;
 function loadStars() {
   try { const r = localStorage.getItem(STAR_KEY); return r ? new Set(JSON.parse(r)) : new Set(); }
   catch (e) { return new Set(); }
@@ -1643,6 +1676,43 @@ function buildCards(filter) {
       const emp = document.createElement("div");
       emp.className = "empty-state";
       emp.textContent = "No milestone apps flagged yet.";
+      grid.appendChild(emp);
+    } else {
+      list.forEach((app, i) => grid.appendChild(makeCard(app, i)));
+    }
+    main.appendChild(grid);
+  } else if (filter === "ai" || filter === "chrono") {
+    const isAi = filter === "ai";
+    const list = isAi
+      ? APPS.filter(a => a.ai && !a.coming_soon).sort((a, b) => parseInt(a.num, 10) - parseInt(b.num, 10))
+      : [...APPS].sort((a, b) => chronoNewestFirst
+          ? (parseInt(b.num, 10) - parseInt(a.num, 10))
+          : (parseInt(a.num, 10) - parseInt(b.num, 10)));
+    const head = document.createElement("div");
+    head.className = "view-head";
+    const hdr = document.createElement("div");
+    hdr.className = "section-header";
+    const t = document.createElement("span"); t.className = "section-title"; t.textContent = isAi ? "AI Powered" : "Chronological";
+    const code = document.createElement("span"); code.className = "section-code"; code.textContent = isAi ? "AI" : (chronoNewestFirst ? "New to Old" : "Old to New");
+    const cnt = document.createElement("span"); cnt.className = "section-count";
+    cnt.textContent = list.length + " app" + (list.length !== 1 ? "s" : "");
+    hdr.appendChild(t); hdr.appendChild(code); hdr.appendChild(cnt);
+    head.appendChild(hdr);
+    if (!isAi) {
+      const tog = document.createElement("button");
+      tog.type = "button";
+      tog.className = "sort-toggle";
+      tog.textContent = chronoNewestFirst ? "Show oldest first" : "Show newest first";
+      tog.addEventListener("click", () => { chronoNewestFirst = !chronoNewestFirst; buildCards("chrono"); });
+      head.appendChild(tog);
+    }
+    main.appendChild(head);
+    const grid = document.createElement("div");
+    grid.className = "card-grid";
+    if (!list.length) {
+      const emp = document.createElement("div");
+      emp.className = "empty-state";
+      emp.textContent = "No apps to show yet.";
       grid.appendChild(emp);
     } else {
       list.forEach((app, i) => grid.appendChild(makeCard(app, i)));
