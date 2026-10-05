@@ -92,9 +92,12 @@ def main():
     ap.add_argument("--push", action="store_true", help="commit (default is dry run)")
     ap.add_argument("--only", nargs="*", help="limit to these app numbers")
     ap.add_argument("--manifest", default="icons/manifest.json")
+    ap.add_argument("--no-preflight", action="store_true",
+                    help="skip gh auth status (for proxied sessions where it misreports)")
     args = ap.parse_args()
 
-    preflight()
+    if not args.no_preflight:
+        preflight()
 
     apps = json.load(open(args.manifest, encoding="utf-8"))
     if args.only:
