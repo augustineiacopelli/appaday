@@ -12,7 +12,7 @@ Every app is a single self-contained file of vanilla HTML, CSS, and JavaScript w
 
 **All 150 shipped apps, numbered 001 through 150 with no gaps in the sequence.** Building since May 2026.
 
-Of the 150, forty-seven are AI-powered. The nine categories are spread as follows.
+Of the 150, forty-seven are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The nine categories are spread as follows.
 
 | Category | Code | Shipped |
 | --- | --- | --- |
