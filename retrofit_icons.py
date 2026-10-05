@@ -2,7 +2,7 @@
 """
 AppADay icon retrofit, Windows-friendly, no cloning.
 
-Patches index.html in all 117 app repos through the GitHub Contents API using
+Patches index.html in every app repo listed in icons/manifest.json through the GitHub Contents API using
 the GitHub CLI for authentication. Nothing is downloaded to your machine except
 the file contents held in memory.
 
@@ -11,7 +11,7 @@ the file contents held in memory.
     python retrofit_icons.py --push         actually commit
     python retrofit_icons.py --push --only 001 007
 
-Idempotent. Any repo whose index.html already contains apple-touch-icon is
+Idempotent per tag. A repo that already carries every home screen tag is
 skipped, so re-running after shipping a new app touches only the new one.
 
 If you would rather have local clones, use --mode clone instead.
@@ -27,10 +27,10 @@ import sys
 
 OWNER = "augustineiacopelli"
 ICON_BASE = "https://augustineiacopelli.github.io/appaday/icons"
-COMMIT_MSG = "Add apple-touch-icon and home screen title"
+COMMIT_MSG = "Add home screen icon and standalone web app tags"
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from apply_icons import patch, short_title, HAS_ICON  # noqa: E402
+from apply_icons import patch, short_title, verify  # noqa: E402
 
 
 def gh(*args, check=True):
@@ -71,12 +71,20 @@ def get_file(repo, path="index.html"):
 
 
 def put_file(repo, text, sha, path="index.html"):
-    encoded = base64.b64encode(text.encode("utf-8")).decode("ascii")
-    gh("api", "--method", "PUT",
-       "repos/%s/%s/contents/%s" % (OWNER, repo, path),
-       "-f", "message=" + COMMIT_MSG,
-       "-f", "content=" + encoded,
-       "-f", "sha=" + sha)
+    """Payload goes in on stdin. Passing the base64 as a -f argument breaks on
+    Windows, whose command line caps out near 8,191 characters."""
+    body = json.dumps({
+        "message": COMMIT_MSG,
+        "content": base64.b64encode(text.encode("utf-8")).decode("ascii"),
+        "sha": sha,
+    })
+    proc = subprocess.run(
+        ["gh", "api", "--method", "PUT",
+         "repos/%s/%s/contents/%s" % (OWNER, repo, path), "--input", "-"],
+        input=body, capture_output=True, text=True, shell=(os.name == "nt"),
+    )
+    if proc.returncode != 0:
+        raise RuntimeError((proc.stderr or proc.stdout).strip())
 
 
 def main():
@@ -107,14 +115,13 @@ def main():
         if html is None:
             absent.append("%s  %s" % (num, slug))
             print("%s  no index.html found" % prefix); continue
-        if HAS_ICON.search(html):
-            already.append(num)
-            print("%s  already has icon, skipped" % prefix); continue
-
         out = patch(html, num, name)
         if out is None:
-            failed.append("%s %s  (no </head>)" % (num, slug)); continue
-        if out.count("apple-touch-icon") != 1 or len(out) <= len(html):
+            failed.append("%s %s  (no <head>)" % (num, slug)); continue
+        if out == html:
+            already.append(num)
+            print("%s  already complete, skipped" % prefix); continue
+        if not verify(out) or len(out) <= len(html):
             failed.append("%s %s  (sanity check failed)" % (num, slug)); continue
 
         if args.push:

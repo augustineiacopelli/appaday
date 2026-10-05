@@ -25,6 +25,7 @@ import json
 import os
 import re
 import sys
+from html import escape
 
 ICON_BASE = "https://augustineiacopelli.github.io/appaday/icons"
 
@@ -55,11 +56,39 @@ TITLE = {
     "088": "Brew Math", "089": "Ink Trace", "091": "Grade Run", "095": "Contrast",
     "096": "Card Duel", "100": "Signal Desk", "104": "Giving Tree",
     "107": "Knot Locker", "113": "Pause",
+    "118": "Mercy", "119": "Room Read", "120": "Chisel II", "121": "Vent + Burn",
+    "122": "Cipher", "123": "Task Split", "124": "Reframe", "125": "Blockwork",
+    "126": "Rubric", "127": "Nag Card", "128": "Sermon", "129": "Tap Color",
+    "130": "Locus", "131": "Cloud Read", "132": "Brew Econ", "133": "Fasting",
+    "134": "Anagram", "135": "Petal Post", "136": "Detour", "137": "Hurdles",
+    "138": "Ferment Log", "139": "Sleep Mix", "140": "Delegate", "141": "Citation",
+    "142": "Grain Garden", "143": "Commute", "144": "Bulletin", "145": "Story Seed",
+    "146": "Saga Forge", "147": "Art Forge", "148": "World Forge", "149": "Story Forge",
+    "150": "Saga Studio", "151": "Readers 2",
 }
 
 ANCHOR = re.compile(r"<meta[^>]*name=[\"']viewport[\"'][^>]*>", re.I)
-HAS_ICON = re.compile(r"apple-touch-icon", re.I)
+HEAD_OPEN = re.compile(r"<head[^>]*>", re.I)
 HEAD_CLOSE = re.compile(r"</head>", re.I)
+
+# Every tag an app needs so that "Add to Home Screen" gives it its own icon,
+# its own short name, and launches it full screen instead of in a Safari tab.
+# Each entry is (detector, builder). A tag is inserted only if its detector
+# finds nothing, so the patch is idempotent per tag and safely upgrades apps
+# that already carry some of them (App 001 had only the first two).
+TAGS = [
+    (re.compile(r"rel=[\"']apple-touch-icon[\"']", re.I),
+     lambda n, t: '<link rel="apple-touch-icon" href="%s/%s.png">' % (ICON_BASE, n)),
+    (re.compile(r"name=[\"']apple-mobile-web-app-title[\"']", re.I),
+     lambda n, t: '<meta name="apple-mobile-web-app-title" content="%s">' % t),
+    (re.compile(r"name=[\"']apple-mobile-web-app-capable[\"']", re.I),
+     lambda n, t: '<meta name="apple-mobile-web-app-capable" content="yes">'),
+    (re.compile(r"name=[\"']mobile-web-app-capable[\"']", re.I),
+     lambda n, t: '<meta name="mobile-web-app-capable" content="yes">'),
+    (re.compile(r"name=[\"']apple-mobile-web-app-status-bar-style[\"']", re.I),
+     lambda n, t: '<meta name="apple-mobile-web-app-status-bar-style" content="black">'),
+]
+HAS_ICON = TAGS[0][0]
 
 
 def short_title(num, name):
@@ -68,24 +97,40 @@ def short_title(num, name):
     return name if len(name) <= 12 else name.split()[0][:12]
 
 
-def block(num, name):
-    return (
-        '\n<link rel="apple-touch-icon" href="%s/%s.png">'
-        '\n<meta name="apple-mobile-web-app-title" content="%s">'
-        % (ICON_BASE, num, short_title(num, name))
-    )
+def missing_tags(html, num, name):
+    t = escape(short_title(num, name), quote=True)
+    return [build(num, t) for det, build in TAGS if not det.search(html)]
 
 
 def patch(html, num, name):
-    """Insert after the viewport meta, or fall back to just before </head>."""
-    tag = block(num, name)
-    m = ANCHOR.search(html)
-    if m:
-        return html[:m.end()] + tag + html[m.end():]
-    m = HEAD_CLOSE.search(html)
-    if not m:
-        return None
-    return html[:m.start()] + tag + "\n" + html[m.start():]
+    """Return html with any missing home screen tags added, html unchanged if
+    nothing is missing, or None if there is no <head> to anchor to.
+    Inserts after the last existing home screen tag, else after the viewport
+    meta, else just inside <head>, else just before </head>."""
+    tags = missing_tags(html, num, name)
+    if not tags:
+        return html
+    ins = "".join("\n" + x for x in tags)
+    pos = None
+    for det, _ in TAGS:
+        for m in det.finditer(html):
+            e = html.find(">", m.end()) + 1
+            pos = e if pos is None else max(pos, e)
+    if pos is None:
+        m = ANCHOR.search(html) or HEAD_OPEN.search(html)
+        if m:
+            pos = m.end()
+    if pos is None:
+        m = HEAD_CLOSE.search(html)
+        if not m:
+            return None
+        return html[:m.start()] + ins.lstrip("\n") + "\n" + html[m.start():]
+    return html[:pos] + ins + html[pos:]
+
+
+def verify(html):
+    """Exactly one of each tag."""
+    return all(len(det.findall(html)) == 1 for det, _ in TAGS)
 
 
 def main():
@@ -107,14 +152,14 @@ def main():
             missing.append("%s  %s" % (num, slug))
             continue
         html = open(path, encoding="utf-8").read()
-        if HAS_ICON.search(html):
-            skipped.append(num)
-            continue
         out = patch(html, num, name)
         if out is None:
-            failed.append("%s  %s  (no </head> found)" % (num, slug))
+            failed.append("%s  %s  (no <head> found)" % (num, slug))
             continue
-        assert out.count("apple-touch-icon") == 1, "%s: duplicate insert" % num
+        if out == html:
+            skipped.append(num)
+            continue
+        assert verify(out), "%s: tag count wrong after patch" % num
         assert len(out) > len(html), "%s: patch shrank the file" % num
         if args.write:
             open(path, "w", encoding="utf-8").write(out)

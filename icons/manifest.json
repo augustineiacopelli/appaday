@@ -934,5 +934,277 @@
   "slug": "appaday-117-daily-mood-symptom-journal",
   "glyph": "heart-pulse",
   "color": "#D14D72"
+ },
+ {
+  "num": "118",
+  "cat": "S",
+  "name": "Divine Mercy Chaplet Companion",
+  "slug": "appaday-118-divine-mercy-chaplet",
+  "glyph": "sun-medium",
+  "color": "#6A4C93"
+ },
+ {
+  "num": "119",
+  "cat": "U",
+  "name": "Room Read",
+  "slug": "appaday-119-room-read",
+  "glyph": "sofa",
+  "color": "#289664"
+ },
+ {
+  "num": "120",
+  "cat": "I",
+  "name": "Thought Chisel II",
+  "slug": "appaday-120-thought-chisel-ii",
+  "glyph": "mic-vocal",
+  "color": "#5B4BC4"
+ },
+ {
+  "num": "121",
+  "cat": "H",
+  "name": "Vent Then Burn",
+  "slug": "appaday-121-vent-then-burn",
+  "glyph": "flame-kindling",
+  "color": "#D14D72"
+ },
+ {
+  "num": "122",
+  "cat": "U",
+  "name": "Code Cipher",
+  "slug": "appaday-122-code-cipher",
+  "glyph": "binary",
+  "color": "#289664"
+ },
+ {
+  "num": "123",
+  "cat": "P",
+  "name": "Two-Minute Rule Task Splitter",
+  "slug": "appaday-123-two-minute-task-splitter",
+  "glyph": "list-todo",
+  "color": "#C8401A"
+ },
+ {
+  "num": "124",
+  "cat": "H",
+  "name": "Reframe",
+  "slug": "appaday-124-reframe",
+  "glyph": "sun-moon",
+  "color": "#D14D72"
+ },
+ {
+  "num": "125",
+  "cat": "P",
+  "name": "Blockwork",
+  "slug": "appaday-125-blockwork",
+  "glyph": "table-2",
+  "color": "#C8401A"
+ },
+ {
+  "num": "126",
+  "cat": "E",
+  "name": "Rubric Builder",
+  "slug": "appaday-126-rubric-builder",
+  "glyph": "grid-2x2-check",
+  "color": "#1F7A8C"
+ },
+ {
+  "num": "127",
+  "cat": "P",
+  "name": "Nag Card",
+  "slug": "appaday-127-nag-card",
+  "glyph": "megaphone",
+  "color": "#C8401A"
+ },
+ {
+  "num": "128",
+  "cat": "S",
+  "name": "Sermon Note Catcher",
+  "slug": "appaday-128-sermon-note-catcher",
+  "glyph": "notebook-text",
+  "color": "#6A4C93"
+ },
+ {
+  "num": "129",
+  "cat": "C",
+  "name": "Tap to Color",
+  "slug": "appaday-129-tap-to-color",
+  "glyph": "brush",
+  "color": "#A63D9E"
+ },
+ {
+  "num": "130",
+  "cat": "H",
+  "name": "Locus of Control",
+  "slug": "appaday-130-locus-of-control",
+  "glyph": "target",
+  "color": "#D14D72"
+ },
+ {
+  "num": "131",
+  "cat": "E",
+  "name": "Cloud Reader",
+  "slug": "appaday-131-cloud-reader",
+  "glyph": "cloudy",
+  "color": "#1F7A8C"
+ },
+ {
+  "num": "132",
+  "cat": "D",
+  "name": "Brew Economics",
+  "slug": "appaday-132-brew-economics",
+  "glyph": "hop",
+  "color": "#B8860B"
+ },
+ {
+  "num": "133",
+  "cat": "H",
+  "name": "Fasting Window Tracker",
+  "slug": "appaday-133-fasting-window-tracker",
+  "glyph": "clock-8",
+  "color": "#D14D72"
+ },
+ {
+  "num": "134",
+  "cat": "C",
+  "name": "Anagram Alchemy",
+  "slug": "appaday-134-anagram-alchemy",
+  "glyph": "wand-sparkles",
+  "color": "#A63D9E"
+ },
+ {
+  "num": "135",
+  "cat": "C",
+  "name": "Petal Post",
+  "slug": "appaday-135-petal-post",
+  "glyph": "rose",
+  "color": "#A63D9E"
+ },
+ {
+  "num": "136",
+  "cat": "U",
+  "name": "Detour",
+  "slug": "appaday-136-detour",
+  "glyph": "map-pinned",
+  "color": "#289664"
+ },
+ {
+  "num": "137",
+  "cat": "G",
+  "name": "Pocket Hurdles",
+  "slug": "appaday-137-pocket-hurdles",
+  "glyph": "fence",
+  "color": "#276EB7"
+ },
+ {
+  "num": "138",
+  "cat": "D",
+  "name": "Ferment Log",
+  "slug": "appaday-138-ferment-log",
+  "glyph": "beaker",
+  "color": "#B8860B"
+ },
+ {
+  "num": "139",
+  "cat": "P",
+  "name": "Static Sleep Mixer",
+  "slug": "appaday-139-static-sleep-mixer",
+  "glyph": "audio-lines",
+  "color": "#C8401A"
+ },
+ {
+  "num": "140",
+  "cat": "P",
+  "name": "Delegation Draft",
+  "slug": "appaday-140-delegation-draft",
+  "glyph": "send",
+  "color": "#C8401A"
+ },
+ {
+  "num": "141",
+  "cat": "P",
+  "name": "Court of Honor Citation",
+  "slug": "appaday-141-court-of-honor-citation",
+  "glyph": "ribbon",
+  "color": "#C8401A"
+ },
+ {
+  "num": "142",
+  "cat": "I",
+  "name": "Grain Garden",
+  "slug": "appaday-142-grain-garden",
+  "glyph": "shovel",
+  "color": "#5B4BC4"
+ },
+ {
+  "num": "143",
+  "cat": "D",
+  "name": "Commute Clock",
+  "slug": "appaday-143-commute-clock",
+  "glyph": "fuel",
+  "color": "#B8860B"
+ },
+ {
+  "num": "144",
+  "cat": "S",
+  "name": "Bulletin Brief",
+  "slug": "appaday-144-bulletin-brief",
+  "glyph": "newspaper",
+  "color": "#6A4C93"
+ },
+ {
+  "num": "145",
+  "cat": "C",
+  "name": "Story Seed",
+  "slug": "appaday-145-story-seed",
+  "glyph": "sprout",
+  "color": "#A63D9E"
+ },
+ {
+  "num": "146",
+  "cat": "C",
+  "name": "Saga Forge",
+  "slug": "appaday-146-saga-forge",
+  "glyph": "anvil",
+  "color": "#A63D9E"
+ },
+ {
+  "num": "147",
+  "cat": "C",
+  "name": "Art and Audio Forge",
+  "slug": "appaday-147-art-and-audio-forge",
+  "glyph": "music",
+  "color": "#A63D9E"
+ },
+ {
+  "num": "148",
+  "cat": "C",
+  "name": "World Forge",
+  "slug": "appaday-148-world-forge",
+  "glyph": "map",
+  "color": "#A63D9E"
+ },
+ {
+  "num": "149",
+  "cat": "C",
+  "name": "Story Forge",
+  "slug": "appaday-149-story-forge",
+  "glyph": "book-open-check",
+  "color": "#A63D9E"
+ },
+ {
+  "num": "150",
+  "cat": "C",
+  "name": "Saga Studio",
+  "slug": "appaday-150-saga-studio",
+  "glyph": "sword",
+  "color": "#A63D9E"
+ },
+ {
+  "num": "151",
+  "cat": "E",
+  "name": "Rainbow Readers 2.0",
+  "slug": "appaday-151-rainbow-readers-2",
+  "glyph": "book-a",
+  "color": "#1F7A8C"
  }
 ]

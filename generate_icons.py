@@ -82,6 +82,15 @@ GLYPH_MAP = {
     "109": "credit-card", "110": "disc-3", "111": "file-check", "112": "notebook-pen",
     "113": "pause", "114": "person-standing", "115": "shopping-basket", "116": "scroll",
     "117": "heart-pulse",
+    "118": "sun-medium", "119": "sofa", "120": "mic-vocal", "121": "flame-kindling",
+    "122": "binary", "123": "list-todo", "124": "sun-moon", "125": "table-2",
+    "126": "grid-2x2-check", "127": "megaphone", "128": "notebook-text", "129": "brush",
+    "130": "target", "131": "cloudy", "132": "hop", "133": "clock-8",
+    "134": "wand-sparkles", "135": "rose", "136": "map-pinned", "137": "fence",
+    "138": "beaker", "139": "audio-lines", "140": "send", "141": "ribbon",
+    "142": "shovel", "143": "fuel", "144": "newspaper", "145": "sprout",
+    "146": "anvil", "147": "music", "148": "map", "149": "book-open-check",
+    "150": "sword", "151": "book-a",
 }
 PORTFOLIO_GLYPH = "shapes"
 
