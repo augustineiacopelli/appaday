@@ -10,14 +10,14 @@ Every app is a single self-contained file of vanilla HTML, CSS, and JavaScript w
 
 ## The count
 
-**All 151 shipped apps, numbered 001 through 151 with no gaps in the sequence.** Building since May 2026.
+**All 152 shipped apps, numbered 001 through 152 with no gaps in the sequence.** Building since May 2026.
 
-Of the 151, forty-seven are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 151, Rainbow Readers 2.0, is an offline phonics practice game for early readers that plays with a game controller. The nine categories are spread as follows.
+Of the 152, forty-seven are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 152, Packing List Rings, builds a packing list for everyone on a trip and tracks each traveler and category with animated progress rings. The nine categories are spread as follows.
 
 | Category | Code | Shipped |
 | --- | --- | --- |
 | Creative | C | 19 |
-| Data | D | 15 |
+| Data | D | 16 |
 | Educational | E | 15 |
 | Games | G | 19 |
 | Health | H | 15 |

@@ -1206,5 +1206,13 @@
   "slug": "appaday-151-rainbow-readers-2",
   "glyph": "book-a",
   "color": "#1F7A8C"
+ },
+ {
+  "num": "152",
+  "cat": "D",
+  "name": "Packing List Rings",
+  "slug": "appaday-152-packing-list-rings",
+  "glyph": "luggage",
+  "color": "#B8860B"
  }
 ]

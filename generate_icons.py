@@ -90,7 +90,7 @@ GLYPH_MAP = {
     "138": "beaker", "139": "audio-lines", "140": "send", "141": "ribbon",
     "142": "shovel", "143": "fuel", "144": "newspaper", "145": "sprout",
     "146": "anvil", "147": "music", "148": "map", "149": "book-open-check",
-    "150": "sword", "151": "book-a",
+    "150": "sword", "151": "book-a", "152": "luggage",
 }
 PORTFOLIO_GLYPH = "shapes"
 
