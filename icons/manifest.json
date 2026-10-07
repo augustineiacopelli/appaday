@@ -1214,5 +1214,13 @@
   "slug": "appaday-152-packing-list-rings",
   "glyph": "luggage",
   "color": "#B8860B"
+ },
+ {
+  "num": "153",
+  "cat": "I",
+  "name": "Social Pulse",
+  "slug": "appaday-153-social-pulse",
+  "glyph": "message-square-reply",
+  "color": "#5B4BC4"
  }
 ]
