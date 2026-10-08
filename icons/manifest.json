@@ -1222,5 +1222,13 @@
   "slug": "appaday-153-social-pulse",
   "glyph": "message-square-reply",
   "color": "#5B4BC4"
+ },
+ {
+  "num": "154",
+  "cat": "S",
+  "name": "Service Hours Log",
+  "slug": "appaday-154-service-hours-log",
+  "glyph": "hand-heart",
+  "color": "#6A4C93"
  }
 ]

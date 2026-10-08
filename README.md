@@ -10,9 +10,9 @@ Every app is a single self-contained file of vanilla HTML, CSS, and JavaScript w
 
 ## The count
 
-**All 153 shipped apps, numbered 001 through 153 with no gaps in the sequence.** Building since May 2026.
+**All 154 shipped apps, numbered 001 through 154 with no gaps in the sequence.** Building since May 2026.
 
-Of the 153, forty-eight are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 153, Social Pulse, takes a pasted batch of social posts and has Claude flag which ones are worth a reply, with a verdict, category, and one line reason for each. The nine categories are spread as follows.
+Of the 154, forty-eight are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 154, Service Hours Log, keeps a running record of volunteer and ministry hours across every cause a person serves, with yearly totals, a printable signable report, and CSV export. The nine categories are spread as follows.
 
 | Category | Code | Shipped |
 | --- | --- | --- |
@@ -23,7 +23,7 @@ Of the 153, forty-eight are AI-powered. App 150, Saga Studio, is the latest mile
 | Health | H | 15 |
 | Interactive | I | 13 |
 | Productivity | P | 23 |
-| Spirituality | S | 15 |
+| Spirituality | S | 16 |
 | Utility | U | 18 |
 
 ## How it is organized
