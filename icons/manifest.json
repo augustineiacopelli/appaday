@@ -1230,5 +1230,13 @@
   "slug": "appaday-154-service-hours-log",
   "glyph": "hand-heart",
   "color": "#6A4C93"
+ },
+ {
+  "num": "155",
+  "cat": "E",
+  "name": "Forecast Discussion Decoder",
+  "slug": "appaday-155-forecast-discussion-decoder",
+  "glyph": "cloud-lightning",
+  "color": "#1F7A8C"
  }
 ]

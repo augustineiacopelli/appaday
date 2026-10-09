@@ -10,15 +10,15 @@ Every app is a single self-contained file of vanilla HTML, CSS, and JavaScript w
 
 ## The count
 
-**All 154 shipped apps, numbered 001 through 154 with no gaps in the sequence.** Building since May 2026.
+**All 155 shipped apps, numbered 001 through 155 with no gaps in the sequence.** Building since May 2026.
 
-Of the 154, forty-eight are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 154, Service Hours Log, keeps a running record of volunteer and ministry hours across every cause a person serves, with yearly totals, a printable signable report, and CSV export. The nine categories are spread as follows.
+Of the 155, forty-nine are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 155, Forecast Discussion Decoder, pulls the latest National Weather Service Area Forecast Discussion for any office and decodes it into plain English with Claude, with a gravity gauge scaled to the threat and tap-to-define jargon. The nine categories are spread as follows.
 
 | Category | Code | Shipped |
 | --- | --- | --- |
 | Creative | C | 19 |
 | Data | D | 16 |
-| Educational | E | 15 |
+| Educational | E | 16 |
 | Games | G | 19 |
 | Health | H | 15 |
 | Interactive | I | 13 |
