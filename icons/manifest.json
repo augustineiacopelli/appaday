@@ -1246,5 +1246,13 @@
   "slug": "appaday-156-tip-splitter",
   "glyph": "receipt",
   "color": "#289664"
+ },
+ {
+  "num": "157",
+  "cat": "S",
+  "name": "Novena Companion",
+  "slug": "appaday-157-novena-companion",
+  "glyph": "church",
+  "color": "#6A4C93"
  }
 ]

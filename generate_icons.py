@@ -95,6 +95,7 @@ GLYPH_MAP = {
     "154": "hand-heart",
     "155": "cloud-lightning",
     "156": "receipt",
+    "157": "church",
 }
 PORTFOLIO_GLYPH = "shapes"
 
