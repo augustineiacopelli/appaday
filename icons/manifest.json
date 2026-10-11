@@ -1238,5 +1238,13 @@
   "slug": "appaday-155-forecast-discussion-decoder",
   "glyph": "cloud-lightning",
   "color": "#1F7A8C"
+ },
+ {
+  "num": "156",
+  "cat": "U",
+  "name": "Tip Splitter",
+  "slug": "appaday-156-tip-splitter",
+  "glyph": "receipt",
+  "color": "#289664"
  }
 ]

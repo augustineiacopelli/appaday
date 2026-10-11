@@ -94,6 +94,7 @@ GLYPH_MAP = {
     "153": "message-square-reply",
     "154": "hand-heart",
     "155": "cloud-lightning",
+    "156": "receipt",
 }
 PORTFOLIO_GLYPH = "shapes"
 

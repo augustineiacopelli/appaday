@@ -10,9 +10,9 @@ Every app is a single self-contained file of vanilla HTML, CSS, and JavaScript w
 
 ## The count
 
-**All 155 shipped apps, numbered 001 through 155 with no gaps in the sequence.** Building since May 2026.
+**All 156 shipped apps, numbered 001 through 156 with no gaps in the sequence.** Building since May 2026.
 
-Of the 155, forty-nine are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 155, Forecast Discussion Decoder, pulls the latest National Weather Service Area Forecast Discussion for any office and decodes it into plain English with Claude, with a gravity gauge scaled to the threat and tap-to-define jargon. The nine categories are spread as follows.
+Of the 156, forty-nine are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 156, Tip Splitter, splits a restaurant check by bill, tip, and party size with live per person shares, all in integer cents, and a round up toggle that lifts each share to the next whole dollar and reports the true tip. The nine categories are spread as follows.
 
 | Category | Code | Shipped |
 | --- | --- | --- |
@@ -24,7 +24,7 @@ Of the 155, forty-nine are AI-powered. App 150, Saga Studio, is the latest miles
 | Interactive | I | 13 |
 | Productivity | P | 23 |
 | Spirituality | S | 16 |
-| Utility | U | 18 |
+| Utility | U | 19 |
 
 ## How it is organized
 
