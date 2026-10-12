@@ -96,6 +96,7 @@ GLYPH_MAP = {
     "155": "cloud-lightning",
     "156": "receipt",
     "157": "church",
+    "158": "heart",
 }
 PORTFOLIO_GLYPH = "shapes"
 

@@ -1254,5 +1254,13 @@
   "slug": "appaday-157-novena-companion",
   "glyph": "church",
   "color": "#6A4C93"
+ },
+ {
+  "num": "158",
+  "cat": "I",
+  "name": "Gratitude Jar",
+  "slug": "appaday-158-gratitude-jar",
+  "glyph": "heart",
+  "color": "#5B4BC4"
  }
 ]

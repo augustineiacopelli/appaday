@@ -10,9 +10,9 @@ Every app is a single self-contained file of vanilla HTML, CSS, and JavaScript w
 
 ## The count
 
-**All 157 shipped apps, numbered 001 through 157 with no gaps in the sequence.** Building since May 2026.
+**All 158 shipped apps, numbered 001 through 158 with no gaps in the sequence.** Building since May 2026.
 
-Of the 157, forty-nine are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 157, Novena Companion, guides a nine day novena with seven built in devotions and their traditional dates or a custom one for your own intention, with daily original meditations, the traditional prayers, a streak, and calendar reminders that link straight to each day. The nine categories are spread as follows.
+Of the 158, fifty are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 158, Gratitude Jar, collects short gratitude slips, as many a day as you like, in an animated jar, and when the seventh slip lands, you close it with your own reflection or let Claude name its common thread in one warm sentence, with a streak and an archive of past jars. The nine categories are spread as follows.
 
 | Category | Code | Shipped |
 | --- | --- | --- |
@@ -21,7 +21,7 @@ Of the 157, forty-nine are AI-powered. App 150, Saga Studio, is the latest miles
 | Educational | E | 16 |
 | Games | G | 19 |
 | Health | H | 15 |
-| Interactive | I | 13 |
+| Interactive | I | 14 |
 | Productivity | P | 23 |
 | Spirituality | S | 17 |
 | Utility | U | 19 |
