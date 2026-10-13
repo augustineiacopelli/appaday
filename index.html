@@ -54,6 +54,13 @@
        app number, newest first by default; the .sort-toggle button in its
        header flips to oldest first (state in chronoNewestFirst, resets on
        reload). Neither view touches currentFilter rules for search.
+    7. Share sheet - #share-sheet modal opened by the header .share-pill
+       (shares the portal) and by the .card-share button on every live
+       card (shares that app). openShare(url, title, label) draws a QR
+       code on #share-qr with the inline qrMatrix() encoder (byte mode,
+       ECC M, versions 1 to 10, no CDN), plus native Share
+       (navigator.share, hidden when unsupported) and Copy link. Closes
+       on Done, backdrop tap, or Escape. Card share sits under the star.
   Update this manifest whenever a new portal feature is added.
   ==================================================================
 -->
@@ -701,6 +708,78 @@
   }
   .filter-new .new-count:empty { display: none; }
 
+  /* Share: header pill, card button, QR sheet */
+  .share-pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    min-height: 44px; padding: 0 18px;
+    border: 1px solid var(--ink); border-radius: 999px;
+    background: var(--ink); color: var(--paper);
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    cursor: pointer; transition: background 0.15s ease, color 0.15s ease, transform 0.1s ease;
+  }
+  .share-pill:hover { background: var(--accent); border-color: var(--accent); }
+  .share-pill:active { transform: scale(0.96); }
+  .share-pill:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .card-share {
+    position: absolute;
+    top: 50px; right: 14px;
+    width: 34px; height: 34px;
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 0; border: none; background: transparent;
+    color: var(--muted); border-radius: 5px; cursor: pointer; z-index: 4;
+    transition: color 0.15s ease, background 0.15s ease, transform 0.1s ease;
+  }
+  .card-share svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .card-share:hover { color: var(--accent); background: var(--accent-dim); }
+  .card-share:active { transform: scale(0.9); }
+  .card-share:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  @media (max-width: 420px) { .card-share { top: 46px; } }
+  .share-sheet {
+    position: fixed; inset: 0; z-index: 100;
+    display: none; align-items: center; justify-content: center;
+    padding: 20px 16px;
+    background: rgba(15,14,12,0.55);
+    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  }
+  .share-sheet.open { display: flex; animation: fadeUp 0.25s ease both; }
+  .share-card {
+    width: 340px; max-width: 100%; max-height: 100%; overflow-y: auto;
+    background: var(--paper); border-radius: 8px;
+    box-shadow: 0 20px 60px rgba(15,14,12,0.35);
+    padding: 24px 22px 20px; text-align: center;
+  }
+  .share-eyebrow {
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent);
+  }
+  .share-title {
+    font-family: 'DM Serif Display', serif; font-size: 26px;
+    line-height: 1.1; color: var(--ink); margin: 6px 0 16px;
+  }
+  .share-qr-wrap {
+    background: #fff; border-radius: 6px; padding: 10px;
+    border: 1px solid var(--rule); display: inline-block;
+  }
+  #share-qr { display: block; width: 240px; height: 240px; max-width: 64vw; max-height: 64vw; image-rendering: pixelated; }
+  .share-hint { font-size: 13px; color: var(--muted); margin-top: 10px; }
+  .share-url {
+    font-family: 'DM Mono', monospace; font-size: 11px; color: var(--ink);
+    word-break: break-all; margin: 12px 0 16px; padding: 8px 10px;
+    background: var(--paper-dark); border-radius: 4px; text-align: left;
+  }
+  .share-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .share-actions button {
+    flex: 1 1 0; min-height: 44px; min-width: 84px;
+    border-radius: 6px; border: 1px solid var(--ink);
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer;
+    background: transparent; color: var(--ink);
+  }
+  .share-actions .share-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .share-actions button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .share-actions button[hidden] { display: none; }
+
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(16px); }
     to   { opacity: 1; transform: translateY(0); }
@@ -708,7 +787,8 @@
 
   @media (max-width: 768px) {
     header { grid-template-columns: 1fr; padding: 40px 20px 32px; }
-    .header-stats { flex-direction: row; align-items: flex-start; gap: 32px; }
+    .header-stats { flex-direction: row; align-items: flex-start; gap: 32px; flex-wrap: wrap; }
+    .share-pill { align-self: center; }
     .stat-block { text-align: left; }
     .filter-inner { padding: 10px 20px; }
     main { padding: 32px 20px 80px; }
@@ -736,6 +816,7 @@
       <div class="stat-number" id="streak-count">0</div>
       <div class="stat-label">Day Streak</div>
     </div>
+    <button type="button" class="share-pill" id="share-portal" aria-label="Share the AppADay portfolio with a QR code or link"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h3v3h-3zM18 18h3v3h-3zM18 14h3M14 18v3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>Share</button>
   </div>
 </header>
 
@@ -767,6 +848,21 @@
 </div>
 
 <main id="main-content"></main>
+
+<div class="share-sheet" id="share-sheet" role="dialog" aria-modal="true" aria-labelledby="share-title">
+  <div class="share-card">
+    <div class="share-eyebrow" id="share-eyebrow">Share</div>
+    <div class="share-title" id="share-title">AppADay</div>
+    <div class="share-qr-wrap"><canvas id="share-qr" width="240" height="240" role="img" aria-label="QR code for the link below"></canvas></div>
+    <div class="share-hint">Point a phone camera at the code to open it.</div>
+    <div class="share-url" id="share-url"></div>
+    <div class="share-actions">
+      <button type="button" class="share-primary" id="share-native" hidden>Share</button>
+      <button type="button" id="share-copy">Copy link</button>
+      <button type="button" id="share-done">Done</button>
+    </div>
+  </div>
+</div>
 
 <footer>
   <span class="footer-motto">Ship something every day. It compounds.</span>
@@ -1867,9 +1963,11 @@ function makeCard(app, index) {
   const mBadge = app.milestone ? `<span class="card-milestone-badge"><svg viewBox="0 0 24 24" width="9" height="9" aria-hidden="true"><path d="M12 2l2.9 6.1 6.6.9-4.8 4.6 1.2 6.6L12 18.6 5.9 20.9l1.2-6.6L2.3 9l6.6-.9z" fill="currentColor"/></svg>Milestone</span>` : "";
   const isOn = starred.has(app.num);
   const starBtn = app.coming_soon ? "" : `<button type="button" class="card-star${isOn ? " is-starred" : ""}" aria-pressed="${isOn ? "true" : "false"}" aria-label="${isOn ? "Unstar " : "Star "}${app.name}"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 2l2.9 6.1 6.6.9-4.8 4.6 1.2 6.6L12 18.6 5.9 20.9l1.2-6.6L2.3 9l6.6-.9z"/></svg></button>`;
+  const shareBtn = app.coming_soon ? "" : `<button type="button" class="card-share" aria-label="Share ${app.name}"><svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path d="M12 15V3M7 8l5-5 5 5M5 12v8h14v-8"/></svg></button>`;
   a.innerHTML = `
     <span class="card-arrow">↗</span>
     ${starBtn}
+    ${shareBtn}
     <div class="card-head">
       ${app.coming_soon
         ? `<span class="card-icon card-icon-pending" aria-hidden="true"></span>`
@@ -1888,9 +1986,176 @@ function makeCard(app, index) {
   if (!app.coming_soon) {
     const sb = a.querySelector(".card-star");
     if (sb) sb.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); toggleStar(app.num, app.name, sb); });
+    const shb = a.querySelector(".card-share");
+    if (shb) shb.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); openShare(app.url, app.name, "App " + app.num); });
   }
   return a;
 }
+
+// ============================================================
+//  QR ENCODER (inline, no dependencies). Byte mode, ECC level M,
+//  versions 1 to 10 (up to 213 bytes, plenty for any app URL).
+// ============================================================
+function qrMatrix(text) {
+  const data = Array.from(new TextEncoder().encode(text));
+  const ECC = [0,10,16,26,18,24,16,18,22,22,26];
+  const BLK = [0,1,1,1,2,2,4,4,4,5,5];
+  const rawMods = v => { let r = (16*v+128)*v+64; if (v >= 2) { const n = Math.floor(v/7)+2; r -= (25*n-10)*n-55; if (v >= 7) r -= 36; } return r; };
+  const dataCap = v => Math.floor(rawMods(v)/8) - ECC[v]*BLK[v];
+  let ver = 1;
+  while (ver <= 10 && 4 + (ver < 10 ? 8 : 16) + data.length*8 > dataCap(ver)*8) ver++;
+  if (ver > 10) return null;
+  const bits = [];
+  const put = (val, len) => { for (let i = len-1; i >= 0; i--) bits.push((val >>> i) & 1); };
+  put(4, 4); put(data.length, ver < 10 ? 8 : 16); data.forEach(b => put(b, 8));
+  const capBits = dataCap(ver)*8;
+  put(0, Math.min(4, capBits - bits.length));
+  put(0, (8 - bits.length % 8) % 8);
+  for (let p = 0xEC; bits.length < capBits; p ^= 0xEC ^ 0x11) put(p, 8);
+  const cw = [];
+  for (let i = 0; i < bits.length; i += 8) { let b = 0; for (let j = 0; j < 8; j++) b = (b << 1) | bits[i+j]; cw.push(b); }
+  // Reed-Solomon over GF(256), poly 0x11D
+  const mul = (x, y) => { let z = 0; for (let i = 7; i >= 0; i--) { z = (z << 1) ^ ((z >>> 7) * 0x11D); z ^= ((y >>> i) & 1) * x; } return z & 0xFF; };
+  const eLen = ECC[ver];
+  const div = new Array(eLen).fill(0); div[eLen-1] = 1;
+  for (let i = 0, root = 1; i < eLen; i++) { for (let j = 0; j < eLen; j++) { div[j] = mul(div[j], root); if (j+1 < eLen) div[j] ^= div[j+1]; } root = mul(root, 2); }
+  const rsRem = msg => { const r = new Array(eLen).fill(0); msg.forEach(b => { const f = b ^ r.shift(); r.push(0); div.forEach((c, i) => { r[i] ^= mul(c, f); }); }); return r; };
+  const nBlk = BLK[ver], raw = Math.floor(rawMods(ver)/8);
+  const nShort = nBlk - raw % nBlk, shortLen = Math.floor(raw / nBlk);
+  const blocks = [];
+  for (let i = 0, k = 0; i < nBlk; i++) {
+    const d = cw.slice(k, k + shortLen - eLen + (i < nShort ? 0 : 1)); k += d.length;
+    const e = rsRem(d);
+    if (i < nShort) d.push(0);
+    blocks.push(d.concat(e));
+  }
+  const all = [];
+  for (let i = 0; i < blocks[0].length; i++) blocks.forEach((b, j) => { if (i !== shortLen - eLen || j >= nShort) all.push(b[i]); });
+  // Matrix
+  const size = ver*4 + 17;
+  const m = [], fn = [];
+  for (let y = 0; y < size; y++) { m.push(new Array(size).fill(false)); fn.push(new Array(size).fill(false)); }
+  const set = (x, y, d) => { m[y][x] = d; fn[y][x] = true; };
+  for (let i = 0; i < size; i++) { set(6, i, i % 2 === 0); set(i, 6, i % 2 === 0); }
+  const finder = (cx, cy) => { for (let dy = -4; dy <= 4; dy++) for (let dx = -4; dx <= 4; dx++) { const x = cx+dx, y = cy+dy, dist = Math.max(Math.abs(dx), Math.abs(dy)); if (x >= 0 && x < size && y >= 0 && y < size) set(x, y, dist !== 2 && dist !== 4); } };
+  finder(3, 3); finder(size-4, 3); finder(3, size-4);
+  if (ver > 1) {
+    const n = Math.floor(ver/7)+2, step = Math.ceil((ver*4+4)/(n*2-2))*2, pos = [6];
+    for (let p = size-7; pos.length < n; p -= step) pos.splice(1, 0, p);
+    pos.forEach((py, i) => pos.forEach((px, j) => {
+      if ((i === 0 && j === 0) || (i === 0 && j === n-1) || (i === n-1 && j === 0)) return;
+      for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) set(px+dx, py+dy, Math.max(Math.abs(dx), Math.abs(dy)) !== 1);
+    }));
+  }
+  const fmt = mask => {
+    const d = mask; let r = d; // ECC M format value is 0
+    for (let i = 0; i < 10; i++) r = (r << 1) ^ ((r >>> 9) * 0x537);
+    const b = ((d << 10) | r) ^ 0x5412, bit = i => ((b >>> i) & 1) === 1;
+    for (let i = 0; i <= 5; i++) set(8, i, bit(i));
+    set(8, 7, bit(6)); set(8, 8, bit(7)); set(7, 8, bit(8));
+    for (let i = 9; i < 15; i++) set(14-i, 8, bit(i));
+    for (let i = 0; i < 8; i++) set(size-1-i, 8, bit(i));
+    for (let i = 8; i < 15; i++) set(8, size-15+i, bit(i));
+    set(8, size-8, true);
+  };
+  fmt(0);
+  if (ver >= 7) {
+    let r = ver; for (let i = 0; i < 12; i++) r = (r << 1) ^ ((r >>> 11) * 0x1F25);
+    const b = (ver << 12) | r;
+    for (let i = 0; i < 18; i++) { const d = ((b >>> i) & 1) === 1, a = size-11+i%3, c = Math.floor(i/3); set(a, c, d); set(c, a, d); }
+  }
+  let bi = 0;
+  for (let right = size-1; right >= 1; right -= 2) {
+    if (right === 6) right = 5;
+    for (let v = 0; v < size; v++) for (let j = 0; j < 2; j++) {
+      const x = right - j, y = ((right+1) & 2) === 0 ? size-1-v : v;
+      if (!fn[y][x] && bi < all.length*8) { m[y][x] = ((all[bi >>> 3] >>> (7 - (bi & 7))) & 1) === 1; bi++; }
+    }
+  }
+  const MASKS = [
+    (x,y) => (x+y)%2 === 0, (x,y) => y%2 === 0, (x,y) => x%3 === 0, (x,y) => (x+y)%3 === 0,
+    (x,y) => (Math.floor(x/3)+Math.floor(y/2))%2 === 0, (x,y) => x*y%2 + x*y%3 === 0,
+    (x,y) => (x*y%2 + x*y%3)%2 === 0, (x,y) => ((x+y)%2 + x*y%3)%2 === 0
+  ];
+  const applyMask = k => { for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) if (!fn[y][x] && MASKS[k](x, y)) m[y][x] = !m[y][x]; };
+  const penalty = () => {
+    let p = 0, dark = 0;
+    for (let y = 0; y < size; y++) for (let axis = 0; axis < 2; axis++) {
+      let run = 1;
+      for (let x = 1; x <= size; x++) {
+        const same = x < size && (axis ? m[x][y] === m[x-1][y] : m[y][x] === m[y][x-1]);
+        if (same) run++; else { if (run >= 5) p += run - 2; run = 1; }
+      }
+    }
+    for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) {
+      if (m[y][x]) dark++;
+      if (x < size-1 && y < size-1 && m[y][x] === m[y][x+1] && m[y][x] === m[y+1][x] && m[y][x] === m[y+1][x+1]) p += 3;
+    }
+    return p + Math.floor(Math.abs(dark*20 - size*size*10) / (size*size)) * 10;
+  };
+  let best = 0, bestP = Infinity;
+  for (let k = 0; k < 8; k++) { applyMask(k); fmt(k); const p = penalty(); if (p < bestP) { bestP = p; best = k; } applyMask(k); }
+  applyMask(best); fmt(best);
+  return m;
+}
+
+// ============================================================
+//  SHARE SHEET (manifest item 7)
+// ============================================================
+const PORTAL_URL = "https://augustineiacopelli.github.io/appaday/";
+let shareCurrent = null, shareReturnFocus = null;
+function drawQR(url) {
+  const cv = document.getElementById("share-qr");
+  const m = qrMatrix(url);
+  const ctx = cv.getContext("2d");
+  if (!m) { ctx.clearRect(0, 0, cv.width, cv.height); return; }
+  const quiet = 4, n = m.length + quiet * 2;
+  const scale = Math.max(2, Math.ceil(240 * (window.devicePixelRatio || 1) / n));
+  cv.width = cv.height = n * scale;
+  ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, cv.width, cv.height);
+  ctx.fillStyle = "#0f0e0c";
+  for (let y = 0; y < m.length; y++) for (let x = 0; x < m.length; x++) if (m[y][x]) ctx.fillRect((x + quiet) * scale, (y + quiet) * scale, scale, scale);
+}
+function openShare(url, title, label) {
+  shareCurrent = { url, title };
+  shareReturnFocus = document.activeElement;
+  document.getElementById("share-eyebrow").textContent = label;
+  document.getElementById("share-title").textContent = title;
+  document.getElementById("share-url").textContent = url;
+  document.getElementById("share-copy").textContent = "Copy link";
+  document.getElementById("share-native").hidden = !navigator.share;
+  drawQR(url);
+  document.getElementById("share-sheet").classList.add("open");
+  document.getElementById("share-done").focus();
+}
+function closeShare() {
+  document.getElementById("share-sheet").classList.remove("open");
+  if (shareReturnFocus && shareReturnFocus.focus) shareReturnFocus.focus();
+}
+(function initShare(){
+  const sheet = document.getElementById("share-sheet");
+  document.getElementById("share-portal").addEventListener("click", () => openShare(PORTAL_URL, "AppADay", "The whole portfolio"));
+  document.getElementById("share-done").addEventListener("click", closeShare);
+  sheet.addEventListener("click", (e) => { if (e.target === sheet) closeShare(); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && sheet.classList.contains("open")) closeShare(); });
+  document.getElementById("share-native").addEventListener("click", async () => {
+    if (!shareCurrent) return;
+    try { await navigator.share({ title: shareCurrent.title, text: shareCurrent.title + " from AppADay", url: shareCurrent.url }); } catch (err) { /* cancelled */ }
+  });
+  document.getElementById("share-copy").addEventListener("click", async () => {
+    if (!shareCurrent) return;
+    const btn = document.getElementById("share-copy");
+    let ok = false;
+    try { await navigator.clipboard.writeText(shareCurrent.url); ok = true; } catch (err) {
+      try {
+        const t = document.createElement("textarea");
+        t.value = shareCurrent.url; t.setAttribute("readonly", ""); t.style.position = "absolute"; t.style.left = "-9999px";
+        document.body.appendChild(t); t.select(); ok = document.execCommand("copy"); document.body.removeChild(t);
+      } catch (e2) { ok = false; }
+    }
+    btn.textContent = ok ? "Copied" : "Copy failed";
+  });
+})();
 
 // ============================================================
 //  RENDER
