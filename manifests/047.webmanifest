@@ -1,0 +1,36 @@
+{
+ "name": "Hop Runner",
+ "short_name": "Hop Runner",
+ "id": "https://augustineiacopelli.github.io/appaday-047-hop-runner/",
+ "start_url": "https://augustineiacopelli.github.io/appaday-047-hop-runner/",
+ "scope": "https://augustineiacopelli.github.io/appaday-047-hop-runner/",
+ "display": "standalone",
+ "background_color": "#0F0E0C",
+ "theme_color": "#276EB7",
+ "icons": [
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/047.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/047.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/047.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/047.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

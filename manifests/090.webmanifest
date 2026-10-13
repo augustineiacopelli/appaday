@@ -1,0 +1,36 @@
+{
+ "name": "Syllabus Skimmer",
+ "short_name": "Syllabus",
+ "id": "https://augustineiacopelli.github.io/appaday-090-syllabus-skimmer/",
+ "start_url": "https://augustineiacopelli.github.io/appaday-090-syllabus-skimmer/",
+ "scope": "https://augustineiacopelli.github.io/appaday-090-syllabus-skimmer/",
+ "display": "standalone",
+ "background_color": "#0F0E0C",
+ "theme_color": "#1F7A8C",
+ "icons": [
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/090.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/090.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/090.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/090.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

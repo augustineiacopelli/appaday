@@ -1,0 +1,36 @@
+{
+ "name": "Nag Card",
+ "short_name": "Nag Card",
+ "id": "https://augustineiacopelli.github.io/appaday-127-nag-card/",
+ "start_url": "https://augustineiacopelli.github.io/appaday-127-nag-card/",
+ "scope": "https://augustineiacopelli.github.io/appaday-127-nag-card/",
+ "display": "standalone",
+ "background_color": "#0F0E0C",
+ "theme_color": "#C8401A",
+ "icons": [
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/127.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/127.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/127.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/127.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

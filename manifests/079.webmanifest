@@ -1,0 +1,36 @@
+{
+ "name": "Rosette",
+ "short_name": "Rosette",
+ "id": "https://augustineiacopelli.github.io/appaday-079-rosette/",
+ "start_url": "https://augustineiacopelli.github.io/appaday-079-rosette/",
+ "scope": "https://augustineiacopelli.github.io/appaday-079-rosette/",
+ "display": "standalone",
+ "background_color": "#0F0E0C",
+ "theme_color": "#A63D9E",
+ "icons": [
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/079.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/079.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/079.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/079.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

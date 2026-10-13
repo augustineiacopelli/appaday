@@ -1,0 +1,36 @@
+{
+ "name": "Meeting Cost Ticker",
+ "short_name": "Mtg Cost",
+ "id": "https://augustineiacopelli.github.io/appaday-084-meeting-cost-ticker/",
+ "start_url": "https://augustineiacopelli.github.io/appaday-084-meeting-cost-ticker/",
+ "scope": "https://augustineiacopelli.github.io/appaday-084-meeting-cost-ticker/",
+ "display": "standalone",
+ "background_color": "#0F0E0C",
+ "theme_color": "#C8401A",
+ "icons": [
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/084.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/084.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/084.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/084.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

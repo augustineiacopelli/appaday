@@ -1,0 +1,36 @@
+{
+ "name": "Service Hours Log",
+ "short_name": "Service Hrs",
+ "id": "https://augustineiacopelli.github.io/appaday-154-service-hours-log/",
+ "start_url": "https://augustineiacopelli.github.io/appaday-154-service-hours-log/",
+ "scope": "https://augustineiacopelli.github.io/appaday-154-service-hours-log/",
+ "display": "standalone",
+ "background_color": "#0F0E0C",
+ "theme_color": "#6A4C93",
+ "icons": [
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/154.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/154.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/154.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/154.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

@@ -1,0 +1,36 @@
+{
+ "name": "Brew Economics",
+ "short_name": "Brew Econ",
+ "id": "https://augustineiacopelli.github.io/appaday-132-brew-economics/",
+ "start_url": "https://augustineiacopelli.github.io/appaday-132-brew-economics/",
+ "scope": "https://augustineiacopelli.github.io/appaday-132-brew-economics/",
+ "display": "standalone",
+ "background_color": "#0F0E0C",
+ "theme_color": "#B8860B",
+ "icons": [
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/132.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/132.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/132.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/132.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

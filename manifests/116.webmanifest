@@ -1,0 +1,36 @@
+{
+ "name": "Latin Phrase of the Day",
+ "short_name": "Latin",
+ "id": "https://augustineiacopelli.github.io/appaday-116-latin-phrase-of-the-day/",
+ "start_url": "https://augustineiacopelli.github.io/appaday-116-latin-phrase-of-the-day/",
+ "scope": "https://augustineiacopelli.github.io/appaday-116-latin-phrase-of-the-day/",
+ "display": "standalone",
+ "background_color": "#0F0E0C",
+ "theme_color": "#1F7A8C",
+ "icons": [
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/116.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/116.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/116.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/116.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

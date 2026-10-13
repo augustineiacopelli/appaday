@@ -1,0 +1,36 @@
+{
+ "name": "Knot Locker",
+ "short_name": "Knot Locker",
+ "id": "https://augustineiacopelli.github.io/appaday-107-knot-locker/",
+ "start_url": "https://augustineiacopelli.github.io/appaday-107-knot-locker/",
+ "scope": "https://augustineiacopelli.github.io/appaday-107-knot-locker/",
+ "display": "standalone",
+ "background_color": "#0F0E0C",
+ "theme_color": "#1F7A8C",
+ "icons": [
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/107.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/107.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/107.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/107.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

@@ -1,0 +1,36 @@
+{
+ "name": "Rainbow Readers 2.0",
+ "short_name": "Readers 2",
+ "id": "https://augustineiacopelli.github.io/appaday-151-rainbow-readers-2/",
+ "start_url": "https://augustineiacopelli.github.io/appaday-151-rainbow-readers-2/",
+ "scope": "https://augustineiacopelli.github.io/appaday-151-rainbow-readers-2/",
+ "display": "standalone",
+ "background_color": "#0F0E0C",
+ "theme_color": "#1F7A8C",
+ "icons": [
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/151.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/151.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/151.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/151.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

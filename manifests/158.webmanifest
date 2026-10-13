@@ -1,0 +1,36 @@
+{
+ "name": "Gratitude Jar",
+ "short_name": "Gratitude",
+ "id": "https://augustineiacopelli.github.io/appaday-158-gratitude-jar/",
+ "start_url": "https://augustineiacopelli.github.io/appaday-158-gratitude-jar/",
+ "scope": "https://augustineiacopelli.github.io/appaday-158-gratitude-jar/",
+ "display": "standalone",
+ "background_color": "#0F0E0C",
+ "theme_color": "#5B4BC4",
+ "icons": [
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/158.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/158.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/158.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/158.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

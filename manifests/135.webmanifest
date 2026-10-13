@@ -1,0 +1,36 @@
+{
+ "name": "Petal Post",
+ "short_name": "Petal Post",
+ "id": "https://augustineiacopelli.github.io/appaday-135-petal-post/",
+ "start_url": "https://augustineiacopelli.github.io/appaday-135-petal-post/",
+ "scope": "https://augustineiacopelli.github.io/appaday-135-petal-post/",
+ "display": "standalone",
+ "background_color": "#0F0E0C",
+ "theme_color": "#A63D9E",
+ "icons": [
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/135.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/135.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/135.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/135.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

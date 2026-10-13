@@ -1,0 +1,36 @@
+{
+ "name": "Cloud Reader",
+ "short_name": "Cloud Read",
+ "id": "https://augustineiacopelli.github.io/appaday-131-cloud-reader/",
+ "start_url": "https://augustineiacopelli.github.io/appaday-131-cloud-reader/",
+ "scope": "https://augustineiacopelli.github.io/appaday-131-cloud-reader/",
+ "display": "standalone",
+ "background_color": "#0F0E0C",
+ "theme_color": "#1F7A8C",
+ "icons": [
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/131.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/131.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/131.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/131.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

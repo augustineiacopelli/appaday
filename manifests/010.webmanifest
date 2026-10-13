@@ -1,0 +1,36 @@
+{
+ "name": "Magic 8 Ball",
+ "short_name": "Magic 8 Ball",
+ "id": "https://augustineiacopelli.github.io/appaday-010-magic-8-ball/",
+ "start_url": "https://augustineiacopelli.github.io/appaday-010-magic-8-ball/",
+ "scope": "https://augustineiacopelli.github.io/appaday-010-magic-8-ball/",
+ "display": "standalone",
+ "background_color": "#0F0E0C",
+ "theme_color": "#5B4BC4",
+ "icons": [
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/010.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/010.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/010.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/010.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

@@ -22,6 +22,8 @@ Put this block in the app's `<head>`, directly after the viewport meta. Replace 
 
 The first two give the icon and its label. The last three make the saved icon launch full screen without the Safari address bar, with a black status bar.
 
+Directly after this block, every app also carries the two Save to Phone lines (a manifest link and the `save.js` script). See SAVE.md.
+
 ## Every time an app ships
 
 1. Include the tag block above in the new app's `index.html` before it is pushed.
@@ -36,6 +38,7 @@ The first two give the icon and its label. The last three make the saved icon la
 
    Commit only the new `icons/NNN.png` plus `icons/manifest.json`. If existing icons show as modified, discard those changes, because a newer Lucide release can redraw a glyph slightly.
 4. Push this repo in the same commit as the portal update, so the icon URL is live before anyone saves the app.
+5. Then run `python3 generate_save_assets.py` and commit the new `icons/192/NNN.png`, `icons/512/NNN.png`, and `manifests/NNN.webmanifest` in that same push (SAVE.md).
 
 ## Checking or repairing apps
 

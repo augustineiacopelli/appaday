@@ -1,0 +1,36 @@
+{
+ "name": "Tap to Color",
+ "short_name": "Tap Color",
+ "id": "https://augustineiacopelli.github.io/appaday-129-tap-to-color/",
+ "start_url": "https://augustineiacopelli.github.io/appaday-129-tap-to-color/",
+ "scope": "https://augustineiacopelli.github.io/appaday-129-tap-to-color/",
+ "display": "standalone",
+ "background_color": "#0F0E0C",
+ "theme_color": "#A63D9E",
+ "icons": [
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/129.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/129.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/129.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/129.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

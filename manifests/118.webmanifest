@@ -1,0 +1,36 @@
+{
+ "name": "Divine Mercy Chaplet Companion",
+ "short_name": "Mercy",
+ "id": "https://augustineiacopelli.github.io/appaday-118-divine-mercy-chaplet/",
+ "start_url": "https://augustineiacopelli.github.io/appaday-118-divine-mercy-chaplet/",
+ "scope": "https://augustineiacopelli.github.io/appaday-118-divine-mercy-chaplet/",
+ "display": "standalone",
+ "background_color": "#0F0E0C",
+ "theme_color": "#6A4C93",
+ "icons": [
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/118.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/118.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/118.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/118.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

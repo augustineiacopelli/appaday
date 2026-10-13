@@ -1,0 +1,36 @@
+{
+ "name": "Sivam Nocab",
+ "short_name": "Sivam",
+ "id": "https://augustineiacopelli.github.io/appaday-036-sivam-nocab/",
+ "start_url": "https://augustineiacopelli.github.io/appaday-036-sivam-nocab/",
+ "scope": "https://augustineiacopelli.github.io/appaday-036-sivam-nocab/",
+ "display": "standalone",
+ "background_color": "#0F0E0C",
+ "theme_color": "#1F7A8C",
+ "icons": [
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/036.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/036.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/036.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/036.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

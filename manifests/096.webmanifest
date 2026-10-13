@@ -1,0 +1,36 @@
+{
+ "name": "Card Duel",
+ "short_name": "Card Duel",
+ "id": "https://augustineiacopelli.github.io/appaday-096-card-duel/",
+ "start_url": "https://augustineiacopelli.github.io/appaday-096-card-duel/",
+ "scope": "https://augustineiacopelli.github.io/appaday-096-card-duel/",
+ "display": "standalone",
+ "background_color": "#0F0E0C",
+ "theme_color": "#276EB7",
+ "icons": [
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/096.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/096.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/096.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/096.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

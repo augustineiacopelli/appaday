@@ -69,6 +69,16 @@
        (iOS, iPadOS, or Android; iPhone by default on desktop). Reuses
        the .share-sheet/.share-card styles; closes on Done, backdrop
        tap, or Escape.
+    9. App save helper - save.js at the repo root plus manifests/NNN.webmanifest
+       and icons/192|512/NNN.png (generate_save_assets.py, see SAVE.md).
+       Every app head links its manifest and loads save.js, which shows a
+       phone-only "save to home screen" bar once per app, or immediately
+       when the URL has ?save=1. The card share sheet has an Open app /
+       Scan to save toggle (#share-mode, .ins-tab styles) that switches the
+       QR between the plain URL and URL?save=1; it is hidden for the
+       portal share. The portal links manifests/portfolio.webmanifest, and
+       the Save to Phone sheet shows #install-now (one tap Install) when
+       Android Chrome fires beforeinstallprompt.
   Update this manifest whenever a new portal feature is added.
   ==================================================================
 -->
@@ -79,6 +89,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link rel="manifest" href="https://augustineiacopelli.github.io/appaday/manifests/portfolio.webmanifest">
 <title>AppADay — Augustine Iacopelli</title>
 <meta name="description" content="One complete, functional, mobile-friendly web app, designed and shipped every day. A public archive of daily builds by Augustine Iacopelli, inspired by Jonathan Mann's Song A Day.">
 <meta property="og:type" content="website">
@@ -804,6 +815,8 @@
     font-family: 'DM Serif Display', serif; font-size: 26px;
     line-height: 1.1; color: var(--ink); margin: 6px 0 16px;
   }
+  .share-mode { margin: 0 0 14px; }
+  .share-mode[hidden] { display: none; }
   .share-qr-wrap {
     background: #fff; border-radius: 6px; padding: 10px;
     border: 1px solid var(--rule); display: inline-block;
@@ -929,6 +942,7 @@
     </div>
     <p class="ins-tip">Every AppADay app has its own icon and opens full screen with no browser bars. Save this portfolio to get all of them behind one icon.</p>
     <div class="share-actions">
+      <button type="button" class="share-primary" id="install-now" hidden>Install now</button>
       <button type="button" class="share-primary" id="install-share">Share a link</button>
       <button type="button" id="install-done">Done</button>
     </div>
@@ -940,7 +954,11 @@
     <div class="share-eyebrow" id="share-eyebrow">Share</div>
     <div class="share-title" id="share-title">AppADay</div>
     <div class="share-qr-wrap"><canvas id="share-qr" width="240" height="240" role="img" aria-label="QR code for the link below"></canvas></div>
-    <div class="share-hint">Point a phone camera at the code to open it.</div>
+    <div class="ins-tabs share-mode" id="share-mode" role="tablist" aria-label="What the code does" hidden>
+      <button type="button" class="ins-tab" role="tab" id="share-mode-open" aria-selected="true">Open app</button>
+      <button type="button" class="ins-tab" role="tab" id="share-mode-save" aria-selected="false">Scan to save</button>
+    </div>
+    <div class="share-hint" id="share-hint">Point a phone camera at the code to open it.</div>
     <div class="share-url" id="share-url"></div>
     <div class="share-actions">
       <button type="button" class="share-primary" id="share-native" hidden>Share</button>
@@ -2202,15 +2220,30 @@ function drawQR(url) {
   ctx.fillStyle = "#0f0e0c";
   for (let y = 0; y < m.length; y++) for (let x = 0; x < m.length; x++) if (m[y][x]) ctx.fillRect((x + quiet) * scale, (y + quiet) * scale, scale, scale);
 }
+function shareModeUrl(base, mode) {
+  return mode === "save" ? base + (base.indexOf("?") < 0 ? "?" : "&") + "save=1" : base;
+}
+function setShareMode(mode) {
+  if (!shareCurrent) return;
+  shareCurrent.mode = mode;
+  shareCurrent.url = shareModeUrl(shareCurrent.base, mode);
+  document.getElementById("share-mode-open").setAttribute("aria-selected", mode === "open" ? "true" : "false");
+  document.getElementById("share-mode-save").setAttribute("aria-selected", mode === "save" ? "true" : "false");
+  document.getElementById("share-hint").textContent = mode === "save"
+    ? "Scanning opens the app with steps to save it to the home screen."
+    : "Point a phone camera at the code to open it.";
+  document.getElementById("share-url").textContent = shareCurrent.url;
+  document.getElementById("share-copy").textContent = "Copy link";
+  drawQR(shareCurrent.url);
+}
 function openShare(url, title, label) {
-  shareCurrent = { url, title };
+  shareCurrent = { base: url, url, title, mode: "open" };
   shareReturnFocus = document.activeElement;
   document.getElementById("share-eyebrow").textContent = label;
   document.getElementById("share-title").textContent = title;
-  document.getElementById("share-url").textContent = url;
-  document.getElementById("share-copy").textContent = "Copy link";
+  document.getElementById("share-mode").hidden = (url === PORTAL_URL);
   document.getElementById("share-native").hidden = !navigator.share;
-  drawQR(url);
+  setShareMode("open");
   document.getElementById("share-sheet").classList.add("open");
   document.getElementById("share-done").focus();
 }
@@ -2222,6 +2255,13 @@ function closeShare() {
   const sheet = document.getElementById("share-sheet");
   document.getElementById("share-portal").addEventListener("click", () => openShare(PORTAL_URL, "AppADay", "The whole portfolio"));
   document.getElementById("share-done").addEventListener("click", closeShare);
+  document.getElementById("share-mode-open").addEventListener("click", () => setShareMode("open"));
+  document.getElementById("share-mode-save").addEventListener("click", () => setShareMode("save"));
+  document.getElementById("share-mode").addEventListener("keydown", (e) => {
+    if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+    const next = shareCurrent && shareCurrent.mode === "open" ? "save" : "open";
+    setShareMode(next); document.getElementById("share-mode-" + next).focus();
+  });
   sheet.addEventListener("click", (e) => { if (e.target === sheet) closeShare(); });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape" && sheet.classList.contains("open")) closeShare(); });
   document.getElementById("share-native").addEventListener("click", async () => {
@@ -2260,6 +2300,18 @@ function setInstallTab(which) {
   });
 }
 let installReturnFocus = null;
+let installDeferred = null;
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  installDeferred = e;
+  const b = document.getElementById("install-now");
+  if (b) b.hidden = false;
+});
+window.addEventListener("appinstalled", () => {
+  installDeferred = null;
+  const b = document.getElementById("install-now");
+  if (b) b.hidden = true;
+});
 function openInstall() {
   installReturnFocus = document.activeElement;
   setInstallTab(detectPlatform());
@@ -2274,6 +2326,12 @@ function closeInstall() {
   const sheet = document.getElementById("install-sheet");
   document.getElementById("install-portal").addEventListener("click", openInstall);
   document.getElementById("install-done").addEventListener("click", closeInstall);
+  document.getElementById("install-now").addEventListener("click", async () => {
+    if (!installDeferred) return;
+    const p = installDeferred; installDeferred = null;
+    document.getElementById("install-now").hidden = true;
+    try { p.prompt(); const r = await p.userChoice; if (r && r.outcome === "accepted") closeInstall(); } catch (err) { /* ignore */ }
+  });
   document.getElementById("install-share").addEventListener("click", () => {
     closeInstall();
     openShare(PORTAL_URL, "AppADay", "The whole portfolio");

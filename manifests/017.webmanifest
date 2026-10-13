@@ -1,0 +1,36 @@
+{
+ "name": "Session Scribe",
+ "short_name": "Scribe",
+ "id": "https://augustineiacopelli.github.io/appaday-017-session-scribe/",
+ "start_url": "https://augustineiacopelli.github.io/appaday-017-session-scribe/",
+ "scope": "https://augustineiacopelli.github.io/appaday-017-session-scribe/",
+ "display": "standalone",
+ "background_color": "#0F0E0C",
+ "theme_color": "#C8401A",
+ "icons": [
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/017.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/017.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/017.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/017.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

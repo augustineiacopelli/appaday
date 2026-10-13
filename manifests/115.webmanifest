@@ -1,0 +1,36 @@
+{
+ "name": "Basket Ledger",
+ "short_name": "Basket",
+ "id": "https://augustineiacopelli.github.io/appaday-115-basket-ledger/",
+ "start_url": "https://augustineiacopelli.github.io/appaday-115-basket-ledger/",
+ "scope": "https://augustineiacopelli.github.io/appaday-115-basket-ledger/",
+ "display": "standalone",
+ "background_color": "#0F0E0C",
+ "theme_color": "#B8860B",
+ "icons": [
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/115.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/115.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/115.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/115.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

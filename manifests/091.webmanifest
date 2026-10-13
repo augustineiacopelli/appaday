@@ -1,0 +1,36 @@
+{
+ "name": "Grade Runway",
+ "short_name": "Grade Run",
+ "id": "https://augustineiacopelli.github.io/appaday-091-grade-runway/",
+ "start_url": "https://augustineiacopelli.github.io/appaday-091-grade-runway/",
+ "scope": "https://augustineiacopelli.github.io/appaday-091-grade-runway/",
+ "display": "standalone",
+ "background_color": "#0F0E0C",
+ "theme_color": "#B8860B",
+ "icons": [
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/091.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/091.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/091.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/091.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

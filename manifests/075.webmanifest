@@ -1,0 +1,36 @@
+{
+ "name": "Fiefdom",
+ "short_name": "Fiefdom",
+ "id": "https://augustineiacopelli.github.io/appaday-075-fiefdom/",
+ "start_url": "https://augustineiacopelli.github.io/appaday-075-fiefdom/",
+ "scope": "https://augustineiacopelli.github.io/appaday-075-fiefdom/",
+ "display": "standalone",
+ "background_color": "#0F0E0C",
+ "theme_color": "#276EB7",
+ "icons": [
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/075.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/075.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/075.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/075.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

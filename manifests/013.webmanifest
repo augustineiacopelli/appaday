@@ -1,0 +1,36 @@
+{
+ "name": "Flick",
+ "short_name": "Flick",
+ "id": "https://augustineiacopelli.github.io/appaday-013-flick/",
+ "start_url": "https://augustineiacopelli.github.io/appaday-013-flick/",
+ "scope": "https://augustineiacopelli.github.io/appaday-013-flick/",
+ "display": "standalone",
+ "background_color": "#0F0E0C",
+ "theme_color": "#276EB7",
+ "icons": [
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/013.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/013.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/013.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/013.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

@@ -1,0 +1,36 @@
+{
+ "name": "Delegation Draft",
+ "short_name": "Delegate",
+ "id": "https://augustineiacopelli.github.io/appaday-140-delegation-draft/",
+ "start_url": "https://augustineiacopelli.github.io/appaday-140-delegation-draft/",
+ "scope": "https://augustineiacopelli.github.io/appaday-140-delegation-draft/",
+ "display": "standalone",
+ "background_color": "#0F0E0C",
+ "theme_color": "#C8401A",
+ "icons": [
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/140.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/140.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/140.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/140.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

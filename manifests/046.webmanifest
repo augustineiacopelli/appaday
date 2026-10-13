@@ -1,0 +1,36 @@
+{
+ "name": "Time to Sober",
+ "short_name": "Sober",
+ "id": "https://augustineiacopelli.github.io/appaday-046-time-to-sober/",
+ "start_url": "https://augustineiacopelli.github.io/appaday-046-time-to-sober/",
+ "scope": "https://augustineiacopelli.github.io/appaday-046-time-to-sober/",
+ "display": "standalone",
+ "background_color": "#0F0E0C",
+ "theme_color": "#D14D72",
+ "icons": [
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/046.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/046.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/046.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/046.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

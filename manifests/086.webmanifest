@@ -1,0 +1,36 @@
+{
+ "name": "Subject Line Lab",
+ "short_name": "Subject Lab",
+ "id": "https://augustineiacopelli.github.io/appaday-086-subject-line-lab/",
+ "start_url": "https://augustineiacopelli.github.io/appaday-086-subject-line-lab/",
+ "scope": "https://augustineiacopelli.github.io/appaday-086-subject-line-lab/",
+ "display": "standalone",
+ "background_color": "#0F0E0C",
+ "theme_color": "#C8401A",
+ "icons": [
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/086.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/086.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/086.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/086.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

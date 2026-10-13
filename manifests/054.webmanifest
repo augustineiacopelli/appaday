@@ -1,0 +1,36 @@
+{
+ "name": "Examen",
+ "short_name": "Examen",
+ "id": "https://augustineiacopelli.github.io/appaday-054-daily-examen/",
+ "start_url": "https://augustineiacopelli.github.io/appaday-054-daily-examen/",
+ "scope": "https://augustineiacopelli.github.io/appaday-054-daily-examen/",
+ "display": "standalone",
+ "background_color": "#0F0E0C",
+ "theme_color": "#6A4C93",
+ "icons": [
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/054.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/054.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/054.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/054.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

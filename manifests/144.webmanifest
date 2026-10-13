@@ -1,0 +1,36 @@
+{
+ "name": "Bulletin Brief",
+ "short_name": "Bulletin",
+ "id": "https://augustineiacopelli.github.io/appaday-144-bulletin-brief/",
+ "start_url": "https://augustineiacopelli.github.io/appaday-144-bulletin-brief/",
+ "scope": "https://augustineiacopelli.github.io/appaday-144-bulletin-brief/",
+ "display": "standalone",
+ "background_color": "#0F0E0C",
+ "theme_color": "#6A4C93",
+ "icons": [
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/144.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/144.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/144.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/144.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}
