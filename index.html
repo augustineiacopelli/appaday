@@ -61,6 +61,14 @@
        ECC M, versions 1 to 10, no CDN), plus native Share
        (navigator.share, hidden when unsupported) and Copy link. Closes
        on Done, backdrop tap, or Escape. Card share sits under the star.
+    8. Save to Phone - #install-sheet modal opened by the header
+       .share-pill.alt (#install-portal) beside Share, inside
+       .header-actions. iPhone and Android tabs (.ins-tab, role=tab)
+       with step lists for adding an app to the home screen as a full
+       screen web app. detectPlatform() preselects the visitor's tab
+       (iOS, iPadOS, or Android; iPhone by default on desktop). Reuses
+       the .share-sheet/.share-card styles; closes on Done, backdrop
+       tap, or Escape.
   Update this manifest whenever a new portal feature is added.
   ==================================================================
 -->
@@ -721,6 +729,45 @@
   .share-pill:hover { background: var(--accent); border-color: var(--accent); }
   .share-pill:active { transform: scale(0.96); }
   .share-pill:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .header-actions { display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
+  .share-pill.alt { background: transparent; color: var(--ink); }
+  .share-pill.alt:hover { background: var(--accent); border-color: var(--accent); color: var(--paper); }
+  .ins-tabs { display: flex; gap: 0; margin: 0 0 16px; border: 1px solid var(--ink); border-radius: 999px; padding: 3px; }
+  .ins-tab {
+    flex: 1 1 0; min-height: 40px; border: none; border-radius: 999px;
+    background: transparent; color: var(--ink); cursor: pointer;
+    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+  }
+  .ins-tab[aria-selected="true"] { background: var(--ink); color: var(--paper); }
+  .ins-tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .ins-panel { text-align: left; }
+  .ins-panel[hidden] { display: none; }
+  .ins-browser {
+    font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--muted); margin: 0 0 10px;
+  }
+  .ins-steps { list-style: none; counter-reset: ins; margin: 0 0 14px; padding: 0; }
+  .ins-steps li {
+    counter-increment: ins; position: relative; padding: 0 0 12px 38px;
+    font-size: 14px; line-height: 1.5; color: var(--ink);
+  }
+  .ins-steps li::before {
+    content: counter(ins); position: absolute; left: 0; top: -1px;
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--accent); color: #fff;
+    font-family: 'DM Mono', monospace; font-size: 12px; line-height: 26px; text-align: center;
+  }
+  .ins-steps b { font-weight: 600; }
+  .ins-ico {
+    display: inline-block; vertical-align: -3px; margin: 0 2px;
+    padding: 2px; border: 1px solid var(--rule); border-radius: 4px;
+    background: var(--paper-dark); box-sizing: content-box;
+  }
+  .ins-note {
+    font-size: 13px; line-height: 1.5; color: var(--muted);
+    background: var(--paper-dark); border-radius: 4px; padding: 10px 12px; margin: 0 0 16px;
+  }
+  .ins-tip { font-size: 13px; line-height: 1.5; color: var(--muted); text-align: left; margin: 0 0 16px; }
   .card-share {
     position: absolute;
     top: 50px; right: 14px;
@@ -788,7 +835,7 @@
   @media (max-width: 768px) {
     header { grid-template-columns: 1fr; padding: 40px 20px 32px; }
     .header-stats { flex-direction: row; align-items: flex-start; gap: 32px; flex-wrap: wrap; }
-    .share-pill { align-self: center; }
+    .header-actions { align-self: center; justify-content: flex-start; }
     .stat-block { text-align: left; }
     .filter-inner { padding: 10px 20px; }
     main { padding: 32px 20px 80px; }
@@ -816,7 +863,10 @@
       <div class="stat-number" id="streak-count">0</div>
       <div class="stat-label">Day Streak</div>
     </div>
-    <button type="button" class="share-pill" id="share-portal" aria-label="Share the AppADay portfolio with a QR code or link"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h3v3h-3zM18 18h3v3h-3zM18 14h3M14 18v3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>Share</button>
+    <div class="header-actions">
+      <button type="button" class="share-pill" id="share-portal" aria-label="Share the AppADay portfolio with a QR code or link"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h3v3h-3zM18 18h3v3h-3zM18 14h3M14 18v3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>Share</button>
+      <button type="button" class="share-pill alt" id="install-portal" aria-label="How to save an app to your phone's home screen"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v7M9 11l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Save to Phone</button>
+    </div>
   </div>
 </header>
 
@@ -848,6 +898,42 @@
 </div>
 
 <main id="main-content"></main>
+
+<div class="share-sheet" id="install-sheet" role="dialog" aria-modal="true" aria-labelledby="install-title">
+  <div class="share-card">
+    <div class="share-eyebrow">Home screen</div>
+    <div class="share-title" id="install-title">Save to Phone</div>
+    <div class="ins-tabs" role="tablist" aria-label="Phone type">
+      <button type="button" class="ins-tab" role="tab" id="ins-tab-ios" aria-controls="ins-ios" aria-selected="true">iPhone / iPad</button>
+      <button type="button" class="ins-tab" role="tab" id="ins-tab-android" aria-controls="ins-android" aria-selected="false">Android</button>
+    </div>
+    <div class="ins-panel" id="ins-ios" role="tabpanel" aria-labelledby="ins-tab-ios">
+      <div class="ins-browser">In Safari</div>
+      <ol class="ins-steps">
+        <li>Open the app you want, or this portfolio, in <b>Safari</b>.</li>
+        <li>Tap the <b>Share</b> button <svg class="ins-ico" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 15V3M7 8l5-5 5 5M5 12v8h14v-8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> in the toolbar. On newer iOS it may be inside the <svg class="ins-ico" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="5" cy="12" r="2" fill="currentColor"/><circle cx="12" cy="12" r="2" fill="currentColor"/><circle cx="19" cy="12" r="2" fill="currentColor"/></svg> <b>More</b> menu first.</li>
+        <li>Scroll down and tap <b>Add to Home Screen</b>.</li>
+        <li>Leave <b>Open as Web App</b> switched on if you see it, then tap <b>Add</b>.</li>
+      </ol>
+      <div class="ins-note">Chrome on iPhone works too: tap <svg class="ins-ico" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 15V3M7 8l5-5 5 5M5 12v8h14v-8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> beside the address bar, then <b>Add to Home Screen</b>.</div>
+    </div>
+    <div class="ins-panel" id="ins-android" role="tabpanel" aria-labelledby="ins-tab-android" hidden>
+      <div class="ins-browser">In Chrome</div>
+      <ol class="ins-steps">
+        <li>Open the app you want, or this portfolio, in <b>Chrome</b>.</li>
+        <li>Tap the <svg class="ins-ico" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="12" cy="5" r="2" fill="currentColor"/><circle cx="12" cy="12" r="2" fill="currentColor"/><circle cx="12" cy="19" r="2" fill="currentColor"/></svg> <b>menu</b> at the top right.</li>
+        <li>Tap <b>Add to Home screen</b> (some phones say <b>Install app</b>).</li>
+        <li>Tap <b>Add</b> or <b>Install</b>, then confirm placing the icon.</li>
+      </ol>
+      <div class="ins-note">Samsung Internet: tap the menu at the bottom right, then <b>Add page to</b> and <b>Home screen</b>.</div>
+    </div>
+    <p class="ins-tip">Every AppADay app has its own icon and opens full screen with no browser bars. Save this portfolio to get all of them behind one icon.</p>
+    <div class="share-actions">
+      <button type="button" class="share-primary" id="install-share">Share a link</button>
+      <button type="button" id="install-done">Done</button>
+    </div>
+  </div>
+</div>
 
 <div class="share-sheet" id="share-sheet" role="dialog" aria-modal="true" aria-labelledby="share-title">
   <div class="share-card">
@@ -2155,6 +2241,52 @@ function closeShare() {
     }
     btn.textContent = ok ? "Copied" : "Copy failed";
   });
+})();
+
+// ============================================================
+//  SAVE TO PHONE SHEET (manifest item 8)
+// ============================================================
+function detectPlatform() {
+  const ua = navigator.userAgent || "";
+  if (/Android/i.test(ua)) return "android";
+  if (/iPhone|iPad|iPod/i.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1)) return "ios";
+  return "ios";
+}
+function setInstallTab(which) {
+  ["ios", "android"].forEach(k => {
+    const on = k === which;
+    document.getElementById("ins-tab-" + k).setAttribute("aria-selected", on ? "true" : "false");
+    document.getElementById("ins-" + k).hidden = !on;
+  });
+}
+let installReturnFocus = null;
+function openInstall() {
+  installReturnFocus = document.activeElement;
+  setInstallTab(detectPlatform());
+  document.getElementById("install-sheet").classList.add("open");
+  document.getElementById("install-done").focus();
+}
+function closeInstall() {
+  document.getElementById("install-sheet").classList.remove("open");
+  if (installReturnFocus && installReturnFocus.focus) installReturnFocus.focus();
+}
+(function initInstall(){
+  const sheet = document.getElementById("install-sheet");
+  document.getElementById("install-portal").addEventListener("click", openInstall);
+  document.getElementById("install-done").addEventListener("click", closeInstall);
+  document.getElementById("install-share").addEventListener("click", () => {
+    closeInstall();
+    openShare(PORTAL_URL, "AppADay", "The whole portfolio");
+  });
+  sheet.addEventListener("click", (e) => { if (e.target === sheet) closeInstall(); });
+  document.getElementById("ins-tab-ios").addEventListener("click", () => setInstallTab("ios"));
+  document.getElementById("ins-tab-android").addEventListener("click", () => setInstallTab("android"));
+  document.querySelector(".ins-tabs").addEventListener("keydown", (e) => {
+    if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+    const next = document.getElementById("ins-tab-ios").getAttribute("aria-selected") === "true" ? "android" : "ios";
+    setInstallTab(next); document.getElementById("ins-tab-" + next).focus();
+  });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && sheet.classList.contains("open")) closeInstall(); });
 })();
 
 // ============================================================
