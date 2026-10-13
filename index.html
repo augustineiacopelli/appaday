@@ -32,14 +32,21 @@
        opening the New view advances the marker so the badge clears, and
        the set stays fixed for the rest of that session. A first-ever
        visit is baselined to the latest date (caught up, empty New).
-    5. Search - #search-input in .filter-inner runs runSearch(), a flat
-       keyword match over num/name/desc/category with light suffix stemming
-       (stemToken, so "brewing" matches "brew"), plus a type-ahead
-       suggestion listbox (#search-suggest, buildSuggestions from app
-       names + category words) that completes what is typed. It overrides the filter
-       view WITHOUT changing currentFilter; clearing the box (#search-clear
-       or emptying it) restores the active filter, and clicking any filter
-       button clears the search.
+    5. Search - #search-input in .filter-inner runs runSearch(), an
+       ask-style ranked search with no AI. Every APPS entry MUST carry
+       kw:"..." (15 to 30 lowercase ASCII words: the problem it solves,
+       who it is for, synonyms, and the words someone would type when
+       they need it). scoreApps() strips filler words (SEARCH_STOP),
+       expands through SYN_GROUPS, and scores each app by field weight
+       (name 6, kw 3, category or AI 2, desc 1) times word rarity (IDF),
+       scaled by how many query ideas it covers, with stemming (stemToken),
+       prefix and one-typo matching, a name-phrase bonus, number lookup,
+       and "not/without X" exclusion. Results show a .card-why "Matched:"
+       line. The type-ahead listbox (#search-suggest, buildSuggestions
+       from app names, kw words, and category words) completes what is
+       typed. It overrides the filter view WITHOUT changing currentFilter;
+       clearing the box (#search-clear or emptying it) restores the
+       active filter, and clicking any filter button clears the search.
     6. AI Powered + Chronological views - filter buttons data-filter="ai"
        and data-filter="chrono". "AI Powered" is a flat, app-number-sorted
        grid of every entry with ai:true (coming_soon excluded), with a
@@ -336,6 +343,13 @@
     display: none;
   }
   .search-suggest.show { display: block; }
+  .card-why {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+    margin-top: 8px;
+  }
   .suggest-row {
     display: block;
     width: 100%;
@@ -745,7 +759,7 @@
     <button class="filter-btn" data-filter="U">Utility</button>
     <div class="search-wrap">
       <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 21l-4.3-4.3M11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-      <input id="search-input" class="search-input" type="search" placeholder="Search" aria-label="Search apps by keyword" autocomplete="off" aria-autocomplete="list">
+      <input id="search-input" class="search-input" type="search" placeholder="Search or ask" aria-label="Search apps by keyword or ask a question, such as a game for my kids" autocomplete="off" aria-autocomplete="list">
       <button id="search-clear" class="search-clear" type="button" aria-label="Clear search">&#215;</button>
       <div class="search-suggest" id="search-suggest" role="listbox" aria-label="Search suggestions"></div>
     </div>
@@ -762,190 +776,226 @@
 <script>
 // ============================================================
 //  APP REGISTRY — append new objects here to add apps
+//  Every entry needs kw:"..." search keywords (see manifest item 5).
 //  cat codes: C = Creative · D = Data · E = Educational · G = Games · H = Health · I = Interactive · P = Productivity · S = Spirituality · U = Utility
 // ============================================================
 const APPS = [
   {
     num:"001", name:"Reaction Timer", cat:"G", date:"2026-05-08",
     desc:"Wait for the screen to flash green — then tap as fast as you can. Tracks your last 5 attempts with a live bar chart and a running average. Under 180ms is elite.",
-    url:"https://augustineiacopelli.github.io/appaday-001-reaction-timer/"
+    url:"https://augustineiacopelli.github.io/appaday-001-reaction-timer/",
+    kw:"reflex reflexes speed fast quick reaction test time milliseconds tap click challenge compete score average benchmark brain game kids family how am i training"
   },
   {
     num:"002", name:"Stream Cleaner", cat:"G", date:"2026-05-09",
     desc:"Blast a colored deodorizing screen clean with a pressure washer before time runs out. Drag to aim — the stream arcs up and away, landing further back as you aim higher. Clear 80% to advance through 5 levels with increasing aim sway and a leaderboard that rewards speed.",
-    url:"https://augustineiacopelli.github.io/appaday-002-stream-cleaner/"
+    url:"https://augustineiacopelli.github.io/appaday-002-stream-cleaner/",
+    kw:"urinal screen pressure washer spray clean cleaning bathroom gross funny silly aim timed arcade levels leaderboard high score game potty humor kids shooter cleanup"
   },
   {
     num:"003", name:"Daily Scripture", cat:"S", date:"2026-05-10",
     desc:"A daily scripture companion that surfaces a random Bible verse from 50 passages spanning both Testaments. Tap for a new verse, see the reference and testament label.",
-    url:"https://augustineiacopelli.github.io/appaday-003-daily-scripture/"
+    url:"https://augustineiacopelli.github.io/appaday-003-daily-scripture/",
+    kw:"bible verse scripture random daily inspiration devotion reading word of god quote catholic christian faith old testament new pray devotional the day encourage"
   },
   {
     num:"004", name:"Tube Sort", cat:"U", date:"2026-05-11",
     desc:"Snap a screenshot of any Ball Sort puzzle and let AI parse the tubes automatically. Fill in unknowns with ?, step through the BFS solution move by move, or enter tubes manually.",
     url:"https://augustineiacopelli.github.io/appaday-004-tube-sort/",
+    kw:"ball sort water color puzzle solver solve stuck hint answer screenshot photo mobile game cheat walkthrough help solving key sorting level",
     ai:true
   },
   {
     num:"005", name:"Dad Joke Generator", cat:"C", date:"2026-05-12",
     desc:"Uses the Claude API to generate fresh, original dad jokes on demand. The punchline is hidden until you're ready — because the beat before the groan is half the joke. A groan meter scores each joke from 1 to 100.",
     url:"https://augustineiacopelli.github.io/appaday-005-dad-joke-generator/",
+    kw:"dad jokes puns humor funny laugh pun groan kids family comedy joke generator of the day make me corny cheesy ai",
     ai:true
   },
   {
     num:"006", name:"Life Calendar", cat:"D", date:"2026-05-13",
     desc:"Enter your birthdate and a life expectancy. Every week of your life rendered as a single mark — gold for weeks lived, red for the week you're in now, dark for the weeks still ahead.",
-    url:"https://augustineiacopelli.github.io/appaday-006-life-calendar/"
+    url:"https://augustineiacopelli.github.io/appaday-006-life-calendar/",
+    kw:"life in weeks mortality memento mori age birthday birthdate lifespan perspective time left visualize grid how many have i lived chart visualization"
   },
   {
     num:"007", name:"Still Standing", cat:"I", date:"2026-05-14",
     desc:"A personal encouragement app. Type what is weighing on your heart and receive a word of warmth drawn from 100 curated messages — each paired with a scripture verse. The input and response flip like a physical card.",
-    url:"https://augustineiacopelli.github.io/appaday-007-Still-Standing/"
+    url:"https://augustineiacopelli.github.io/appaday-007-Still-Standing/",
+    kw:"encouragement comfort hope sad stressed worried anxious struggling uplifting kind words support scripture verse feel better faith heavy heart grief discouraged lift me up bible catholic"
   },
   {
     num:"008", name:"Number Neighbors", cat:"G", date:"2026-05-15",
     desc:"The classic 15-puzzle across three grid sizes: 3×3, 4×4, and 5×5. Every shuffle is guaranteed solvable via parity checking. Tracks move count, elapsed time, and personal best per grid size.",
-    url:"https://augustineiacopelli.github.io/appaday-008-number-neighbors/"
+    url:"https://augustineiacopelli.github.io/appaday-008-number-neighbors/",
+    kw:"sliding puzzle fifteen 15 tile brain teaser logic numbers moves timer game classic slider kids"
   },
   {
     num:"009", name:"Focus Timer", cat:"H", date:"2026-05-16",
     desc:"A Pomodoro-style focus timer with configurable work and break intervals, a circular progress ring, and a clean fullscreen mode.",
-    url:"https://augustineiacopelli.github.io/appaday-009-focus-timer/"
+    url:"https://augustineiacopelli.github.io/appaday-009-focus-timer/",
+    kw:"pomodoro focus concentrate study work timer break productivity deep countdown interval sessions time management concentration"
   },
   {
     num:"010", name:"Magic 8 Ball", cat:"I", date:"2026-05-17",
     desc:"All 20 classic responses rendered inside a glowing blue triangle window — exactly as on the real toy. A history strip tracks your last five verdicts, color-coded by outcome type.",
-    url:"https://augustineiacopelli.github.io/appaday-010-magic-8-ball/"
+    url:"https://augustineiacopelli.github.io/appaday-010-magic-8-ball/",
+    kw:"magic eight ball 8 fortune yes or no question answer decide predict toy random fun for me ask a oracle teller game"
   },
   {
     num:"011", name:"Password Sculptor", cat:"U", date:"2026-05-18",
     desc:"Generates secure passwords using the browser's Web Crypto API. Control length, character sets, and ambiguous character exclusion. A live strength meter calculates Shannon entropy and labels the result from Very Weak through Fortress.",
-    url:"https://augustineiacopelli.github.io/appaday-011-password-sculptor/"
+    url:"https://augustineiacopelli.github.io/appaday-011-password-sculptor/",
+    kw:"password generator secure strong random passphrase security login credentials strength entropy safe make a account protect privacy"
   },
   {
     num:"012", name:"Prayer Intentions", cat:"S", date:"2026-05-19",
     desc:"A quiet, devotional app for capturing and praying through personal intentions. Add the names and intentions of those you're carrying in prayer, then work through them one card at a time.",
-    url:"https://augustineiacopelli.github.io/appaday-012-prayer-intentions/"
+    url:"https://augustineiacopelli.github.io/appaday-012-prayer-intentions/",
+    kw:"prayer list intentions pray for people requests remember intercession catholic devotion others journal intercessions faith"
   },
   {
     num:"013", name:"Flick", cat:"G", date:"2026-05-20",
     desc:"Two players take turns flicking pucks across a divided board. A gold blast token appears randomly — hit it to trigger a shockwave that sends every puck flying. Most pucks in the opponent's zone when all pucks are played wins.",
-    url:"https://augustineiacopelli.github.io/appaday-013-flick/"
+    url:"https://augustineiacopelli.github.io/appaday-013-flick/",
+    kw:"two player multiplayer flick pucks table game shuffleboard board friends pass and play physics with a friend versus local"
   },
   {
     num:"014", name:"Countdown Wall", cat:"P", date:"2026-05-21",
     desc:"A personal countdown tracker built for your phone's home screen. Add named events, assign a color, and see every upcoming date as a big, beautiful day count. Cards sort automatically — soonest first, past events last.",
-    url:"https://augustineiacopelli.github.io/appaday-014-countdown-wall/"
+    url:"https://augustineiacopelli.github.io/appaday-014-countdown-wall/",
+    kw:"countdown days until left event date deadline vacation birthday holiday wedding trip how long count down anniversary retirement graduation upcoming events home screen"
   },
   {
     num:"015", name:"Quest Log", cat:"P", date:"2026-05-22",
     desc:"A Minecraft-inspired homework tracker where assignments become quests. Check one off and earn a randomized achievement toast with XP. Level up to unlock new badge tiers — from Starter all the way to Grandmaster.",
-    url:"https://augustineiacopelli.github.io/appaday-015-quest-log/"
+    url:"https://augustineiacopelli.github.io/appaday-015-quest-log/",
+    kw:"homework tracker assignments school students kids teen gamified minecraft xp achievements levels due dates planner student organizer"
   },
   {
     num:"016", name:"Chug Roulette", cat:"G", date:"2026-05-23",
     desc:"A spin-the-wheel party drinking game inspired by the Beer Mile. Spin for a random challenge — chugs, waterfalls, rule-making, swaps, or a full DNF penalty. Add your group as Runners and the wheel cycles through players by name.",
-    url:"https://augustineiacopelli.github.io/appaday-016-chug-roulette/"
+    url:"https://augustineiacopelli.github.io/appaday-016-chug-roulette/",
+    kw:"drinking game party spin the wheel beer mile chug friends group bar adults roulette games ideas"
   },
   {
     num:"017", name:"Session Scribe", cat:"P", date:"2026-05-24",
     desc:"Record any conference session in the browser. The Web Speech API transcribes audio in real time. When you stop, Claude returns structured notes: a summary, Roman-numeral outline, key takeaways, notable quotes, and follow-up questions. Must be run in browser rather than as a web app.",
     url:"https://augustineiacopelli.github.io/appaday-017-session-scribe/",
+    kw:"record lecture transcribe transcription conference session notes speech to text voice recorder summary outline takeaways meeting dictation talks ai capture audio",
     ai:true
   },
   {
     num:"018", name:"Still Water", cat:"I", date:"2026-05-25",
     desc:"A meditative tap-to-explore experience. A dark, living pond with subtle caustic shimmer lines. Tap anywhere to cast ripples. Eight hidden objects wait to be found — land close enough and they surface with a glow. No timer. No fail state.",
-    url:"https://augustineiacopelli.github.io/appaday-018-still-water/"
+    url:"https://augustineiacopelli.github.io/appaday-018-still-water/",
+    kw:"calm relaxing pond water ripples meditative hidden objects peaceful zen explore stress relief no pressure relaxation chill unwind quiet down object game"
   },
   {
     num:"019", name:"Tone Translator", cat:"U", date:"2026-05-26",
     desc:"Paste any text and translate it into a different tone. Four options: Formal, Casual, Direct, and Warm. Claude rewrites your text while preserving the core meaning.",
     url:"https://augustineiacopelli.github.io/appaday-019-tone-translator/",
+    kw:"rewrite text tone change wording formal casual professional email message rephrase polite friendly paraphrase ai writing assistant soften sound edit",
     ai:true
   },
   {
     num:"020", name:"Rainbow Readers", cat:"E", date:"2026-05-27",
     desc:"A four-level phonics game for early readers ages 4–7. Tap the correct starting letter, identify full words, trace guide letters in rainbow ink with your finger, and progress through whole words one letter at a time.",
-    url:"https://augustineiacopelli.github.io/appaday-020-rainbow-readers/"
+    url:"https://augustineiacopelli.github.io/appaday-020-rainbow-readers/",
+    kw:"phonics reading learn to read kids children preschool kindergarten letters alphabet tracing early reader learning game toddler education literacy abc"
   },
   {
     num:"021", name:"Bolt Patrol", cat:"G", date:"2026-05-28",
     desc:"A Sonic-inspired side-scrolling runner. Roll through 8 zones, stomp enemies, collect rings, and survive long enough to destroy the Death Egg.",
-    url:"https://augustineiacopelli.github.io/appaday-021-bolt-patrol/"
+    url:"https://augustineiacopelli.github.io/appaday-021-bolt-patrol/",
+    kw:"sonic runner platformer side scroller arcade rings action retro jump game hedgehog speed run kids"
   },
   {
     num:"022", name:"Haiku Engine", cat:"C", date:"2026-05-29",
     desc:"Enter any topic or mood — morning fog, grief, a long flight home — and receive an original 5-7-5 haiku with a short reflection on the imagery choices that shaped it.",
     url:"https://augustineiacopelli.github.io/appaday-022-haiku-engine/",
+    kw:"haiku poem poetry write verse syllables creative writing mood ai poet japanese short nature imagery reflection inspiration",
     ai:true
   },
   {
     num:"023", name:"Beer Tasting Scorecard", cat:"U", date:"2026-05-30",
     desc:"Rate beers one at a time on four attributes with large tap-friendly sliders. Built for group tastings on the go — bus tours, tap rooms, homebrew club events.",
-    url:"https://augustineiacopelli.github.io/appaday-023-beer-tasting-scorecard/"
+    url:"https://augustineiacopelli.github.io/appaday-023-beer-tasting-scorecard/",
+    kw:"beer rating tasting notes score beers brewery taproom compare bjcp judging craft flight judge review log homebrew club sheet"
   },
   {
     num:"024", name:"Budget Ring", cat:"D", date:"2026-05-31",
     desc:"A spending visualizer that renders up to 8 budget categories as a live donut chart with percentage labels. Enter category names and amounts, watch the ring update instantly, and email yourself a plain-text report with one tap.",
-    url:"https://augustineiacopelli.github.io/appaday-024-budget-ring/"
+    url:"https://augustineiacopelli.github.io/appaday-024-budget-ring/",
+    kw:"budget spending money expenses donut chart categories personal finance where goes pie tracker household visualize"
   },
   {
     num:"025", name:"Chroma", cat:"C", date:"2026-06-01",
     desc:"Extract a full set of color palettes from any input color. Five ways to enter a color, seven palette sections generated instantly, every hex value click-to-copy, and a one-tap email to send your palette anywhere.",
-    url:"https://augustineiacopelli.github.io/appaday-025-chroma/"
+    url:"https://augustineiacopelli.github.io/appaday-025-chroma/",
+    kw:"color palette colours hex scheme complementary design branding web colors swatches generator pick match designer art"
   },
   {
     num:"026", name:"Tippy Tip", cat:"U", date:"2026-06-02",
     desc:"A mobile-friendly Italian tipping guide for travelers. Select your situation, enter relevant details, and get culturally accurate tip guidance — including whether a tip is expected, optional, or not needed, plus a phrase to say in Italian.",
-    url:"https://augustineiacopelli.github.io/appaday-026-tippy-tip/"
+    url:"https://augustineiacopelli.github.io/appaday-026-tippy-tip/",
+    kw:"italy italian tipping tip etiquette travel europe restaurant waiter how much to rome vacation phrases tips trip money manners"
   },
   {
     num:"027", name:"Habit Heatmap", cat:"P", date:"2026-06-03",
     desc:"Track up to five daily habits across the month with a GitHub-style heatmap grid. Tap any day to mark it done, watch your streak climb, and switch between habits instantly with the tab bar. Data lives in your browser — no account needed.",
-    url:"https://augustineiacopelli.github.io/appaday-027-habit-heatmap/"
+    url:"https://augustineiacopelli.github.io/appaday-027-habit-heatmap/",
+    kw:"habit tracker streak daily habits consistency goals routine heatmap calendar check off build streaks self improvement"
   },
   // — Add new apps below this line —
   {
     num:"028", name:"Pixel Quest", cat:"G", date:"2026-06-04",
     desc:"A full overworld RPG with a 60x38 tile world map, two castles with interior sub-maps, two villages with weapon shops and inns, eight enemy types, an XP and leveling system, equipment slots, and a final Lich King boss battle.",
-    url:"https://augustineiacopelli.github.io/appaday-028-pixel-quest/"
+    url:"https://augustineiacopelli.github.io/appaday-028-pixel-quest/",
+    kw:"rpg role playing game adventure quest dungeon retro pixel overworld leveling boss fight zelda final fantasy sword"
   },
   {
     num:"029", name:"Life Advocate", cat:"P", date:"2026-06-05",
     desc:"An AI-powered male advocate chat for men facing an unexpected pregnancy — guiding with love toward life-affirming decisions and connecting users to verified pro-life pregnancy resource centers nationwide.",
     url:"https://augustineiacopelli.github.io/appaday-029-life-advocate/",
+    kw:"pregnancy unexpected fathers dads men pro life support resource centers crisis advice fatherhood expecting baby help options",
     ai:true
   },
   {
     num:"030", name:"Sleep Curve", cat:"H", date:"2026-06-06",
     desc:"Log your bedtime and wake time each night and watch your sleep curve take shape. Color-coded durations, a 7-hour target line, nightly stats, and iOS Shortcuts support for one-tap automatic logging.",
-    url:"https://augustineiacopelli.github.io/appaday-030-sleep-curve/"
+    url:"https://augustineiacopelli.github.io/appaday-030-sleep-curve/",
+    kw:"sleep tracker bedtime wake up hours of log rest insomnia schedule chart quality how much tired health"
   },
   {
     num:"031", name:"Saints of the Day", cat:"S", date:"2026-06-07",
     desc:"A daily companion to the Roman Martyrology. Browse the principal saint for any day of the year, read their biography and a signature quote, and pray a monthly collect. Full 366-day coverage with a date picker and prev/next navigation.",
-    url:"https://augustineiacopelli.github.io/appaday-031-saints-of-the-day/"
+    url:"https://augustineiacopelli.github.io/appaday-031-saints-of-the-day/",
+    kw:"saints saint of the day feast catholic biography martyrology patron liturgical calendar lives holy men women daily today"
   },
   {
     num:"032", name:"Duck Season", cat:"G", date:"2026-06-08",
     desc:"A Duck Hunt-style browser game with canvas-drawn pixel art sprites and 8 weather scenes. Shoot ducks before they escape — 3 shared shots per wave, 5 waves per round, 24 rounds total. Miss over 50% of your shots and it's game over.",
-    url:"https://augustineiacopelli.github.io/appaday-032-duck-season/"
+    url:"https://augustineiacopelli.github.io/appaday-032-duck-season/",
+    kw:"duck hunt shooting game shooter arcade retro nintendo aim hunting birds shoot guns target practice pixel art waves rounds classic"
   },
   {
     num:"033", name:"Convert It", cat:"U", date:"2026-06-09",
     desc:"Instant unit conversion across 8 categories: Length, Weight, Temperature, Volume, Speed, Area, Data, and Time. Pick a category, choose your units, type a value, and get an instant result with the conversion formula displayed.",
-    url:"https://augustineiacopelli.github.io/appaday-033-convert-it/"
+    url:"https://augustineiacopelli.github.io/appaday-033-convert-it/",
+    kw:"unit converter conversion convert metric imperial inches centimeters feet meters pounds kilograms fahrenheit celsius miles kilometers cups liters measurement calculator recipe kitchen units temperature"
   },
   {
     num:"034", name:"LCR Dice", cat:"G", date:"2026-06-10",
     desc:"A full-featured browser version of the classic dice game Left Center Right. 3–8 players, circular table layout, configurable house rules (Dot-Dot-Dot, LCR Jackpot, Triple L/R/C), adjustable starting chips, and a lifetime chip bank that persists across sessions.",
-    url:"https://augustineiacopelli.github.io/appaday-034-lcr-dice/"
+    url:"https://augustineiacopelli.github.io/appaday-034-lcr-dice/",
+    kw:"dice game left center right lcr chips party family night group players chip tabletop house rules jackpot kids adults reunion"
   },
   {
     num:"035", name:"Meeting Distiller", cat:"P", date:"2026-06-11",
     desc:"Paste raw meeting notes and get an instant structured breakdown: summary, decisions, action items with owners and deadlines, and open questions. Then send each person their tasks directly via email with one tap.",
     url:"https://augustineiacopelli.github.io/appaday-035-meeting-distiller/",
+    kw:"meeting notes summary minutes action items decisions follow up email tasks organize ai work",
     ai:true
   },
   {
@@ -954,7 +1004,8 @@ const APPS = [
     cat:"E",
     date:"2026-06-12",
     desc:"A retro CRT-styled typing trainer with 7 lesson tracks covering home row, top row, full alphabet, numbers, common words, sentences, and symbols. Tracks live WPM and accuracy, grades each run S through D, and persists your best WPM and completion streak across sessions.",
-    url:"https://augustineiacopelli.github.io/appaday-036-sivam-nocab/"
+    url:"https://augustineiacopelli.github.io/appaday-036-sivam-nocab/",
+    kw:"typing practice speed keyboard touch wpm words per minute learn to type trainer retro game keyboarding skills faster"
   },
   {
     num:"037",
@@ -962,7 +1013,8 @@ const APPS = [
     cat:"G",
     date:"2026-06-13",
     desc:"A bar-themed Pac-Man clone starring a bartender chasing barley kernels past four barfly ghosts with classic chase, ambush, patrol, and flee AI. Hop cones turn the hunt around, pretzels add bonus points, and four themed venues — Tap Room, Biergarten, Nightclub, Venue — escalate the speed each level.",
-    url:"https://augustineiacopelli.github.io/appaday-037-last-call/"
+    url:"https://augustineiacopelli.github.io/appaday-037-last-call/",
+    kw:"pac man pacman maze arcade retro bar bartender ghosts classic game chase pellets remake beer"
   },
   {
     num: "038",
@@ -970,7 +1022,8 @@ const APPS = [
     cat: "S",
     date: "2026-06-14",
     desc: "A pilgrimage map of fifty Roman churches and sites holding saint relics, from St. Peter’s tomb and the True Cross fragments to St. Monica’s tomb and the martyrdom sites of the Appian Way. Tap pins for the relic story and address. Filter by Apostles, Passion, Marian, or Saints’ Tombs. Add personal pins (your hotel, a meeting spot) with My Places.",
-    url:"https://augustineiacopelli.github.io/appaday-038-relics-of-rome/"
+    url:"https://augustineiacopelli.github.io/appaday-038-relics-of-rome/",
+    kw:"rome churches relics pilgrimage map italy vatican saints travel catholic sites basilicas tourist where to see tombs peter paul trip guide"
   },
   {
     num:"039",
@@ -978,597 +1031,717 @@ const APPS = [
     cat:"G",
     date:"2026-06-15",
     desc:"Tap glowing fireflies drifting across a summer night sky to catch them in your jar. Each tap sends a firefly arcing into a glass jar at the bottom of the screen, where caught fireflies accumulate and pulse. Three difficulty levels with adjustable time limits.",
-    url:"https://augustineiacopelli.github.io/appaday-039-firefly-catcher/"
+    url:"https://augustineiacopelli.github.io/appaday-039-firefly-catcher/",
+    kw:"fireflies lightning bugs summer night tap game catch jar kids casual relaxing nature timer toddler"
   },
   {
     num:"040", name:"Kitchen Tamer", cat:"U", date:"2026-06-16",
     desc:"Upload photos of your fridge, freezer, and pantry — multiple shots per space — and Kitchen Tamer generates a realistic multi-day meal plan using what you already have, plus a shopping list for what’s missing. Email the plan directly from the app via Google Apps Script.",
     url:"https://augustineiacopelli.github.io/appaday-040-kitchen-tamer/",
+    kw:"meal plan planning what to cook dinner ideas fridge pantry leftovers recipes groceries shopping list food ingredients ai cooking can i make with have",
     ai:true
   },
   {
     num:"041", name:"Frame By Frame", cat:"C", date:"2026-06-17",
     desc:"A photo slideshow with five decorative frame styles — Polaroid, Gallery Mat, Film Strip, Gilded, and Borderless. Load photos from your device, set your interval, and let it run. Hide the UI for a clean full-screen view. Photos persist between sessions.",
-    url:"https://augustineiacopelli.github.io/appaday-041-frame-by-frame/"
+    url:"https://augustineiacopelli.github.io/appaday-041-frame-by-frame/",
+    kw:"photo slideshow picture frame digital photos display gallery family pictures show on a tablet polaroid film strip framed memories"
   },
   {
     num:"042", name:"Breath Guide", cat:"H", date:"2026-06-18",
     desc:"Meditative breathing guide with six researched patterns — Box, 4-7-8, Coherent, Wim Hof, Diaphragmatic, and Contemplative. An animated orb breathes with you. A built-in calendar tracks every day you practice and shows your current streak.",
-    url:"https://augustineiacopelli.github.io/appaday-042-breath-guide/"
+    url:"https://augustineiacopelli.github.io/appaday-042-breath-guide/",
+    kw:"breathing exercise breathwork box 4 7 8 calm anxiety stress relax meditation mindfulness breathe down panic relaxation wellness"
   },
   {
     num:"043", name:"Chore Quest", cat:"P", date:"2026-06-19",
     desc:"Gamified chore manager for kids. Parents assign quests with XP rewards and daily, weekly, or one-time frequency. Kids level up by completing chores and compete on a live sibling scoreboard.",
-    url:"https://augustineiacopelli.github.io/appaday-043-chore-quest/"
+    url:"https://augustineiacopelli.github.io/appaday-043-chore-quest/",
+    kw:"chores chore chart kids children allowance household tasks family rewards xp siblings motivate routine"
   },
   {
     num:"044", name:"Quarters Master", cat:"G", date:"2026-06-20",
     desc:"A bar-game skill challenge with three modes: solo Practice with an escalating-difficulty streak, 2-Player Pass and Play, and 2-Player vs CPU across four difficulty tiers. Two timed taps lock your power and aim — land the coin in the cup for a make, hit the bright zone for a perfect, and race to 7 cups.",
-    url:"https://augustineiacopelli.github.io/appaday-044-quarters-master/"
+    url:"https://augustineiacopelli.github.io/appaday-044-quarters-master/",
+    kw:"quarters bar game coin toss drinking skill shot party two player games bounce a quarter into glass cup pass and play versus cpu"
   },
   {
     num:"045", name:"Water Reminder", cat:"H", date:"2026-06-21",
     desc:"Tracks your hydration by comparing photos of your glass over time. Snap a photo, and Claude estimates the current fill level; compared against your last check-in, it calculates what you actually drank, asking about refills when needed. A filling glass shows progress toward your daily goal.",
     url:"https://augustineiacopelli.github.io/appaday-045-water-reminder/",
+    kw:"water intake hydration drink glass tracker hydrate reminder ounces health ai more goal how much did i photo wellness",
     ai:true
   },
   {
     num:"046", name:"Time to Sober", cat:"H", date:"2026-06-22",
     desc:"A blood alcohol estimator and live drinking-session tracker. Log drinks with start/finish times, watch a real-time BAC curve, and see live countdowns to the legal limit and to 0.000%. Includes a gender-aware what-you-may-be-feeling guide and saves your session automatically.",
-    url:"https://augustineiacopelli.github.io/appaday-046-time-to-sober/"
+    url:"https://augustineiacopelli.github.io/appaday-046-time-to-sober/",
+    kw:"bac blood alcohol drunk sober drinking drive safely how long until calculator legal limit safety am i ok to party"
   },
   {
     num:"047", name:"Hop Runner", cat:"G", date:"2026-06-23",
     desc:"A Mario-style side-scrolling platformer set in a brewery universe. Play as a mustachioed brewer running through hop gardens, malt caves, and fermentation factories — beer mug perpetually raised.",
-    url:"https://augustineiacopelli.github.io/appaday-047-hop-runner/"
+    url:"https://augustineiacopelli.github.io/appaday-047-hop-runner/",
+    kw:"mario platformer side scroller brewery beer brewer arcade jump retro game hops malt platform jumping kids"
   },
   {
     num:"048", name:"Tilt Racer", cat:"G", date:"2026-06-24",
     desc:"A 3D arcade racer you steer by tilting your device. Race 6,000m against 7 opponents on a winding neon-lit track. Side swipes, spin-outs, and a checkered finish line await.",
-    url:"https://augustineiacopelli.github.io/appaday-048-tilt-racer/"
+    url:"https://augustineiacopelli.github.io/appaday-048-tilt-racer/",
+    kw:"racing game car race driving tilt steer motion phone accelerometer gyroscope arcade controls steering wheel 3d"
   },
   {
     num:"049", name:"Pace Planner", cat:"H", date:"2026-06-25",
     desc:"Select a race distance from 5K to 50K, enter your goal time and fitness level, and get a personalized week-by-week training plan. Includes pace targets, a mileage ramp chart, and daily workout breakdowns across four research-backed training styles.",
-    url:"https://augustineiacopelli.github.io/appaday-049-pace-planner/"
+    url:"https://augustineiacopelli.github.io/appaday-049-pace-planner/",
+    kw:"running plan marathon half 5k 10k race training pace schedule runner coach couch to"
   },
   {
     num:"050", name:"Training Log", cat:"H", date:"2026-06-26",
     desc:"A personal run tracker with a weekly mileage bar chart, per-day dot summary, and full run history. Log distance, duration, workout type, feel, shoes, and notes. Stats update live: total miles, run count, this-week miles, and average pace.",
-    url:"https://augustineiacopelli.github.io/appaday-050-training-log/"
+    url:"https://augustineiacopelli.github.io/appaday-050-training-log/",
+    kw:"running log run tracker miles mileage workouts jogging runs shoes exercise journal workout diary per week fitness"
   },
   {
     num:"051", name:"Pace + Log", cat:"H", date:"2026-06-27",
     desc:"The complete running companion: build a personalized training plan by start date or race date, log every run against it, and track your pace vs. goal. Includes base training, mid-week onramp weeks, one-off day adjustments, and a live Today card showing today's prescribed workout.",
-    url:"https://augustineiacopelli.github.io/appaday-051-pace-log/"
+    url:"https://augustineiacopelli.github.io/appaday-051-pace-log/",
+    kw:"running plan training log marathon race pace runner schedule runs coach run with prep goal"
   },
   {
     num:"052", name:"QR Forge", cat:"U", date:"2026-06-27",
     desc:"Turn any URL or text into a scannable QR code. Set size, pick foreground and background colors, upload a center logo, and download a PNG in one tap.",
-    url:"https://augustineiacopelli.github.io/appaday-052-qr-forge/"
+    url:"https://augustineiacopelli.github.io/appaday-052-qr-forge/",
+    kw:"qr code generator link url barcode share website scan logo make a sharing flyer"
   },
   {
     num:"053", name:"The Decider", cat:"P", date:"2026-06-29",
     desc:"A weighted spinning wheel for any decision. Set odds for unlimited options, watch the wheel spin, and let it choose. Locked until your percentages add up to exactly 100%.",
-    url:"https://augustineiacopelli.github.io/appaday-053-the-decider/"
+    url:"https://augustineiacopelli.github.io/appaday-053-the-decider/",
+    kw:"decide decision maker spin wheel random choice pick for me cant options weighted odds randomizer choose spinner"
   },
   {
     num:"054", name:"Examen", cat:"S", date:"2026-06-30", ai:true,
     desc:"A nightly Ignatian Examen, five quiet movements from gratitude through grace. Breathe with a flickering candle through each step, explore the seven virtues before naming tomorrow's grace, and optionally reflect on the Sorrow movement with AI confession prep organized by the Ten Commandments.",
-    url:"https://augustineiacopelli.github.io/appaday-054-daily-examen/"
+    url:"https://augustineiacopelli.github.io/appaday-054-daily-examen/",
+    kw:"examen ignatian evening prayer night reflection review day conscience gratitude jesuit catholic daily faith"
   },
   {
     num:"055", name:"Morning Offering", cat:"S", date:"2026-07-01",
     desc:"A guided five-movement Morning Offering: silence and a slow breath, the full offering prayer revealed line by line, intentions for family and one named person, a seven-virtue choice for the day with a modal explaining each, and a closing invocation, paced by a sun rising from night to gold.",
-    url:"https://augustineiacopelli.github.io/appaday-055-morning-offering/"
+    url:"https://augustineiacopelli.github.io/appaday-055-morning-offering/",
+    kw:"morning offering prayer start the day catholic devotion intentions virtue daily faith pray in with god"
   },
   {
     num:"056", name:"Enrollment Funnel", cat:"D", date:"2026-07-02",
     desc:"A funnel chart for any multi-stage pipeline, from 2 to 8 customizable stages. Enter counts per stage and watch conversion rates compute live between steps. Paste rows to import data, adjust stages and labels from the settings gear, then export the finished funnel as a JPG. Styled in WSU black and Shocker Yellow.",
-    url:"https://augustineiacopelli.github.io/appaday-056-enrollment-funnel/"
+    url:"https://augustineiacopelli.github.io/appaday-056-enrollment-funnel/",
+    kw:"funnel chart conversion pipeline stages sales enrollment admissions marketing recruiting data visualization rates drop off"
   },
   {
     num:"057", name:"Liberty Lights", cat:"I", date:"2026-07-03",
     desc:"Tap the night sky to launch fireworks in six burst styles, from a gold Peony to a tri-color 250 Salute honoring the original colonies, or let Random Mix pick for you. Record a full show, play it back, and save or load it as a file. Auto Show, live sound, and a countdown to America's 250th.",
-    url:"https://augustineiacopelli.github.io/appaday-057-liberty-lights/"
+    url:"https://augustineiacopelli.github.io/appaday-057-liberty-lights/",
+    kw:"fireworks fourth of july independence day celebration night sky show patriotic america 4th fun"
   },
   {
     num:"058", name:"Civics Interview Practice", cat:"E", date:"2026-07-04",
     desc:"Civics Interview Practice recreates the real naturalization interview: choose the 2008 test, ten of one hundred questions, pass at six, or the 2025 test, twenty of one hundred twenty-eight, pass at twelve. Missed questions get reviewed afterward, best scores are tracked per version, and every session closes with a stamped federal notice of the result.",
-    url:"https://augustineiacopelli.github.io/appaday-058-civics-interview/"
+    url:"https://augustineiacopelli.github.io/appaday-058-civics-interview/",
+    kw:"citizenship test naturalization civics practice questions uscis us government history study quiz exam immigration interview"
   },
   {
     num:"059", name:"Mad Lib Parlor", cat:"C", date:"2026-07-05",
     desc:"Mad Lib Parlor turns four true-to-life stories, a parish potluck, a homebrew day, a campus meeting, a pilgrimage, into fill-in-the-blank mayhem. Pick a tale, feed it nouns and verbs, and watch it type itself out on parlor-game paper. Copy your masterpiece and share it.",
-    url:"https://augustineiacopelli.github.io/appaday-059-mad-lib-parlor/"
+    url:"https://augustineiacopelli.github.io/appaday-059-mad-lib-parlor/",
+    kw:"mad libs fill in the blank story word game nouns verbs silly funny party kids family"
   },
   {
     num:"060", name:"Task Manager", cat:"P", date:"2026-07-06",
     desc:"A full task manager rebuilt from a Google Apps Script tool into a standalone GitHub app. Add tasks with priority, location, minutes, and repeat rules, mark them done or snooze them, export an ICS event, and back up your list with a smart Merge or full Replace import. Optional cloud sync reconciles multiple devices through your own Apps Script Web App.",
-    url:"https://augustineiacopelli.github.io/appaday-060-task-manager/"
+    url:"https://augustineiacopelli.github.io/appaday-060-task-manager/",
+    kw:"to do list todo tasks task reminders priorities repeat recurring organize productivity calendar manager checklist chores errands snooze backup my day getting things done gtd"
   },
   {
     num:"061", name:"Language Flashcard Sprint", cat:"E", date:"2026-07-07", ai:true,
     desc:"Language Flashcard Sprint delivers five fresh vocabulary cards a day in a language of your choice, generated live by Claude. Flip each index card to reveal the translation and an example sentence, mark it known or still learning, and watch a chalkboard streak stamp grow as your word history builds day by day.",
-    url:"https://augustineiacopelli.github.io/appaday-061-language-flashcard-sprint/"
+    url:"https://augustineiacopelli.github.io/appaday-061-language-flashcard-sprint/",
+    kw:"language learning vocabulary flashcards spanish french italian latin german foreign study words translation ai learn a practice word of the day bilingual"
   },
   {
     num:"062", name:"Restore", cat:"H", date:"2026-07-08",
     desc:"A guided stretching and prayer app for winding down body and mind. Choose a cooldown, evening, or quick reset routine, follow a breathing halo through thirteen illustrated stretches, and close each hold with a scripture verse and short prayer. Tracks streaks, session count, and minutes locally.",
-    url:"https://augustineiacopelli.github.io/appaday-062-restore/"
+    url:"https://augustineiacopelli.github.io/appaday-062-restore/",
+    kw:"stretching stretches cool down bedtime wind evening routine flexibility prayer relaxation body stretch relax sore muscles tight back gentle yoga scripture before bed"
   },
   {
     num:"063", name:"Bleeding Edge", cat:"E", date:"2026-07-09", ai:true,
     desc:"Name any subject and Bleeding Edge maps its research frontier from the live web: where the field stands, what was just published and whether it was truly peer-reviewed, methods worth borrowing from neighboring fields, and the questions nobody has claimed. Chart a course from any gap, then re-scan for what is new.",
-    url:"https://augustineiacopelli.github.io/appaday-063-bleeding-edge/"
+    url:"https://augustineiacopelli.github.io/appaday-063-bleeding-edge/",
+    kw:"research literature review academic papers science latest state of the art study topic scholarly ai frontier whats new in a field current peer reviewed sources graduate school thesis dissertation"
   },
   {
     num:"064", name:"Zen Garden", cat:"I", date:"2026-07-10",
     desc:"A karesansui you rake with your finger. Carve grooves in raked sand with a finger, three-tine, or six-tine rake, drop a smoothing brush over what you want gone, and tap ripples that wrap around whatever they meet. Set stones, mossy stones, pebbles, maple leaves, blossoms, and a stone lantern, then drag them and watch the sand furrow behind. Save the garden as an image.",
-    url:"https://augustineiacopelli.github.io/appaday-064-zen-garden/"
+    url:"https://augustineiacopelli.github.io/appaday-064-zen-garden/",
+    kw:"zen garden sand rake relaxing calm meditative peaceful stress relief japanese mindfulness relax rocks stones moss tranquil my mind"
   },
   {
     num:"065", name:"Currents", cat:"D", date:"2026-07-11",
     desc:"Currents turns a list of source-to-target amounts into a proportional Sankey diagram that redraws as you type. Columns arrange by depth, ribbons run from each source's hue to its target's, and hovering traces any path. Import CSV, TSV, or JSON, or start from a budget, day, or admissions preset, then export as SVG or PNG.",
-    url:"https://augustineiacopelli.github.io/appaday-065-currents/"
+    url:"https://augustineiacopelli.github.io/appaday-065-currents/",
+    kw:"sankey diagram flow chart money budget energy data visualization sources targets flows where goes visualize csv import"
   },
   {
     num:"066", name:"Confiteor", cat:"S", date:"2026-07-12",
     desc:"A private, offline companion for Confession. Examine your conscience through the Ten Commandments, flagging sins with counts, notes, and a mortal-or-venial classifier that weighs knowledge and consent. Walk the rite step by step, with a large-type confessional mode, a confession log, and encrypted backups. Nothing ever leaves your device.",
-    url:"https://augustineiacopelli.github.io/appaday-066-confiteor/"
+    url:"https://augustineiacopelli.github.io/appaday-066-confiteor/",
+    kw:"confession examination of conscience sacrament reconciliation penance sins catholic prepare prep go to ten commandments list mortal venial private offline"
   },
   {
     num:"067", name:"Thought Chisel", cat:"I", ai:true, date:"2026-07-13",
     desc:"A voice-powered Socratic idea refiner. Speak your raw thought aloud, and Claude distills it into one sharp sentence, then asks a pointed follow-up question read aloud via Speech Synthesis. Three rounds of speak-listen-refine chisel your ramble into a razor-sharp concept with key tensions worth exploring. Must be run in browser rather than as a web app.",
-    url:"https://augustineiacopelli.github.io/appaday-067-thought-chisel/"
+    url:"https://augustineiacopelli.github.io/appaday-067-thought-chisel/",
+    kw:"brainstorm idea refine thinking voice speak socratic questions clarify thoughts sharpen ideas ai partner talk through an out loud aloud journal by"
   },
   {
     num:"068", name:"Ten Lessons", cat:"E", ai:true, date:"2026-07-14",
     desc:"Name any subject and Claude designs a ten-lesson path from first principles to real proficiency. Each lesson is a selectable module that generates on demand and saves durably in your browser, so you can stop and pick up anytime. Finish all ten to earn a Commencement certificate, collected on a Skills page. Progress lives in IndexedDB with one-tap backup export.",
-    url:"https://augustineiacopelli.github.io/appaday-068-ten-lessons/"
+    url:"https://augustineiacopelli.github.io/appaday-068-ten-lessons/",
+    kw:"learn anything course curriculum lesson plan study self taught teach me tutorial skill learning path ai a subject lessons something new step by beginner to expert"
   },
   {
     num:"069", name:"Labyrinth", cat:"G", date:"2026-07-15",
     desc:"Tilt your phone and a steel ball rolls across a wooden board with real gravity behind it. Six hand-cut mazes drilled with holes that pull before they swallow. Prise 48 brass tacks out of the wood and spend them at a workbench: felt the walls, swap the ball for brass or boxwood, fit a magnet knob, carry beeswax plugs. Five hidden maker's marks unlock a board with no walls at all.",
-    url:"https://augustineiacopelli.github.io/appaday-069-labyrinth/"
+    url:"https://augustineiacopelli.github.io/appaday-069-labyrinth/",
+    kw:"labyrinth tilt maze marble ball rolling motion phone accelerometer gravity wooden puzzle game steel holes"
   },
   {
     num:"070", name:"Flatbed", cat:"U", date:"2026-07-16",
     desc:"A pocket flatbed scanner in a browser tab. Point at a page and it finds the four corners, waits for your hands to go still, then fires on its own. A lamp sweeps while the perspective squares up. Adaptive B/W keeps text crisp. Drag a corner if it guessed wrong. Out as a PDF, JPGs, or a Mail draft.",
-    url:"https://augustineiacopelli.github.io/appaday-070-flatbed/"
+    url:"https://augustineiacopelli.github.io/appaday-070-flatbed/",
+    kw:"scanner scan document paper receipt pdf camera photocopy digitize page pages paperwork documents app no"
   },
   {
     num:"071", name:"Payoff Ledger", cat:"D", date:"2026-07-17",
     desc:"Most amortization calculators show you one loan. This one plots up to six on the same chart, with recurring extras, lump sums, and biweekly payments. It marks the month principal finally overtakes interest, and asks the question the others skip: at your assumed return, would investing that extra have beaten paying the loan down?",
-    url:"https://augustineiacopelli.github.io/appaday-071-payoff-ledger/"
+    url:"https://augustineiacopelli.github.io/appaday-071-payoff-ledger/",
+    kw:"loan payoff amortization mortgage debt car student interest extra payments pay off faster calculator refinance biweekly compare loans saved"
   },
   {
     num:"072", name:"Fix-It Lens", cat:"U", ai:true, date:"2026-07-18",
     desc:"Point your phone at something broken, add a sentence, and Claude reads the photo like a cautious contractor: what it sees, how sure it is, the supplies and tools you need, the fix step by step, and the safety flags that matter. Answer its follow-up questions and it re-diagnoses from the same photo to sharpen the plan.",
-    url:"https://augustineiacopelli.github.io/appaday-072-fix-it-lens/"
+    url:"https://augustineiacopelli.github.io/appaday-072-fix-it-lens/",
+    kw:"repair diy fix broken home handyman troubleshooting maintenance plumbing tools how to ai help it something leaking toilet faucet appliance with photo homeowner"
   },
   {
     num:"073", name:"Explain It Three Ways", cat:"E", ai:true, date:"2026-07-19",
     desc:"Type any concept and it refracts into three explanations at once: an analogy-driven version for a child, a plain-language version for a curious friend, and a precise technical one for an expert. Each panel carries a headline and a level-specific note, and a follow-up sharpens all three together.",
-    url:"https://augustineiacopelli.github.io/appaday-073-three-ways/"
+    url:"https://augustineiacopelli.github.io/appaday-073-three-ways/",
+    kw:"explain concept like im five eli5 simple explanation understand learn analogy ai simply concepts teaching simplify to a child expert study help tool"
   },
   {
     num:"074", name:"Tap &amp; Can Manager", cat:"U", date:"2026-07-20",
     desc:"A keezer board for your home taproom. Track every keg by real volume, pour it down in 4 to 32oz servings, or estimate what is left from the keg weight on a scale. Levels turn amber then red before a keg kicks. Organize taps across multiple keezers and keep a cold-can inventory alongside.",
-    url:"https://augustineiacopelli.github.io/appaday-074-tap-can-manager/"
+    url:"https://augustineiacopelli.github.io/appaday-074-tap-can-manager/",
+    kw:"kegs keg tracker kegerator keezer home bar taps homebrew beer inventory pour draft how much is left kicked taproom lines"
   },
   {
     num:"075", name:"Fiefdom", cat:"G", milestone:true, date:"2026-07-21",
     desc:"A deep strategy game of land and sea. Claim a Voronoi world map, farm crops, forge steel, refine gas, and feed your armies or watch them desert. Raise fleets to invade islands, then build nukes, interceptors, and rockets. One to six players, hotseat plus AI. Outlast every house to rule.",
-    url:"https://augustineiacopelli.github.io/appaday-075-fiefdom/"
+    url:"https://augustineiacopelli.github.io/appaday-075-fiefdom/",
+    kw:"strategy game war conquest risk empire armies nations civilization map turn based multiplayer islands navy nukes economy territory"
   },
   {
     num:"076", name:"Time Audit", cat:"D", date:"2026-07-22",
     desc:"Read a calendar export and see where the hours actually went. Every event is painted onto a strip chart of your days, then sorted into keyword categories you control. Hours, share, and averages per category, weekly totals, day-of-week load, and biggest commitments. Nothing leaves the browser.",
-    url:"https://augustineiacopelli.github.io/appaday-076-time-audit/"
+    url:"https://augustineiacopelli.github.io/appaday-076-time-audit/",
+    kw:"time tracking calendar analysis where does my go hours meetings schedule productivity ics audit goes export analyze spent busy categories"
   },
   {
     num:"077", name:"Tilt Sentinel", cat:"D", date:"2026-07-23",
     desc:"Turn a Tilt hydrometer's Google Sheet into a live fermentation dashboard: current gravity and temperature, a dual-axis chart, and computed OG, attenuation, ABV, and days fermenting with comment markers. Track multiple batches and get phone alerts for stalls, temp swings, and stale readings.",
-    url:"https://augustineiacopelli.github.io/appaday-077-tilt-sentinel/"
+    url:"https://augustineiacopelli.github.io/appaday-077-tilt-sentinel/",
+    kw:"tilt hydrometer fermentation gravity homebrew beer brewing temperature dashboard monitor specific chart progress homebrewing"
   },
   {
     num:"078", name:"Red Team This", cat:"P", ai:true, date:"2026-07-24",
     desc:"Paste a document, email, or argument before you send it and Claude reads it like a hostile reviewer: the single weakest claim and how to shore it up, every number you can't back yet, and the one hard question you cannot answer. Your adversarial pre-send pass, turned into a tool.",
-    url:"https://augustineiacopelli.github.io/appaday-078-red-team-this/"
+    url:"https://augustineiacopelli.github.io/appaday-078-red-team-this/",
+    kw:"critique feedback proofread review my writing weak points argument check before sending devils advocate ai stress test find holes email persuasive"
   },
   {
     num:"079", name:"Rosette", cat:"C", date:"2026-07-25",
     desc:"A drawing pad that mirrors every stroke into a rose window. Drag from the center and your line blooms across 6 to 16 petals at once, glowing like leaded cathedral glass on deep indigo. Auto-cycle the jewel palette or hold one color, size the brush, then save your rosette as a PNG.",
-    url:"https://augustineiacopelli.github.io/appaday-079-rosette/"
+    url:"https://augustineiacopelli.github.io/appaday-079-rosette/",
+    kw:"drawing kaleidoscope symmetry mandala art doodle stained glass rose window creative pad mirror relaxing coloring"
   },
   {
     num:"080", name:"Rosary Companion", cat:"S", date:"2026-07-26",
     desc:"A guided rosary that walks you bead by bead through the whole structure, from the Sign of the Cross and Creed to the closing Hail Holy Queen, each prayer and mystery shown as you tap. It sets the day's mysteries by weekday and by liturgical season, with a filling bead ring and resumable progress.",
-    url:"https://augustineiacopelli.github.io/appaday-080-rosary-companion/"
+    url:"https://augustineiacopelli.github.io/appaday-080-rosary-companion/",
+    kw:"rosary pray the hail mary mysteries beads catholic marian prayer guide how to of day decades"
   },
   {
     num:"081", name:"Desk Reset", cat:"H", date:"2026-07-27",
     desc:"A five-minute reset for a stiff body and tired eyes, run without leaving your chair. Rotating seated stretches and a 20-20-20 eye break, each with one plain cue and a calm countdown over a breathing dusk horizon. Pick 3, 5, or 8 minutes and it remembers your choice.",
-    url:"https://augustineiacopelli.github.io/appaday-081-desk-reset/"
+    url:"https://augustineiacopelli.github.io/appaday-081-desk-reset/",
+    kw:"desk stretches office stretch break sitting posture eye strain screen work eyes 20 seated stiff neck shoulders from home"
   },
   {
     num:"082", name:"Memory Grid", cat:"G", date:"2026-07-28",
     desc:"Memory Grid is a tap-to-flip matching game. Pick Easy, Medium, or Hard, then turn cards two at a time to find every pair. A live move counter and timer track each run, best times save per difficulty, and generated flip and match sounds keep it satisfying. Built touch-first.",
-    url:"https://augustineiacopelli.github.io/appaday-082-memory-grid/"
+    url:"https://augustineiacopelli.github.io/appaday-082-memory-grid/",
+    kw:"memory game matching pairs concentration card flip brain training kids cards match test"
   },
   {
     num:"083", name:"Homebrew Label Lab", cat:"C", date:"2026-07-29",
     desc:"Design a print-ready craft beer label in the browser. Describe your beer and Claude art-directs the name, motif, and palette, or build it by hand. Five motifs, eight color schemes, and bottle, can, and tap-handle formats with real-world size presets and print-accurate PNG export.",
     url:"https://augustineiacopelli.github.io/appaday-083-homebrew-label-lab/",
+    kw:"beer label bottle design homebrew printable can craft branding ai maker name ideas art print labels",
     ai:true
   },
   {
     num:"084", name:"Meeting Cost Ticker", cat:"P", date:"2026-07-30",
     desc:"Watch a meeting's dollar cost tick up live. Set the head count and an average hourly rate, or switch to By Person and enter each attendee's actual salary, annual or hourly. A per-second ticker, per-minute and per-hour burn rates, and a running what-could-you-buy tally. All on-device.",
-    url:"https://augustineiacopelli.github.io/appaday-084-meeting-cost-ticker/"
+    url:"https://augustineiacopelli.github.io/appaday-084-meeting-cost-ticker/",
+    kw:"meeting cost salary of meetings money time waste burn rate calculator how much does this wasted"
   },
   {
     num:"085", name:"Constellation Drawer", cat:"I", date:"2026-07-31",
     desc:"Tap points on a night sky to place glowing stars and link them into a constellation. Anchor to any star to branch, name your figure, and save a shareable PNG with the name set in a star-chart serif. A calm, single-purpose creative toy that keeps your sketch on-device.",
-    url:"https://augustineiacopelli.github.io/appaday-085-constellation-drawer/"
+    url:"https://augustineiacopelli.github.io/appaday-085-constellation-drawer/",
+    kw:"constellation stars night sky draw astronomy create share constellations drawing creative make art image"
   },
   {
     num:"086", name:"Subject Line Lab", cat:"P", ai:true, date:"2026-08-01",
     desc:"Paste an email body and get five subject-line candidates, each measured for predicted open rate. Every line names its technique, shows a live score gauge and character count, and flags the top pick. Bring your own Anthropic API key; only the request leaves your browser.",
-    url:"https://augustineiacopelli.github.io/appaday-086-subject-line-lab/"
+    url:"https://augustineiacopelli.github.io/appaday-086-subject-line-lab/",
+    kw:"email subject line headline open rate marketing newsletter copywriting ai lines write click better rates"
   },
   {
     num:"087", name:"Angelus Companion", cat:"S", date:"2026-08-02",
     desc:"A guided Angelus and Regina Caeli. Pray along with the versicles, responses, and Hail Marys step by step or as full text, with a traditional 3-3-3-9 bell chime at 6 AM, noon, and 6 PM. Auto-switches to the Regina Caeli through Eastertide via the Computus. A quiet daily pause for the Incarnation.",
-    url:"https://augustineiacopelli.github.io/appaday-087-angelus-companion/"
+    url:"https://augustineiacopelli.github.io/appaday-087-angelus-companion/",
+    kw:"angelus regina caeli noon prayer bells catholic marian 6 am pm church easter pray the three times a day bell reminder"
   },
   {
     num:"088", name:"Brew Math", cat:"U", date:"2026-08-03",
     desc:"A one-screen homebrew calculator. Enter original and final gravity to read ABV, apparent and real attenuation, and rough calories per 12 and 16 oz. Refractometer mode applies your wort factor plus an alcohol correction so a Brix final reading becomes a true gravity. Everything stays on-device.",
-    url:"https://augustineiacopelli.github.io/appaday-088-brew-math/"
+    url:"https://augustineiacopelli.github.io/appaday-088-brew-math/",
+    kw:"homebrew calculator abv alcohol percentage gravity refractometer brix calories brewing math reading original final content"
   },
   {
     num:"089", name:"Ink Trace", cat:"I", date:"2026-08-04",
     desc:"Type a short phrase and watch it write itself as a single-stroke ink drawing, one pen path at a time. Five scripts from sans to blackletter, custom ink and paper, adjustable weight, speed, and nib, plus an inked finish and paper grain. Replay, share a styled link, and export a still or animation.",
-    url:"https://augustineiacopelli.github.io/appaday-089-ink-trace/"
+    url:"https://augustineiacopelli.github.io/appaday-089-ink-trace/",
+    kw:"handwriting animation calligraphy lettering write text ink pen drawing animated signature animate writing a word gift message"
   },
   {
     num:"090", name:"Syllabus Skimmer", cat:"E", date:"2026-08-05",
     desc:"Paste a course syllabus and Claude pulls out what matters: every key date on a filterable timeline, the grading breakdown as a weighted bar that flags when the percentages do not add up, required versus optional materials, and the attendance, late work, and AI policies in plain view.",
     url:"https://augustineiacopelli.github.io/appaday-090-syllabus-skimmer/",
+    kw:"syllabus course college class due dates schedule grading students semester school ai summary important exams assignments breakdown",
     ai:true
   },
   {
     num:"091", name:"Grade Runway", cat:"D", date:"2026-08-06",
     desc:"Drop in a syllabus PDF and Claude pulls out the grading table. From there: your weighted grade across every course, a rail showing points earned, lost, and still open, and the exact average you need on the work that is left to land your target.",
     url:"https://augustineiacopelli.github.io/appaday-091-grade-runway/",
+    kw:"grade calculator what do i need on the final gpa weighted class grades college student ai exam needed average",
     ai:true
   },
   {
     num:"092", name:"Semester Forecast", cat:"D", date:"2026-08-07",
     desc:"Feed in every syllabus for the term and Claude turns them into one picture: a week by week bar of estimated effort stacked by course, the crunch weeks and the breathing room called out by name, every deliverable with an hours estimate, and the weighted grade math for what is still open.",
     url:"https://augustineiacopelli.github.io/appaday-092-semester-forecast/",
+    kw:"semester planning workload course schedule busy weeks college students study planner ai heavy plan syllabi time management",
     ai:true
   },
   {
     num:"093", name:"Scam Text Tormentor", cat:"C", date:"2026-08-08",
     desc:"Paste the scam text that showed up uninvited, cast a performer, and Claude writes the reply. A confused grandpa, an over-eager buyer, a bureaucrat who needs Form 27-B, a parish volunteer who thinks it is about the fish fry. Keep pasting what they write back and the whole bit builds into a thread.",
     url:"https://augustineiacopelli.github.io/appaday-093-scam-text-tormentor/",
+    kw:"scam texts scammer prank spam text funny replies troll waste their time fraud ai reply scammers responses",
     ai:true
   },
   {
     num:"094", name:"Monogram Maker", cat:"C", date:"2026-08-09",
     desc:"Three initials, a hand you like, a frame and a palette, and the whole thing comes off the screen as a real SVG. Ten frames from a plain circle to a shield to an art deco border, six typefaces, eight palettes, four arrangements. The font rides inside the file so it looks right anywhere.",
-    url:"https://augustineiacopelli.github.io/appaday-094-monogram-maker/"
+    url:"https://augustineiacopelli.github.io/appaday-094-monogram-maker/",
+    kw:"monogram initials logo personalized design wedding svg letters maker gift crest custom embroidery stationery art"
   },
   {
     num:"095", name:"Contrast Checker", cat:"U", date:"2026-08-10",
     desc:"Set a text color and a background color and the WCAG ratio moves as you type, with pass or fail marks for normal text, large text, and interface elements. When a pair falls short it hands back the nearest color that would clear AA or AAA, one click to apply. Live preview, saved pairs, shareable link."
-    ,url:"https://augustineiacopelli.github.io/appaday-095-contrast-checker/"
+    ,url:"https://augustineiacopelli.github.io/appaday-095-contrast-checker/",
+    kw:"color contrast accessibility wcag ada readable text colors web design a11y checker check accessible ratio designer developer website"
   },
   {
     num:"096", name:"Card Duel", cat:"G", date:"2026-08-11",
     desc:"Two players, one phone. Twelve creatures, each with an attack number and a health number. Send one out, let it wake up, then trade blows. Every knockout takes a star off the other trainer, and an undefended trainer loses one outright. Six stars ends it. A curtain hides your hand between turns.",
-    url:"https://augustineiacopelli.github.io/appaday-096-card-duel/"
+    url:"https://augustineiacopelli.github.io/appaday-096-card-duel/",
+    kw:"card game pokemon creature battle kids two player trading cards duel monsters style monster creatures attack players one phone"
   },
   {
     num:"097", name:"Field Marks", cat:"E", date:"2026-08-12",
     desc:"Photograph a bird, plant, insect, or fungus and get a field record back: the marks that name it, the species it is confused with, taxonomy, habitat, and range. Hazards are ranked by the worst plausible match, never the likeliest. Invasive plants get a removal plan, ailing ones a care plan. Logged by group.",
     url:"https://augustineiacopelli.github.io/appaday-097-field-marks/",
+    kw:"identify bird plant bug insect mushroom fungus nature species what is this photo id ai identification field guide naturalist hiking poisonous",
     ai:true
   },
   {
     num:"098", name:"Newton's Cradle", cat:"I", date:"2026-08-13",
     desc:"Five brass balls on short strings. Pull one aside and let it go and the one at the far end leaps out while the middle four never stir. Lift two and two answer. Real pendulum physics, not a loop: drag any ball, set the gravity and how fast the energy bleeds off, and count the transfers.",
-    url:"https://augustineiacopelli.github.io/appaday-098-newtons-cradle/"
+    url:"https://augustineiacopelli.github.io/appaday-098-newtons-cradle/",
+    kw:"newtons cradle physics pendulum desk toy science momentum simulation demo swinging balls teacher swing classroom"
   },
   {
     num:"099", name:"Social Post Responder", cat:"P", date:"2026-08-14",
     desc:"Paste a batch of feed posts and get an honest triage back: which ones you can actually add something to, the exact line worth answering, and a short reply drafted in your voice. A cliche scanner flags anything that sounds like everyone else, and sent replies build a seven day outreach streak.",
     url:"https://augustineiacopelli.github.io/appaday-099-social-post-responder/",
+    kw:"social media replies comments linkedin facebook posts respond engagement drafting ai reply to comment drafts what say",
     ai:true
   },
   {
     num:"100", name:"Signal Desk", cat:"D", milestone:true, date:"2026-08-15",
     desc:"Drop in any CSV and get the first hour of analysis back. Signal Desk infers every column type, profiles distributions, scores data quality, correlates measures, builds pivots, compares segments, and charts cohort retention. Tap any number to see the arithmetic and the rows behind it.",
     url:"https://augustineiacopelli.github.io/appaday-100-signal-desk/",
+    kw:"data analysis csv spreadsheet statistics explore analytics dashboard insights charts ai analyze quick profile columns pivot correlation",
     ai:true
   },
   {
     num:"101", name:"Liturgical Season Companion", cat:"S", date:"2026-08-16",
     desc:"Open it and see today's place in the Church year: the season and the vestment color worn, the week, the Sunday cycle A/B/C and weekday cycle I/II, and the next solemnity or feast. The full calendar down through the optional memorials, every date computed on-device from the Computus.",
-    url:"https://augustineiacopelli.github.io/appaday-101-liturgical-season-companion/"
+    url:"https://augustineiacopelli.github.io/appaday-101-liturgical-season-companion/",
+    kw:"liturgical calendar church year season advent lent easter vestment color feast days catholic what is it today sunday cycle"
   },
   {
     num:"102", name:"Reel Splitter", cat:"U", date:"2026-08-17",
     desc:"Split a long MP4 into smaller playable files in the browser, or pull the audio out on its own. It rewrites the index and copies every frame byte for byte, so nothing is re-encoded and nothing leaves your device. Cuts land on keyframes. A long lecture drops to an audio file small enough to upload.",
-    url:"https://augustineiacopelli.github.io/appaday-102-reel-splitter/"
+    url:"https://augustineiacopelli.github.io/appaday-102-reel-splitter/",
+    kw:"video splitter split cut trim mp4 extract audio clips tool a long into parts from trimmer"
   },
   {
     num:"103", name:"Bracket Maker", cat:"I", date:"2026-08-18",
     desc:"Type in the names, then tap the winner of each match. Single elimination with real seeding, byes to the top seeds, optional regions each seeded 1 to 16, and a round robin play-in that sets the seed line without eliminating anyone. Shareable by link, printable as a clean draw sheet.",
-    url:"https://augustineiacopelli.github.io/appaday-103-bracket-maker/"
+    url:"https://augustineiacopelli.github.io/appaday-103-bracket-maker/",
+    kw:"tournament bracket march madness single elimination seeding sports competition pool brackets maker ncaa office round robin seeds"
   },
   {
     num:"104", name:"Giving Tree", cat:"S", date:"2026-08-19",
     desc:"Set giving goals as a percentage of household income, split between your parish and other charities, then log each gift and watch a tree fill in: leaves for the church goal, ripening fruit for the rest. Pace tells you if you are ahead or behind for the year. Import past giving from a CSV.",
-    url:"https://augustineiacopelli.github.io/appaday-104-giving-tree/"
+    url:"https://augustineiacopelli.github.io/appaday-104-giving-tree/",
+    kw:"tithing giving donations charity church stewardship generosity tithe percentage goals charitable parish household income"
   },
   {
     num:"105", name:"Scripture Verse Card Maker", cat:"S", date:"2026-08-20",
     desc:"Turn any Scripture verse into a shareable image card. Pick from four templates, solid, gradient, dotted pattern, or framed, toggle dark or light mode, then export a PNG or copy the finished card straight to your clipboard.",
-    url:"https://augustineiacopelli.github.io/appaday-105-scripture-verse-card-maker/"
+    url:"https://augustineiacopelli.github.io/appaday-105-scripture-verse-card-maker/",
+    kw:"bible verse image scripture graphic share social media card quote wallpaper make a instagram"
   },
   {
     num:"106", name:"Python Discombobulator", cat:"E", date:"2026-08-21",
     desc:"Paste Python code or a traceback and get it explained. Choose summary or line-by-line depth, beginner to terse tone, and code or traceback mode with soft auto-detection. Runs a live client-side syntax check before any explanation is requested.",
     url:"https://augustineiacopelli.github.io/appaday-106-python-discombobulator/",
+    kw:"python code explain error traceback debug programming coding help learn ai message beginner debugging",
     ai:true
   },
   {
     num:"107", name:"Knot Locker", cat:"E", date:"2026-08-22",
     desc:"A field guide and quiz for five essential scout knots: bowline, clove hitch, taut-line hitch, square knot, and two half hitches. Filter by use case, step through tie diagrams, then drill yourself with a five question quiz that scores you and flags any missed knots. Works fully offline.",
-    url:"https://augustineiacopelli.github.io/appaday-107-knot-locker/"
+    url:"https://augustineiacopelli.github.io/appaday-107-knot-locker/",
+    kw:"knots tying scouts boy cub camping rope outdoor skills bowline scouting scout how to tie a knot clove hitch square"
   },
   {
     num:"108", name:"Meteor Shower Tracker", cat:"U", date:"2026-08-23",
     desc:"An honest meteor shower planner covering twelve major annual showers. Countdown to the next peak, a corrected hourly rate for your latitude, Bortle class and moonlight, a session planner with real odds, an eleven-night best-night finder, and a full-year calendar. Red or amber night-vision styling.",
-    url:"https://augustineiacopelli.github.io/appaday-108-meteor-shower-tracker/"
+    url:"https://augustineiacopelli.github.io/appaday-108-meteor-shower-tracker/",
+    kw:"meteor shower shooting stars stargazing perseids astronomy night sky when to watch showers is the next geminids best"
   },
   {
     num:"109", name:"Subscription Creep Tracker", cat:"D", date:"2026-08-24",
     desc:"Tracks recurring subscriptions and converts every billing cadence, weekly, monthly, quarterly, yearly, into one honest monthly-equivalent total. A Chart.js breakdown toggles category vs. service, the list sorts by name, cost, or renewal date, and anything due within a week gets flagged before it sneaks past you.",
-    url:"https://augustineiacopelli.github.io/appaday-109-subscription-creep-tracker/"
+    url:"https://augustineiacopelli.github.io/appaday-109-subscription-creep-tracker/",
+    kw:"subscriptions recurring bills streaming netflix monthly cost spending cancel save money tracker how much do i spend on services"
   },
   {
     num:"110", name:"Album Cover Generator", cat:"C", date:"2026-08-25",
     ai:true,
     desc:"Describe a mood and get a full fictional album cover back: Claude invents a band name and song title while Pollinations paints the artwork, running independently so a failure on one side never blocks the other. Download the finished cover art with one tap.",
-    url:"https://augustineiacopelli.github.io/appaday-110-album-cover-generator/"
+    url:"https://augustineiacopelli.github.io/appaday-110-album-cover-generator/",
+    kw:"album cover band name art music artwork image generator ai make fake mood"
   },
   {
     num:"111", name:"Application Gap Analysis", cat:"P", date:"2026-08-26",
     ai:true,
     desc:"Paste a resume and a job posting. Claude extracts every real requirement from the posting, then checks the resume against each one with a client-computed match score, an expandable gap grid with evidence and rewrites, structural resume flags, and interview-fit questions.",
-    url:"https://augustineiacopelli.github.io/appaday-111-application-gap-analysis/"
+    url:"https://augustineiacopelli.github.io/appaday-111-application-gap-analysis/",
+    kw:"resume job application posting match cover letter search career hiring ai tailor description gap analysis apply for jobs change"
   },
   {
     num:"112", name:"Temptation Ledger", cat:"P", date:"2026-08-27",
     desc:"A private ledger for resisting temptation. Log a trigger and reason, sit through a timestamp-based sixty-second pause, then mark the moment held or yielded. Tracks a live streak and charts the held-vs-yielded ratio, a 14-day trend, top triggers, and time-of-day patterns from local history.",
-    url:"https://augustineiacopelli.github.io/appaday-112-temptation-ledger/"
+    url:"https://augustineiacopelli.github.io/appaday-112-temptation-ledger/",
+    kw:"temptation resist urges self control addiction habits willpower bad habit quit ledger pause breaking"
   },
   {
     num:"113", name:"Pause Point", cat:"P", date:"2026-08-28",
     desc:"A companion Manifest V3 browser extension to Temptation Ledger. Block a domain from the toolbar popup; visiting it redirects to a sixty-second pause screen with a reason prompt instead of loading. Tracks a held streak, grants a timed pass on override, and enforces entirely offline via declarativeNetRequest.",
-    url:"https://augustineiacopelli.github.io/appaday-113-pause-point/"
+    url:"https://augustineiacopelli.github.io/appaday-113-pause-point/",
+    kw:"website blocker block sites distractions browser extension focus self control social media websites distracting chrome stop wasting time"
   },
   {
     num:"114", name:"Posture Check", cat:"P", date:"2026-08-29",
     desc:"A background reminder app that nudges you to check your posture and stretch on a set interval. Choose a preset or custom minute interval, get an in-tab card plus optional system notification, sound, and vibration, and build a daily streak by acknowledging each check.",
-    url:"https://augustineiacopelli.github.io/appaday-114-posture-check/"
+    url:"https://augustineiacopelli.github.io/appaday-114-posture-check/",
+    kw:"posture reminder sit up straight stretch break notification desk work ergonomics reminders check sitting too long job"
   },
   {
     num:"115", name:"Basket Ledger", cat:"D", date:"2026-08-30",
     desc:"Log grocery prices as you shop, or scan a receipt photo and let Claude read off the store, date, and each item's price for you to review before adding. Tracks price trends per item over time and ranks your stores by average price.",
     url:"https://augustineiacopelli.github.io/appaday-115-basket-ledger/",
+    kw:"grocery prices price tracker receipts shopping compare stores food cost inflation track which store is cheapest receipt scanner",
     ai:true
   },
   {
     num:"116", name:"Latin Phrase of the Day", cat:"E", date:"2026-08-31",
     desc:"A daily Latin phrase drawn from liturgy, law, philosophy, and mottoes, each with translation, phonetic pronunciation, and a short note on its use. Favorite today's pick, or browse the archive by category with day-by-day paging and expandable entries.",
-    url:"https://augustineiacopelli.github.io/appaday-116-latin-phrase-of-the-day/"
+    url:"https://augustineiacopelli.github.io/appaday-116-latin-phrase-of-the-day/",
+    kw:"latin phrases quotes learn vocabulary mottoes classics daily phrase church of the day meaning pronunciation legal"
   },
   {
     num:"117", name:"Daily Mood and Symptom Journal", cat:"H", date:"2026-09-01",
     desc:"Log as many mood and symptom check-ins as a day needs. Mood and Likert-scale symptoms average per day, count-based symptoms add up, each symptom can be skipped per entry, and a dual-axis 30-day chart traces every trend alongside a logging streak.",
-    url:"https://augustineiacopelli.github.io/appaday-117-daily-mood-symptom-journal/"
+    url:"https://augustineiacopelli.github.io/appaday-117-daily-mood-symptom-journal/",
+    kw:"mood journal symptom tracker mental health feelings chronic illness pain log diary symptoms how am i feeling"
   },
   {
     num:"118", name:"Divine Mercy Chaplet Companion", cat:"S", date:"2026-09-02",
     desc:"A guided, tap-through companion for praying the Chaplet of Divine Mercy: the opening prayers, all five decades with the offering and ten petitions each, the triple Holy God, and the closing prayer, with a running progress line.",
-    url:"https://augustineiacopelli.github.io/appaday-118-divine-mercy-chaplet/"
+    url:"https://augustineiacopelli.github.io/appaday-118-divine-mercy-chaplet/",
+    kw:"divine mercy chaplet catholic prayer three oclock saint faustina of 3 pm pray hour beads"
   },
   {
     num:"119", name:"Room Read", cat:"U", date:"2026-09-03",
     desc:"Photograph a room from a few angles and get a Claude-generated design read: a critique, observations, a tappable punch list with color swatches, and style directions paired with live Openverse reference photos. Group several rooms into one project and flip between results with tabs.",
     url:"https://augustineiacopelli.github.io/appaday-119-room-read/",
+    kw:"interior design room decor decorating home makeover furniture style living bedroom ai decorate my designer redecorate ideas photo",
     ai:true
   },
   {
     num:"120", name:"Thought Chisel II", cat:"I", date:"2026-09-04",
     desc:"Thought Chisel II turns spoken ideas into sharpened thinking by voice. Choose a quick two-round or deep five-round session; Claude clarifies, probes assumptions, and explores implications, then names the chiseled idea and its sharpest tension. Sessions save automatically and can be branched.",
     url:"https://augustineiacopelli.github.io/appaday-120-thought-chisel-ii/",
+    kw:"brainstorm voice thinking socratic questions refine ideas speak clarify reasoning ai spoken deep session",
     ai:true
   },
   {
     num:"121", name:"Vent Then Burn", cat:"H", date:"2026-09-05",
     desc:"Type whatever needs to be released, then watch it burn. Your words sample into thousands of ash-colored particles that drift upward, shrink, and glow ember orange over a crackling soundscape before fading out. Nothing is ever saved or sent anywhere. An affirming line appears, then the page resets blank.",
-    url:"https://augustineiacopelli.github.io/appaday-121-vent-then-burn/"
+    url:"https://augustineiacopelli.github.io/appaday-121-vent-then-burn/",
+    kw:"vent anger frustration release let go write and burn catharsis stress emotional emotions angry upset anonymously it words relief"
   },
   {
     num:"122", name:"Code Cipher", cat:"U", date:"2026-09-06",
     desc:"A six-protocol cipher lab for encoding and decoding messages: Caesar, Atbash, Vigenere, Morse, Symbol substitution, and real AES-256 via the Web Crypto API. A Field Manual explains how breakable each cipher is, a spacing-removal option adds difficulty, and Mystery Message builds a random puzzle.",
-    url:"https://augustineiacopelli.github.io/appaday-122-code-cipher/"
+    url:"https://augustineiacopelli.github.io/appaday-122-code-cipher/",
+    kw:"cipher secret code encrypt decrypt morse caesar encode decode puzzle spy messages codes encryption kids puzzles"
   },
   {
     num:"123", name:"Two-Minute Rule Task Splitter", cat:"P", ai:true, date:"2026-09-07",
     desc:"Break any daunting task into concrete two-minute subtasks using Claude. Describe what you are avoiding, get an ordered checklist with time estimates per step, check items off with a live progress bar, and regenerate the breakdown until it actually fits how you work.",
-    url:"https://augustineiacopelli.github.io/appaday-123-two-minute-task-splitter/"
+    url:"https://augustineiacopelli.github.io/appaday-123-two-minute-task-splitter/",
+    kw:"procrastination break down task overwhelmed get started small steps two minutes to do ai tasks procrastinating avoiding where start tiny"
   },
   {
     num:"124", name:"Reframe", cat:"H", ai:true, date:"2026-09-08",
     desc:"Paste whatever is weighing on you and Claude sorts it into what is actually true, what you might be adding on top, and one concrete step you can take this week. No cheerfulness, no invented details, just a plain-spoken gut check when your thoughts need sorting out.",
-    url:"https://augustineiacopelli.github.io/appaday-124-reframe/"
+    url:"https://augustineiacopelli.github.io/appaday-124-reframe/",
+    kw:"reframe worry anxiety overthinking perspective cbt cognitive gut check stress ai anxious thoughts spiral"
   },
   { num:"125", name:"Blockwork", cat:"P", milestone:true, date:"2026-09-09",
     desc:"An offline shift coverage scheduler. Build a roster, set recurring weekly hours by location, then watch a rolling two-week grid resolve them against approved time off, campus closures, and one-date overrides. Hand-drawn coverage strips flag every block that falls below minimum staffing.",
-    url:"https://augustineiacopelli.github.io/appaday-125-blockwork/"
+    url:"https://augustineiacopelli.github.io/appaday-125-blockwork/",
+    kw:"staff schedule shift scheduler employees coverage roster work time off scheduling employee manager campus closures front desk hours supervisor offline planner who is working"
   },
   { num:"126", name:"Rubric Builder", cat:"E", ai:true, date:"2026-09-10",
     desc:"Enter an assignment name and a list of grading criteria, and Claude drafts a four level rubric, Excellent, Good, Needs Work, and Missing, for each one. Every descriptor cell is editable in place, then copies straight into a document as a formatted table.",
-    url:"https://augustineiacopelli.github.io/appaday-126-rubric-builder/"
+    url:"https://augustineiacopelli.github.io/appaday-126-rubric-builder/",
+    kw:"rubric grading criteria teacher assignment assessment instructor professor ai make a assignments teachers professors scoring guide excellent good needs work syllabus"
   },
   { num:"127", name:"Nag Card", cat:"P", date:"2026-09-11",
     desc:"Nag Card gives you one box for the single thing you cannot forget today. Leave the tab open and it escalates: background shifts from calm blue toward alarm red, text grows, the tab title blinks your task when you look away, and phones get a vibration nudge. Mark it done to make it stop.",
-    url:"https://augustineiacopelli.github.io/appaday-127-nag-card/"
+    url:"https://augustineiacopelli.github.io/appaday-127-nag-card/",
+    kw:"reminder dont forget one task nag alert urgent remember today single most important thing escalating alarm priority focus vibrate"
   },
   { num:"128", name:"Sermon Note Catcher", cat:"S", ai:true, date:"2026-09-12",
     desc:"Confirms the day's Mass readings against a free liturgical API, with a USCCB link as backup, then records the homily by voice or by hand. Speech is cleaned into paragraphs and scanned for a takeaway and action item, with optional Claude refinement, and the app recolors to the day's liturgical color.",
-    url:"https://augustineiacopelli.github.io/appaday-128-sermon-note-catcher/"
+    url:"https://augustineiacopelli.github.io/appaday-128-sermon-note-catcher/",
+    kw:"sermon notes homily mass readings church catholic sunday record voice takeaway action item gospel faith"
   },
   { num:"129", name:"Tap to Color", cat:"C", date:"2026-09-13",
     desc:"Ten hand drawn scenes and 667 tappable regions. Pick one of twelve crayons, tap any shape to fill it, and switch to the blank crayon to wipe a region back out. Each picture tracks its own progress, finished ones earn a badge, and every fill saves on your device so you can leave a page half colored.",
-    url:"https://augustineiacopelli.github.io/appaday-129-tap-to-color/"
+    url:"https://augustineiacopelli.github.io/appaday-129-tap-to-color/",
+    kw:"coloring book page kids color in crayons pictures art pages tap to children by tapping drawing app toddler preschool"
   },
   { num:"130", name:"Locus of Control", cat:"H", ai:true, date:"2026-09-14",
     desc:"Describe whatever is weighing on you and Claude sorts it into what you control, what you might influence, and what you do not control, weighted by how much each piece actually matters. A bullseye shows the split, every item gets a first step or a practice, and history flags the worries that keep returning.",
-    url:"https://augustineiacopelli.github.io/appaday-130-locus-of-control/"
+    url:"https://augustineiacopelli.github.io/appaday-130-locus-of-control/",
+    kw:"control what you can stress anxiety worry circle of stoic perspective ai locus i stoicism bullseye influence coping mental health"
   },
   { num:"131", name:"Cloud Reader", cat:"E", ai:true, date:"2026-09-15",
     desc:"Point your phone at the sky and Claude reads the deck overhead, naming the cloud type, grading its own confidence, and calling what the next one to three hours hold. A second segment pulls 48 hours of hourly model data for where you stand and narrates it as a broadcast outlook over a live trend strip.",
-    url:"https://augustineiacopelli.github.io/appaday-131-cloud-reader/"
+    url:"https://augustineiacopelli.github.io/appaday-131-cloud-reader/",
+    kw:"cloud identification weather forecast sky clouds meteorology what will the do ai are those photo types cumulus cirrus storm coming rain outdoor plans"
   },
   { num:"132", name:"Brew Economics", cat:"D", date:"2026-09-16",
     desc:"Price a homebrew batch honestly. List the ingredients, set the volume and the loss you expect to trub and transfer, and it derives drinkable pints, bottles, and six packs, then stacks your cost per six pack against the shelf and projects a year of savings. Consumables and equipment fold in on request.",
-    url:"https://augustineiacopelli.github.io/appaday-132-brew-economics/"
+    url:"https://augustineiacopelli.github.io/appaday-132-brew-economics/",
+    kw:"homebrew cost brewing price per beer six pack save money budget brew economics how much does pints packs grain hops yeast comparison store bought"
   },
   { num:"133", name:"Fasting Window Tracker", cat:"H", date:"2026-09-17",
     desc:"Track your fasting and eating windows on one 24 hour ring that splits cleanly across midnight. Pick 16:8, 18:6 or 20:4, start the fast, and a live countdown, streak counters, a month calendar and an editable history handle the rest. Early ends are logged without judgment. Export and import JSON.",
-    url:"https://augustineiacopelli.github.io/appaday-133-fasting-window-tracker/"
+    url:"https://augustineiacopelli.github.io/appaday-133-fasting-window-tracker/",
+    kw:"intermittent fasting timer 16 8 eating window diet tracker 18 6 20 4 streak calendar weight loss"
   },
   { num:"134", name:"Anagram Alchemy", cat:"C", ai:true, date:"2026-09-18",
     desc:"Enter a name or phrase and Claude proposes anagram candidates, but only the ones that survive a local letter by letter audit ever reach the screen. Choose a survivor and the original letters physically travel into their new arrangement. Favorite the keepers or export a 1080 square share card.",
-    url:"https://augustineiacopelli.github.io/appaday-134-anagram-alchemy/"
+    url:"https://augustineiacopelli.github.io/appaday-134-anagram-alchemy/",
+    kw:"anagram word scramble rearrange letters name puzzle wordplay ai anagrams game of my scrabble fun art"
   },
   { num:"135", name:"Petal Post", cat:"C", date:"2026-09-19",
     desc:"Build a bouquet stem by stem. Pick from six flower types, choose a color for each, and up to twelve stems arrange themselves in a vase as closed buds. Tap to open them one at a time, petals unfolding ring by ring, then mail the finished arrangement to someone or save it as an image.",
-    url:"https://augustineiacopelli.github.io/appaday-135-petal-post/"
+    url:"https://augustineiacopelli.github.io/appaday-135-petal-post/",
+    kw:"flowers bouquet send gift card valentine mothers day virtual flower builder arrangement greeting mail"
   },
   { num:"136", name:"Detour", cat:"U", ai:true, date:"2026-09-20",
     desc:"Enter two American cities and it drives the route, samples it every 25 miles, sweeps 8 kilometers to either side for tagged oddities, and snaps each one to the road so you see the exact mile marker and how far off you would wander. Claude ranks the survivors by weirdness and writes each a one line pitch.",
-    url:"https://augustineiacopelli.github.io/appaday-136-detour/"
+    url:"https://augustineiacopelli.github.io/appaday-136-detour/",
+    kw:"road trip roadside attractions route drive oddities stops travel america weird quirky between two cities detour mile marker"
   },
   { num:"137", name:"Pocket Hurdles", cat:"G", date:"2026-09-21",
     desc:"Hold your phone upright and run in place. Jump for real to clear striped hurdles and lean left or right to slip around tall blue mats across three lanes as the pace climbs from 8 to 20 meters per second. No phone handy? Arrow keys and space, or swipes and taps, run the same race.",
-    url:"https://augustineiacopelli.github.io/appaday-137-pocket-hurdles/"
+    url:"https://augustineiacopelli.github.io/appaday-137-pocket-hurdles/",
+    kw:"running game jump exercise motion phone active kids hurdles track fitness in place play"
   },
   { num:"138", name:"Ferment Log", cat:"D", date:"2026-09-22",
     desc:"Run a small brewery from a Google Sheet you own. Track ingredients against par, plan batches that draw down stock, log gravity and temperature on a dual axis chart, and watch tanks fill, crash, and carbonate as drawn fermenters. Package into kegs, bottles, or cans and count down to the last pour.",
-    url:"https://augustineiacopelli.github.io/appaday-138-ferment-log/"
+    url:"https://augustineiacopelli.github.io/appaday-138-ferment-log/",
+    kw:"brewery inventory brewing ingredients batches fermentation tanks google sheet homebrew management operations par stock ingredient planning batch dashboard"
   },
   { num:"139", name:"Static Sleep Mixer", cat:"P", date:"2026-09-23",
     desc:"Blend white, pink, and brown noise into one steady sleep sound, each layer with its own volume and a smooth fade in and out. Set a sleep timer and the mix eases to silence over the final minutes, even with the screen locked. A dim night palette keeps the glare down, and your mix is waiting next time.",
-    url:"https://augustineiacopelli.github.io/appaday-139-static-sleep-mixer/"
+    url:"https://augustineiacopelli.github.io/appaday-139-static-sleep-mixer/",
+    kw:"white noise sleep sounds pink brown timer fall asleep baby machine sound blend fade"
   },
   { num:"140", name:"Delegation Draft", cat:"P", ai:true, date:"2026-09-24",
     desc:"Describe a task and who is taking it on, and Claude drafts a delegation memo that names the result rather than the method, lists what done looks like as a checklist, states exactly how much authority they hold, and sets a weekday deadline sized to the effort. Edit any line, then copy, email, or share it.",
-    url:"https://augustineiacopelli.github.io/appaday-140-delegation-draft/"
+    url:"https://augustineiacopelli.github.io/appaday-140-delegation-draft/",
+    kw:"delegate delegation memo assign task manager handoff team ai tasks to staff hand off work authority deadline checklist"
   },
   { num:"141", name:"Court of Honor Citation", cat:"P", ai:true, date:"2026-09-25",
     desc:"Build a rank advancement certificate for a Cub Scout Pack or a Scout Troop. Enter the Scout, rank, and a favorite moment, and Claude writes a short citation whose tone grows from warm and simple at Lion to formal and dignified at Eagle. Print it on one landscape page or save it as an image to share.",
-    url:"https://augustineiacopelli.github.io/appaday-141-court-of-honor-citation/"
+    url:"https://augustineiacopelli.github.io/appaday-141-court-of-honor-citation/",
+    kw:"scouts rank advancement certificate court of honor cub boy award ai scout eagle arrow light lion tiger wolf bear webelos ceremony"
   },
   { num:"142", name:"Grain Garden", cat:"I", date:"2026-09-26",
     desc:"A falling sand garden. Pour sand, water, acid, lava, stone, wood, plant, and fire, and watch them fall, flow, and react. Water quenches lava into stone, fire races through wood, acid eats what it touches, and plants drink up water. Flip gravity or tilt your phone, then save a crisp PNG.",
-    url:"https://augustineiacopelli.github.io/appaday-142-grain-garden/"
+    url:"https://augustineiacopelli.github.io/appaday-142-grain-garden/",
+    kw:"falling sand sandbox physics simulation elements water fire lava simulator pixel acid plants play with"
   },
   { num:"143", name:"Commute Clock", cat:"D", date:"2026-09-27",
     desc:"A commute gas calculator that shows what each drive to work costs and what a day at home keeps. Slide your commute days to see yearly savings, add lunch trips home, log fillups to price your own tank and real MPG, and value reclaimed hours from your wage or salary.",
-    url:"https://augustineiacopelli.github.io/appaday-143-commute-clock/"
+    url:"https://augustineiacopelli.github.io/appaday-143-commute-clock/",
+    kw:"commute cost gas money work from home mpg fuel savings driving calculator to remote mileage"
   },
   { num:"144", name:"Bulletin Brief", cat:"S", ai:true, date:"2026-09-28",
     desc:"Paste a Catholic parish bulletin or upload its PDF, and Claude turns it into a one page digest: Mass times with this week's schedule changes up top, confession and adoration, events, and what the parish is asking of you. Unclear items carry a visible flag. Add events to your calendar, share, or print.",
-    url:"https://augustineiacopelli.github.io/appaday-144-bulletin-brief/"
+    url:"https://augustineiacopelli.github.io/appaday-144-bulletin-brief/",
+    kw:"parish bulletin church mass times summary catholic events ai confession adoration news what is happening at this week pdf"
   },
   { num:"145", name:"Story Seed", cat:"C", ai:true, date:"2026-09-29",
     desc:"Pick a genre and name one ordinary object, and Claude writes a two paragraph story opener where that object is the catalyst that sets everything in motion. Tap Random for an evocative object, Regenerate for a fresh take on the same seed, or Copy to keep it. Your last ten seeds stay close at hand.",
-    url:"https://augustineiacopelli.github.io/appaday-145-story-seed/"
+    url:"https://augustineiacopelli.github.io/appaday-145-story-seed/",
+    kw:"story writing prompt writer block fiction creative ai opener ideas starter genre object generator inspiration spark"
   },
   {
     num:"146", name:"Saga Forge", cat:"C", ai:true, date:"2026-09-30",
     desc:"A rules workshop for classic JRPGs. Write and lock a saga Charter, generate its Codex, then author characters, enemies, and troops. Fight them in a pixel Arena or run hundreds of battles in a Simulator that flags fights far from your target win rate. Optional Claude drafting. Exports a bundle and the engine.",
-    url:"https://augustineiacopelli.github.io/appaday-146-saga-forge/"
+    url:"https://augustineiacopelli.github.io/appaday-146-saga-forge/",
+    kw:"saga forge game design jrpg rpg maker battle system characters enemies rules make a simulator balance"
   },
   {
     num:"147", name:"Art and Audio Forge", cat:"C", date:"2026-10-01",
     desc:"The art and sound studio for a Saga Forge bundle. Quick Build fills every sprite, tileset, and palette from your saga, then refine them with a pixel editor, colorways, and element palettes. Characters gain animated battle poses and a full battle presenter, and bundles still open in Day 146.",
-    url:"https://augustineiacopelli.github.io/appaday-147-art-and-audio-forge/"
+    url:"https://augustineiacopelli.github.io/appaday-147-art-and-audio-forge/",
+    kw:"saga forge pixel art sprites sound effects game music assets rpg tilesets editor sprite animation chiptune"
   },
   {
     num:"148", name:"World Forge", cat:"C", date:"2026-10-02",
     desc:"The world builder for a Saga Forge bundle dressed by Art and Audio Forge. One seed grows chapter progression, continents of climate biomes with gated passes, towns, castles, dungeons, caves, and encounter zones. Paint cells, tune zones, prove every chapter walkable, and export for Day 150.",
-    url:"https://augustineiacopelli.github.io/appaday-148-world-forge/"
+    url:"https://augustineiacopelli.github.io/appaday-148-world-forge/",
+    kw:"saga forge world builder map maker rpg dungeons towns game generator biomes castles design level"
   },
   {
     num:"149", name:"Story Forge", cat:"C", ai:true, date:"2026-10-03",
     desc:"The story writer for a World Forge world. Bind every gate to a flag, build quests as state machines, dialogue graphs, cutscenes, and endings, and a walk proves the story can always be finished. Final exports a game kit: five engines and a bundle that play the game with no forge at all.",
-    url:"https://augustineiacopelli.github.io/appaday-149-story-forge/"
+    url:"https://augustineiacopelli.github.io/appaday-149-story-forge/",
+    kw:"saga forge story writing quests dialogue game rpg branching narrative quest design cutscenes endings interactive fiction"
   },
   {
     num:"150", name:"Saga Studio", cat:"C", ai:true, milestone:true, date:"2026-10-04",
     desc:"The milestone that joins the four Saga forges into one studio. Charter and Rules, Art and Audio, World, and Story become a gated five stage pipeline with one project store. Test Play any chapter, map, or battle, then Build game writes a standalone RPG as one HTML file or a zip that plays offline.",
-    url:"https://augustineiacopelli.github.io/appaday-150-saga-studio/"
+    url:"https://augustineiacopelli.github.io/appaday-150-saga-studio/",
+    kw:"saga forge game maker build a rpg engine make your own studio an final fantasy style creator"
   },
   {
     num:"151", name:"Rainbow Readers 2.0", cat:"E", date:"2026-10-05",
     desc:"Offline phonics and sight word practice for grades 1 to 3. A quick placement probe finds the right step, then six mini games build letters, words, sentences, and reading passages. Stars fill a rainbow to unlock friends. Plays with touch, keyboard, or a game controller on a TV or RetroPie.",
-    url:"https://augustineiacopelli.github.io/appaday-151-rainbow-readers-2/"
+    url:"https://augustineiacopelli.github.io/appaday-151-rainbow-readers-2/",
+    kw:"phonics reading practice sight words kids first grade second third learn to read early readers offline game"
   },
   {
     num:"152", name:"Packing List Rings", cat:"D", date:"2026-10-06",
     desc:"Packing List Rings builds a packing list for everyone on a trip. Add travelers as adults, kids, or infants, set dates, climate, and setting, and it generates items per person with quantities scaled to trip length. Animated progress rings track each category and traveler until everything is packed.",
-    url:"https://augustineiacopelli.github.io/appaday-152-packing-list-rings/"
+    url:"https://augustineiacopelli.github.io/appaday-152-packing-list-rings/",
+    kw:"packing list travel trip luggage vacation pack family suitcase checklist kids infants planner what to for"
   },
   {
     num:"153", name:"Social Pulse", cat:"I", ai:true, date:"2026-10-07",
     desc:"Paste a batch of social posts or comments and Claude flags which ones are worth a reply. Each post gets a verdict of reply now, reply later, or skip, a category, and a one line reason. Add your own reply criteria, mark posts Open, Later, or Done, and filter the results. Up to 40 posts per run.",
-    url:"https://augustineiacopelli.github.io/appaday-153-social-pulse/"
+    url:"https://augustineiacopelli.github.io/appaday-153-social-pulse/",
+    kw:"social media comments triage which to reply engagement posts ai now later skip worthy community management"
   },
   {
     num:"154", name:"Service Hours Log", cat:"S", date:"2026-10-08",
     desc:"Service Hours Log keeps a running record of volunteer and ministry hours across every cause you serve, from church to Scouts to PTA. Log hours in seconds with quick chips, see totals per cause and per year, then print a signable report or export a CSV for your parish, troop, or school service summary.",
-    url:"https://augustineiacopelli.github.io/appaday-154-service-hours-log/"
+    url:"https://augustineiacopelli.github.io/appaday-154-service-hours-log/",
+    kw:"volunteer hours service log community scouts church ministry tracker pta report track for school"
   },
   {
     num:"155", name:"Forecast Discussion Decoder", cat:"E", ai:true, date:"2026-10-09",
     desc:"Fetches the latest National Weather Service Area Forecast Discussion for any forecast office and decodes it into plain English with Claude. Pick a voice from news reporter to snarky to comical, see a gravity gauge scaled to the threat, and tap any jargon term for a free definition. Defaults to Wichita.",
-    url:"https://augustineiacopelli.github.io/appaday-155-forecast-discussion-decoder/"
+    url:"https://augustineiacopelli.github.io/appaday-155-forecast-discussion-decoder/",
+    kw:"weather forecast discussion nws national service explained meteorology ai afd area meteorologist jargon decoded"
   },
   {
     num:"156", name:"Tip Splitter", cat:"U", date:"2026-10-10",
     desc:"Tip Splitter turns a restaurant check into an even split in seconds. Enter the bill, tap a 15, 18, 20, or 25 percent chip or type your own, and set the party size. The tip, grand total, and each share update live, and a round up toggle lifts every share to the next whole dollar and shows the true tip.",
-    url:"https://augustineiacopelli.github.io/appaday-156-tip-splitter/"
+    url:"https://augustineiacopelli.github.io/appaday-156-tip-splitter/",
+    kw:"tip calculator split the bill restaurant check gratuity dinner friends splitting percentage group how much does each person owe"
   },
   {
     num:"157", name:"Novena Companion", cat:"S", date:"2026-10-11",
     desc:"Novena Companion walks you through a nine day Catholic novena. Choose one of seven devotions with its traditional dates or pray a custom novena for your own intention. Daily meditations, the traditional prayers, a streak, and calendar reminders that open straight to each day keep you faithful.",
-    url:"https://augustineiacopelli.github.io/appaday-157-novena-companion/"
+    url:"https://augustineiacopelli.github.io/appaday-157-novena-companion/",
+    kw:"novena nine days catholic prayer devotion intention day prayers pray a st jude divine mercy tracker"
   },
   {
     num:"158", name:"Gratitude Jar", cat:"I", ai:true, date:"2026-10-12",
     desc:"Gratitude Jar is a place to drop short notes of thanks, 140 characters each, as often as you like. Each slip tumbles into an animated jar. When the seventh lands, close it with your own reflection or let Claude name the common thread in one warm sentence. A daily streak and past jars keep the habit going.",
-    url:"https://augustineiacopelli.github.io/appaday-158-gratitude-jar/"
+    url:"https://augustineiacopelli.github.io/appaday-158-gratitude-jar/",
+    kw:"gratitude thankful journal thanks blessings positive reflection jar thankfulness notes practice count habit mood boost positivity"
   }
 ];
 
@@ -1860,7 +2033,7 @@ function buildCards(filter) {
 }
 
 // ============================================================
-//  SEARCH  (keyword lookup across number, name, desc, category)
+//  SEARCH  (ask-style, no AI: keywords + synonyms + weighted scoring)
 //  Overrides the filter view without changing currentFilter, so
 //  clearing the box restores whatever filter was active.
 // ============================================================
@@ -1868,15 +2041,12 @@ const searchInput = document.getElementById("search-input");
 const searchClear = document.getElementById("search-clear");
 let searchQuery = "";
 
-function appHaystack(app) {
-  const meta = CATS[app.cat] || { label: "", plural: "" };
-  return [app.num, app.name, app.desc, app.cat, meta.label, meta.plural].join(" ").toLowerCase();
-}
 function stemToken(w) {
   if (w.length < 5) return w;
   const suf = ["ings", "ies", "ing", "ers", "ied", "es", "ed", "er", "ly", "s"];
   for (let i = 0; i < suf.length; i++) {
     const s = suf[i];
+    if (s === "s" && w.slice(-2) === "ss") continue;
     if (w.length > s.length && w.slice(-s.length) === s) {
       const st = w.slice(0, w.length - s.length);
       if (st.length >= 4) return st;
@@ -1884,14 +2054,194 @@ function stemToken(w) {
   }
   return w;
 }
-function tokenMatches(hay, t) {
-  if (hay.indexOf(t) !== -1) return true;
-  const st = stemToken(t);
-  return st !== t && hay.indexOf(st) !== -1;
+// --- Ask-style search (no AI). Every APPS entry carries kw:"..." keywords
+// describing the problem it solves. A query is cleaned of filler words,
+// expanded through SYN_GROUPS, and each app is scored by field weight
+// (name > keywords > category/AI > description), word rarity (IDF), and
+// how many of the query's ideas it covers. "not X" / "without X" excludes.
+const SEARCH_STOP = new Set(("a an the and or but of to for in on at by with from into onto about as is are was were be been being am " +
+  "do does did done can could would should will shall may might must i me my mine myself we our us you your it its this that these those " +
+  "there here what which who whom whose when where why how any some something anything everything thing things stuff way ways " +
+  "app apps application tool tools program site page want wants wanted need needs needed looking look find show give get got let lets " +
+  "please help helps helping just really very kind sort type like also more most one ones use using used make makes making good best " +
+  "great better im id ive dont doesnt cant have has had go going able so if then than much many down up out off each every all also new well now into really still yet whats").split(" "));
+const SEARCH_NEG = new Set(["not", "no", "without", "except", "excluding", "minus"]);
+const SYN_GROUPS = [
+  "pray prayer prayers praying devotion devotional",
+  "catholic church parish christian faith",
+  "bible scripture verse verses gospel",
+  "saint saints holy",
+  "kid kids child children son daughter toddler toddlers",
+  "game games play playing",
+  "money budget finance financial spending expenses dollars cash",
+  "cost costs price prices expensive cheap",
+  "beer beers brew brewing homebrew homebrewing brewer ale",
+  "sleep sleeping asleep bedtime insomnia",
+  "run running runner jog jogging marathon",
+  "exercise workout fitness",
+  "stretch stretches stretching yoga",
+  "stress stressed anxiety anxious worry worried overwhelmed",
+  "calm relax relaxing relaxation peaceful meditation mindfulness",
+  "school student students class classes college homework",
+  "teacher teachers teaching professor instructor",
+  "write writing writer",
+  "learn learning study studying education",
+  "weather meteorology meteorologist",
+  "photo photos picture pictures camera image",
+  "chart charts graph graphs visualize visualization dashboard",
+  "track tracker tracking log logging journal",
+  "plan planner planning schedule scheduling",
+  "remind reminder reminders forget",
+  "decide decision decisions choose choice",
+  "travel trip trips vacation",
+  "food meal meals cooking cook dinner recipe recipes",
+  "grocery groceries shopping",
+  "ai claude smart",
+  "draw drawing art sketch doodle",
+  "color colors colour colours",
+  "email emails mail",
+  "task tasks todo chore chores",
+  "joke jokes funny humor laugh",
+  "water hydration hydrate",
+  "alcohol drinking drunk",
+  "scout scouts scouting",
+  "volunteer volunteering service",
+  "puzzle puzzles brain logic",
+  "music song songs band",
+  "word words vocabulary",
+  "phone mobile tilt motion",
+  "party parties friends group",
+  "grade grades grading gpa",
+  "health wellness wellbeing",
+  "mood feelings emotions emotional",
+  "rpg roleplaying",
+];
+const SYN = (function () {
+  const m = {};
+  SYN_GROUPS.forEach(g => {
+    const ws = g.split(" ");
+    ws.forEach(w => { const k = stemToken(w); m[k] = m[k] || new Set(); ws.forEach(x => { if (x !== w) m[k].add(x); }); });
+  });
+  return m;
+})();
+function searchTokens(str) {
+  return String(str).toLowerCase().replace(/&amp;/g, " and ").replace(/['\u2019]/g, "").split(/[^a-z0-9]+/).filter(Boolean);
 }
-function matchesQuery(app, tokens) {
-  const hay = appHaystack(app);
-  return tokens.every(t => tokenMatches(hay, t));
+function editWithin1(a, b) {
+  if (a === b) return true;
+  const la = a.length, lb = b.length;
+  if (Math.abs(la - lb) > 1) return false;
+  let i = 0, j = 0, diff = 0;
+  while (i < la && j < lb) {
+    if (a[i] === b[j]) { i++; j++; continue; }
+    if (++diff > 1) return false;
+    if (la === lb && a[i] === b[j + 1] && a[i + 1] === b[j]) { i += 2; j += 2; continue; } // swapped letters
+    if (la > lb) i++; else if (lb > la) j++; else { i++; j++; }
+  }
+  return diff + (la - i) + (lb - j) <= 1;
+}
+// Field weights: name 6, keywords 3, category and AI flag 2, description 1.
+const SEARCH_INDEX = (function () {
+  const df = {};
+  const docs = APPS.map(app => {
+    const meta = CATS[app.cat] || { label: "", plural: "" };
+    const isAI = app.ai || /\bclaude\b/i.test(app.desc);
+    const fields = [
+      [app.name, 6],
+      [app.kw || "", 3],
+      [meta.label + " " + meta.plural + (isAI ? " ai claude" : ""), 2],
+      [app.desc, 1],
+    ];
+    const terms = {};
+    fields.forEach(([txt, w]) => {
+      searchTokens(txt).forEach(t => {
+        const s = stemToken(t);
+        if (!terms[s] || terms[s].w < w) terms[s] = { w: w, word: t };
+      });
+    });
+    Object.keys(terms).forEach(s => { df[s] = (df[s] || 0) + 1; });
+    return { app: app, terms: terms, stems: Object.keys(terms), nameKey: searchTokens(app.name).join(" ") };
+  });
+  return { docs: docs, df: df, n: docs.length };
+})();
+function termIdf(stem) {
+  const d = SEARCH_INDEX.df[stem] || 1;
+  return Math.log(1 + SEARCH_INDEX.n / d);
+}
+// Best weighted hit of one word in one app: exact or stemmed, then prefix, then one-typo.
+function bestHit(doc, word) {
+  const s = stemToken(word);
+  const t = doc.terms[s];
+  if (t) return { w: t.w * termIdf(s), word: t.word };
+  if (word.length < 3) return null;
+  let best = null;
+  const known = !!SEARCH_INDEX.df[s]; // real archive words are never typo-corrected
+  for (let i = 0; i < doc.stems.length; i++) {
+    const ds = doc.stems[i];
+    let f = 0;
+    if (word.length >= 3 && ds.length > word.length && ds.indexOf(word) === 0) f = 0.6;
+    else if (!known && s.length >= 5 && ds.length >= 5 && editWithin1(s, ds)) f = 0.45;
+    if (f) {
+      const v = doc.terms[ds].w * termIdf(ds) * f;
+      if (!best || v > best.w) best = { w: v, word: doc.terms[ds].word };
+    }
+  }
+  return best;
+}
+function parseQuery(q) {
+  const raw = searchTokens(q);
+  const concepts = [], negs = [];
+  let negNext = false;
+  raw.forEach(t => {
+    if (SEARCH_NEG.has(t)) { negNext = true; return; }
+    if (SEARCH_STOP.has(t)) return;
+    if (negNext) { negs.push(t); negNext = false; return; }
+    concepts.push(t);
+  });
+  return { concepts: [...new Set(concepts)], negs: negs, phrase: raw.join(" ") };
+}
+function scoreApps(q) {
+  const pq = parseQuery(q);
+  if (!pq.concepts.length && !pq.negs.length) return [];
+  const results = [];
+  SEARCH_INDEX.docs.forEach(doc => {
+    // Exclusions: a negated word that is central to the app (name, keywords, category) drops it.
+    for (let i = 0; i < pq.negs.length; i++) {
+      const h = bestHit(doc, pq.negs[i]);
+      const syns = SYN[stemToken(pq.negs[i])];
+      let central = h && doc.terms[stemToken(h.word)] && doc.terms[stemToken(h.word)].w >= 2;
+      if (!central && syns) syns.forEach(x => { const t = doc.terms[stemToken(x)]; if (t && t.w >= 2) central = true; });
+      if (central) return;
+    }
+    let total = 0, covered = 0;
+    const why = [];
+    pq.concepts.forEach(c => {
+      let best = null;
+      if (/^\d{1,3}$/.test(c) && Number(c) === Number(doc.app.num)) best = { w: 40, word: "#" + doc.app.num };
+      const h = bestHit(doc, c);
+      if (h && (!best || h.w > best.w)) best = h;
+      // Synonyms count at half strength; with a direct hit they only add a small boost.
+      let syn = null;
+      const syns = SYN[stemToken(c)];
+      if (syns) syns.forEach(x => { const sh = bestHit(doc, x); if (sh && (!syn || sh.w > syn.w)) syn = sh; });
+      if (syn) {
+        if (best) best = { w: best.w + syn.w * 0.15, word: best.word };
+        else best = { w: syn.w * 0.5, word: syn.word };
+      }
+      if (best) { total += best.w; covered++; if (why.indexOf(best.word) === -1) why.push(best.word); }
+    });
+    if (!pq.concepts.length) { results.push({ app: doc.app, score: 0.001, why: [] }); return; }
+    if (!covered) return;
+    const coverage = covered / pq.concepts.length;
+    let score = total * (0.35 + 0.65 * coverage * coverage);
+    if (doc.nameKey && pq.phrase.indexOf(doc.nameKey) !== -1) score += 25;
+    results.push({ app: doc.app, score: score, why: why });
+  });
+  results.sort((a, b) => b.score - a.score || Number(b.app.num) - Number(a.app.num));
+  if (!results.length) return results;
+  const top = results[0].score;
+  if (pq.concepts.length < 2) return results.slice(0, 40);
+  return results.filter((r, i) => i < 3 || r.score >= top * 0.25).slice(0, 30);
 }
 function refreshStats() {
   document.getElementById("total-count").textContent = APPS.filter(a => !a.coming_soon).length;
@@ -1902,12 +2252,11 @@ function refreshStats() {
 function runSearch(q) {
   const main = document.getElementById("main-content");
   main.innerHTML = "";
-  const tokens = q.toLowerCase().split(/\s+/).filter(Boolean);
-  const results = APPS.filter(a => matchesQuery(a, tokens));
+  const results = scoreApps(q);
 
   const hdr = document.createElement("div");
   hdr.className = "section-header";
-  const t = document.createElement("span"); t.className = "section-title"; t.textContent = "Search";
+  const t = document.createElement("span"); t.className = "section-title"; t.textContent = "Best matches";
   const code = document.createElement("span"); code.className = "section-code"; code.textContent = q;
   const cnt = document.createElement("span"); cnt.className = "section-count";
   cnt.textContent = results.length + " result" + (results.length !== 1 ? "s" : "");
@@ -1919,10 +2268,20 @@ function runSearch(q) {
   if (!results.length) {
     const emp = document.createElement("div");
     emp.className = "empty-state";
-    emp.textContent = "No apps match that keyword. Try another word or clear the search.";
+    emp.textContent = "Nothing matched. Try other words, like prayer, kids game, budget, or a question such as what helps me sleep.";
     grid.appendChild(emp);
   } else {
-    results.forEach((app, i) => grid.appendChild(makeCard(app, i)));
+    results.forEach((r, i) => {
+      const card = makeCard(r.app, i);
+      if (r.why.length) {
+        const w = document.createElement("div");
+        w.className = "card-why";
+        w.textContent = "Matched: " + r.why.slice(0, 4).join(", ");
+        const foot = card.querySelector(".card-footer");
+        if (foot) card.insertBefore(w, foot); else card.appendChild(w);
+      }
+      grid.appendChild(card);
+    });
   }
   main.appendChild(grid);
   refreshStats();
@@ -1951,7 +2310,7 @@ const SUGGEST = (function () {
   const words = new Set();
   const names = [];
   const addWords = (str) => str.toLowerCase().split(/[^a-z0-9]+/).forEach(w => { if (w.length >= 3) words.add(w); });
-  APPS.forEach(a => { names.push(a.name); addWords(a.name); });
+  APPS.forEach(a => { names.push(a.name); addWords(a.name); if (a.kw) addWords(a.kw); });
   Object.keys(CATS).forEach(k => { addWords(CATS[k].label); addWords(CATS[k].plural); });
   return { words: [...words].sort(), names: names };
 })();
