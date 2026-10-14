@@ -98,6 +98,7 @@ GLYPH_MAP = {
     "157": "church",
     "158": "heart",
     "159": "coffee",
+    "160": "file-audio",
 }
 PORTFOLIO_GLYPH = "shapes"
 

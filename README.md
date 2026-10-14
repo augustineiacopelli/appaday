@@ -10,9 +10,9 @@ Every app is a single self-contained file of vanilla HTML, CSS, and JavaScript w
 
 ## The count
 
-**All 159 shipped apps, numbered 001 through 159 with no gaps in the sequence.** Building since May 2026.
+**All 160 shipped apps, numbered 001 through 160 with no gaps in the sequence.** Building since May 2026.
 
-Of the 159, fifty are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 159, Caffeine Tracker, logs every coffee, tea, or energy drink with one tap and draws your caffeine level fading on a live decay curve, with the time you drop below your sleep safe threshold, the milligrams left at bedtime, and a daily total against the 400 mg guidance. The nine categories are spread as follows.
+Of the 160, fifty-one are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 160, Procedure Scribe, turns a dictated recording into an edited training module, SOP, or lecture outline, transcribing it with Whisper entirely in the browser before a ready made prompt hands the cleanup to Claude. The nine categories are spread as follows.
 
 | Category | Code | Shipped |
 | --- | --- | --- |
@@ -24,7 +24,7 @@ Of the 159, fifty are AI-powered. App 150, Saga Studio, is the latest milestone:
 | Interactive | I | 14 |
 | Productivity | P | 23 |
 | Spirituality | S | 17 |
-| Utility | U | 19 |
+| Utility | U | 20 |
 
 ## How it is organized
 
