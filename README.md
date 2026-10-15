@@ -10,14 +10,14 @@ Every app is a single self-contained file of vanilla HTML, CSS, and JavaScript w
 
 ## The count
 
-**All 160 shipped apps, numbered 001 through 160 with no gaps in the sequence.** Building since May 2026.
+**All 161 shipped apps, numbered 001 through 161 with no gaps in the sequence.** Building since May 2026.
 
-Of the 160, fifty-one are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 160, Procedure Scribe, turns a dictated recording into an edited training module, SOP, or lecture outline, transcribing it with Whisper entirely in the browser before a ready made prompt hands the cleanup to Claude. The nine categories are spread as follows.
+Of the 161, fifty-one are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 161, Tuition Payback Plotter, shows how long a degree, certificate, or bootcamp takes to pay for itself through the raise it brings, building the cost from credit hours, classes, semesters, and room and board and charting extra earnings against it beside a conservative scenario. The nine categories are spread as follows.
 
 | Category | Code | Shipped |
 | --- | --- | --- |
 | Creative | C | 19 |
-| Data | D | 16 |
+| Data | D | 17 |
 | Educational | E | 16 |
 | Games | G | 19 |
 | Health | H | 16 |

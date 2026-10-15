@@ -1278,5 +1278,13 @@
   "slug": "appaday-160-procedure-scribe",
   "glyph": "file-audio",
   "color": "#289664"
+ },
+ {
+  "num": "161",
+  "cat": "D",
+  "name": "Tuition Payback Plotter",
+  "slug": "appaday-161-tuition-payback-plotter",
+  "glyph": "graduation-cap",
+  "color": "#B8860B"
  }
 ]

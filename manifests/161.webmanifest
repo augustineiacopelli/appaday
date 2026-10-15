@@ -1,0 +1,36 @@
+{
+ "name": "Tuition Payback Plotter",
+ "short_name": "Payback",
+ "id": "https://augustineiacopelli.github.io/appaday-161-tuition-payback-plotter/",
+ "start_url": "https://augustineiacopelli.github.io/appaday-161-tuition-payback-plotter/",
+ "scope": "https://augustineiacopelli.github.io/appaday-161-tuition-payback-plotter/",
+ "display": "standalone",
+ "background_color": "#0F0E0C",
+ "theme_color": "#B8860B",
+ "icons": [
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/161.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/161.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/161.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/161.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}
