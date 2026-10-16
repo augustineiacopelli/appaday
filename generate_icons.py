@@ -100,6 +100,7 @@ GLYPH_MAP = {
     "159": "coffee",
     "160": "file-audio",
     "161": "graduation-cap",
+    "162": "sun-moon",
 }
 PORTFOLIO_GLYPH = "shapes"
 

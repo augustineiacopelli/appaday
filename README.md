@@ -10,9 +10,9 @@ Every app is a single self-contained file of vanilla HTML, CSS, and JavaScript w
 
 ## The count
 
-**All 161 shipped apps, numbered 001 through 161 with no gaps in the sequence.** Building since May 2026.
+**All 162 shipped apps, numbered 001 through 162 with no gaps in the sequence.** Building since May 2026.
 
-Of the 161, fifty-one are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 161, Tuition Payback Plotter, shows how long a degree, certificate, or bootcamp takes to pay for itself through the raise it brings, building the cost from credit hours, classes, semesters, and room and board and charting extra earnings against it beside a conservative scenario. The nine categories are spread as follows.
+Of the 162, fifty-one are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 162, Consolation Journal, logs the interior movements of a retreat as consolation or desolation using the Ignatian Rules for the Discernment of Spirits, recording what came just before each one and keeping a standing caution against deciding in desolation beside a color ribbon of the day. The nine categories are spread as follows.
 
 | Category | Code | Shipped |
 | --- | --- | --- |
@@ -23,7 +23,7 @@ Of the 161, fifty-one are AI-powered. App 150, Saga Studio, is the latest milest
 | Health | H | 16 |
 | Interactive | I | 14 |
 | Productivity | P | 23 |
-| Spirituality | S | 17 |
+| Spirituality | S | 18 |
 | Utility | U | 20 |
 
 ## How it is organized

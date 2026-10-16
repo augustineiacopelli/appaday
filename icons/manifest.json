@@ -1286,5 +1286,13 @@
   "slug": "appaday-161-tuition-payback-plotter",
   "glyph": "graduation-cap",
   "color": "#B8860B"
+ },
+ {
+  "num": "162",
+  "cat": "S",
+  "name": "Consolation Journal",
+  "slug": "appaday-162-consolation-journal",
+  "glyph": "sun-moon",
+  "color": "#6A4C93"
  }
 ]
