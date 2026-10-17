@@ -1294,5 +1294,13 @@
   "slug": "appaday-162-consolation-journal",
   "glyph": "sun-moon",
   "color": "#6A4C93"
+ },
+ {
+  "num": "163",
+  "cat": "P",
+  "name": "Rule of Life Builder",
+  "slug": "appaday-163-rule-of-life",
+  "glyph": "scroll-text",
+  "color": "#C8401A"
  }
 ]

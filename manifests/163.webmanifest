@@ -1,0 +1,36 @@
+{
+ "name": "Rule of Life Builder",
+ "short_name": "Rule of Life",
+ "id": "https://augustineiacopelli.github.io/appaday-163-rule-of-life/",
+ "start_url": "https://augustineiacopelli.github.io/appaday-163-rule-of-life/",
+ "scope": "https://augustineiacopelli.github.io/appaday-163-rule-of-life/",
+ "display": "standalone",
+ "background_color": "#0F0E0C",
+ "theme_color": "#C8401A",
+ "icons": [
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/163.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/163.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/163.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/163.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}
