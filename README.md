@@ -10,9 +10,9 @@ Every app is a single self-contained file of vanilla HTML, CSS, and JavaScript w
 
 ## The count
 
-**All 163 shipped apps, numbered 001 through 163 with no gaps in the sequence.** Building since May 2026.
+**All 164 shipped apps, numbered 001 through 164 with no gaps in the sequence.** Building since May 2026.
 
-Of the 163, fifty-one are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 163, Rule of Life Builder, helps a Catholic man write a short rule across prayer, Scripture, the sacraments, service, and fasting, then keep it week by week with daily checks, a Sunday review, a twelve week archive, and a plain text export for a spiritual director. The nine categories are spread as follows.
+Of the 164, fifty-one are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 164, Brotherhood Check-In, gives a men's group or accountability partner a private weekly practice: editable questions on prayer, honesty, purity, work, family, and service, a check on whether last week's commitment was kept, eight weeks of patterns, and a copyable summary that leaves private answers out unless chosen. The nine categories are spread as follows.
 
 | Category | Code | Shipped |
 | --- | --- | --- |
@@ -23,7 +23,7 @@ Of the 163, fifty-one are AI-powered. App 150, Saga Studio, is the latest milest
 | Health | H | 16 |
 | Interactive | I | 14 |
 | Productivity | P | 24 |
-| Spirituality | S | 18 |
+| Spirituality | S | 19 |
 | Utility | U | 20 |
 
 ## How it is organized

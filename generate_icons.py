@@ -102,6 +102,7 @@ GLYPH_MAP = {
     "161": "graduation-cap",
     "162": "sun-moon",
     "163": "scroll-text",
+    "164": "handshake",
 }
 PORTFOLIO_GLYPH = "shapes"
 

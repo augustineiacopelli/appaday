@@ -1302,5 +1302,13 @@
   "slug": "appaday-163-rule-of-life",
   "glyph": "scroll-text",
   "color": "#C8401A"
+ },
+ {
+  "num": "164",
+  "cat": "S",
+  "name": "Brotherhood Check-In",
+  "slug": "appaday-164-brotherhood-check-in",
+  "glyph": "handshake",
+  "color": "#6A4C93"
  }
 ]
