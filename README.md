@@ -10,9 +10,9 @@ Every app is a single self-contained file of vanilla HTML, CSS, and JavaScript w
 
 ## The count
 
-**All 164 shipped apps, numbered 001 through 164 with no gaps in the sequence.** Building since May 2026.
+**All 165 shipped apps, numbered 001 through 165 with no gaps in the sequence.** Building since May 2026.
 
-Of the 164, fifty-one are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 164, Brotherhood Check-In, gives a men's group or accountability partner a private weekly practice: editable questions on prayer, honesty, purity, work, family, and service, a check on whether last week's commitment was kept, eight weeks of patterns, and a copyable summary that leaves private answers out unless chosen. The nine categories are spread as follows.
+Of the 165, fifty-one are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 165, Home Maintenance Log, keeps recurring home upkeep and warranty dates in one list: furnace filters, smoke and CO alarm batteries, gutters, water heater flushes, and appliance warranties roll forward when you tap Done, with overdue and due soon colors, undo, and JSON export, all stored on the device. The nine categories are spread as follows.
 
 | Category | Code | Shipped |
 | --- | --- | --- |
@@ -24,7 +24,7 @@ Of the 164, fifty-one are AI-powered. App 150, Saga Studio, is the latest milest
 | Interactive | I | 14 |
 | Productivity | P | 24 |
 | Spirituality | S | 19 |
-| Utility | U | 20 |
+| Utility | U | 21 |
 
 ## How it is organized
 
