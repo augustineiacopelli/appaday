@@ -1,0 +1,36 @@
+{
+ "name": "Standing Desk Interval Coach",
+ "short_name": "Desk Coach",
+ "id": "https://augustineiacopelli.github.io/appaday-166-standing-desk-interval-coach/",
+ "start_url": "https://augustineiacopelli.github.io/appaday-166-standing-desk-interval-coach/",
+ "scope": "https://augustineiacopelli.github.io/appaday-166-standing-desk-interval-coach/",
+ "display": "standalone",
+ "background_color": "#0F0E0C",
+ "theme_color": "#D14D72",
+ "icons": [
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/166.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/166.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/166.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/166.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

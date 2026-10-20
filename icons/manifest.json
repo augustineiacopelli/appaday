@@ -1318,5 +1318,13 @@
   "slug": "appaday-165-home-maintenance-log",
   "glyph": "wrench",
   "color": "#289664"
+ },
+ {
+  "num": "166",
+  "cat": "H",
+  "name": "Standing Desk Interval Coach",
+  "slug": "appaday-166-standing-desk-interval-coach",
+  "glyph": "person-standing",
+  "color": "#D14D72"
  }
 ]

@@ -104,6 +104,7 @@ GLYPH_MAP = {
     "163": "scroll-text",
     "164": "handshake",
     "165": "wrench",
+    "166": "person-standing",
 }
 PORTFOLIO_GLYPH = "shapes"
 
