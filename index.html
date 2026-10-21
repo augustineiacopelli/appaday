@@ -92,8 +92,7 @@
        sets #about while open and clears it on close. Reuses .share-sheet
        and .share-card; closes on Done, backdrop tap, or Escape. The footer
        also carries a LinkedIn link beside GitHub. The five CliftonStrengths
-       are .about-chipbtn buttons; tapping one reveals its .about-sfp panel
-       (one open at a time) with a summary and a link to Gallup's theme page.
+       names in the What drives me paragraph link to Gallup's theme pages.
   Update this manifest whenever a new portal feature is added.
   ==================================================================
 -->
@@ -872,26 +871,6 @@
   }
   .about-body h3:first-child { margin-top: 0; }
   .about-body a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
-  .about-sf { display: flex; flex-wrap: wrap; gap: 6px; margin: -2px 0 10px; }
-  .about-chipbtn {
-    display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 0 12px 0 6px;
-    border: 1px solid var(--rule); border-radius: 999px; background: var(--card-bg); color: var(--ink);
-    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.06em; cursor: pointer;
-    transition: border-color 0.15s ease, background 0.15s ease;
-  }
-  .about-chipbtn span {
-    width: 24px; height: 24px; border-radius: 50%; background: var(--accent); color: #fff;
-    display: inline-flex; align-items: center; justify-content: center; font-size: 11px;
-  }
-  .about-chipbtn:hover { border-color: var(--accent); }
-  .about-chipbtn[aria-expanded="true"] { border-color: var(--accent); background: var(--accent-dim); }
-  .about-chipbtn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-  .about-sfp {
-    font-size: 13px; line-height: 1.55; color: var(--ink); background: var(--paper-dark);
-    border-left: 3px solid var(--accent); border-radius: 4px; padding: 10px 12px; margin: 0 0 12px;
-  }
-  .about-sfp[hidden] { display: none; }
-  .about-sfp a { color: var(--accent); font-weight: 600; white-space: nowrap; }
   .about-chip {
     display: inline-block; margin-top: 8px; padding: 4px 10px; border-radius: 999px;
     background: var(--accent-dim); color: var(--accent);
@@ -1025,10 +1004,7 @@
       <h3>Why AppADay</h3>
       <p>AppADay began on May 8, 2026, inspired by Jonathan Mann's Song A Day. Every day, one complete, working, mobile friendly app gets designed, built, and published, with no skip days. It is my working lab for analytics and applied AI. <a href="https://augustineiacopelli.github.io/appaday-100-signal-desk/" target="_blank" rel="noopener">Signal Desk</a>, App 100, is a bring your own CSV analyst workbench with automatic profiling, driver analysis, forecasting, and Simpson's paradox checks. <a href="https://augustineiacopelli.github.io/appaday-092-semester-forecast/" target="_blank" rel="noopener">Semester Forecast</a> has Claude read every syllabus in a term, then computes a week by week workload chart that names the crunch weeks before they arrive. <a href="https://augustineiacopelli.github.io/appaday-150-saga-studio/" target="_blank" rel="noopener">Saga Studio</a> grew from zero lines into a full RPG creation platform in five days. Dozens of the apps call Claude directly, each designed so the model works from computed facts rather than guesses.</p>
       <h3>What drives me</h3>
-      <p>I play to win. Competition is my top CliftonStrength, followed by Significance, Consistency, Relator, and Focus. I want to know how my work measures up, and then I work to come out on top. A daily shipping streak with no skip days is that drive in action, with Consistency and Focus keeping it alive. Relator shows in how many of these apps were built for the people around me: my family, my students, my colleagues, and my parish.</p>
-      <div class="about-sf" aria-label="My top five CliftonStrengths, tap one to learn more"><button type="button" class="about-chipbtn" aria-expanded="false" aria-controls="sf-0"><span>1</span>Competition</button><button type="button" class="about-chipbtn" aria-expanded="false" aria-controls="sf-1"><span>2</span>Significance</button><button type="button" class="about-chipbtn" aria-expanded="false" aria-controls="sf-2"><span>3</span>Consistency</button><button type="button" class="about-chipbtn" aria-expanded="false" aria-controls="sf-3"><span>4</span>Relator</button><button type="button" class="about-chipbtn" aria-expanded="false" aria-controls="sf-4"><span>5</span>Focus</button></div>
-      <div class="about-sfp" id="sf-0" hidden><b>Competition.</b> I measure my progress against others and work hard to come out on top. Goals, scoreboards, and a clear finish line energize me. <a href="https://www.gallup.com/cliftonstrengths/en/252191/competition-theme.aspx" target="_blank" rel="noopener">Gallup's definition ↗</a></div><div class="about-sfp" id="sf-1" hidden><b>Significance.</b> I want my work to make a visible, lasting difference and to be the person others count on when the stakes are high. <a href="https://www.gallup.com/cliftonstrengths/en/252341/significance-theme.aspx" target="_blank" rel="noopener">Gallup's definition ↗</a></div><div class="about-sfp" id="sf-2" hidden><b>Consistency.</b> I build clear, repeatable systems so people are treated fairly and the same rules apply to everyone. <a href="https://www.gallup.com/cliftonstrengths/en/252203/consistency-theme.aspx" target="_blank" rel="noopener">Gallup's definition ↗</a></div><div class="about-sfp" id="sf-3" hidden><b>Relator.</b> I do my best work alongside people I know and trust, and I invest in relationships that last. <a href="https://www.gallup.com/cliftonstrengths/en/252311/relator-theme.aspx" target="_blank" rel="noopener">Gallup's definition ↗</a></div><div class="about-sfp" id="sf-4" hidden><b>Focus.</b> I set a direction, prioritize hard, and stay on course until the goal is reached. <a href="https://www.gallup.com/cliftonstrengths/en/252239/focus-theme.aspx" target="_blank" rel="noopener">Gallup's definition ↗</a></div>
-      <p>I'm Catholic and my faith shapes how I work and what I build, which is why the Spirituality shelf holds rosaries, novenas, and prayer companions alongside the games and dashboards.</p>
+      <p>I play to win. <a href="https://www.gallup.com/cliftonstrengths/en/252191/competition-theme.aspx" target="_blank" rel="noopener">Competition</a> is my top CliftonStrength, followed by <a href="https://www.gallup.com/cliftonstrengths/en/252341/significance-theme.aspx" target="_blank" rel="noopener">Significance</a>, <a href="https://www.gallup.com/cliftonstrengths/en/252203/consistency-theme.aspx" target="_blank" rel="noopener">Consistency</a>, <a href="https://www.gallup.com/cliftonstrengths/en/252311/relator-theme.aspx" target="_blank" rel="noopener">Relator</a>, and <a href="https://www.gallup.com/cliftonstrengths/en/252239/focus-theme.aspx" target="_blank" rel="noopener">Focus</a>. I want to know how my work measures up, and then I work to come out on top. A daily shipping streak with no skip days is that drive in action, with Consistency and Focus keeping it alive. Relator shows in how many of these apps were built for the people around me: my family, my students, my colleagues, and my parish. I'm Catholic and my faith shapes how I work and what I build, which is why the Spirituality shelf holds rosaries, novenas, and prayer companions alongside the games and dashboards.</p>
     </div>
     <div class="about-stats" aria-label="AppADay by the numbers">
       <div class="about-stat"><b id="about-apps">0</b><span>Apps</span></div>
@@ -2575,12 +2551,6 @@ function closeAbout() {
   document.addEventListener("keydown", (e) => { if (e.key === "Escape" && sheet.classList.contains("open")) closeAbout(); });
   window.addEventListener("hashchange", () => { if (location.hash === "#about" && !sheet.classList.contains("open")) openAbout(); });
   if (location.hash === "#about") openAbout();
-  const sfBtns = sheet.querySelectorAll(".about-chipbtn");
-  sfBtns.forEach(btn => btn.addEventListener("click", () => {
-    const open = btn.getAttribute("aria-expanded") !== "true";
-    sfBtns.forEach(b => { b.setAttribute("aria-expanded", "false"); document.getElementById(b.getAttribute("aria-controls")).hidden = true; });
-    if (open) { btn.setAttribute("aria-expanded", "true"); document.getElementById(btn.getAttribute("aria-controls")).hidden = false; }
-  }));
 })();
 
 // ============================================================
