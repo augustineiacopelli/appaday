@@ -78,7 +78,12 @@
        QR between the plain URL and URL?save=1; it is hidden for the
        portal share. The portal links manifests/portfolio.webmanifest, and
        the Save to Phone sheet shows #install-now (one tap Install) when
-       Android Chrome fires beforeinstallprompt.
+       Android Chrome fires beforeinstallprompt. save.js also sets each
+       app's browser tab favicon from its apple-touch-icon and, unless the
+       app has its own, a theme-color meta from its manifest theme_color.
+   10. Surprise Me - header .share-pill.alt (#surprise-me) after Save to
+       Phone. Opens a random live app (coming_soon excluded) in a new tab,
+       never the same app twice in a row (lastSurprise).
   Update this manifest whenever a new portal feature is added.
   ==================================================================
 -->
@@ -879,6 +884,7 @@
     <div class="header-actions">
       <button type="button" class="share-pill" id="share-portal" aria-label="Share the AppADay portfolio with a QR code or link"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h3v3h-3zM18 18h3v3h-3zM18 14h3M14 18v3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>Share</button>
       <button type="button" class="share-pill alt" id="install-portal" aria-label="How to save an app to your phone's home screen"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v7M9 11l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Save to Phone</button>
+      <button type="button" class="share-pill alt" id="surprise-me" aria-label="Open a random app from the archive"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="8" cy="8" r="1.5" fill="currentColor"/><circle cx="16" cy="8" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="8" cy="16" r="1.5" fill="currentColor"/><circle cx="16" cy="16" r="1.5" fill="currentColor"/></svg>Surprise Me</button>
     </div>
   </div>
 </header>
@@ -2370,6 +2376,14 @@ function closeInstall() {
   document.getElementById("install-sheet").classList.remove("open");
   if (installReturnFocus && installReturnFocus.focus) installReturnFocus.focus();
 }
+let lastSurprise = null;
+document.getElementById("surprise-me").addEventListener("click", () => {
+  const live = APPS.filter(a => !a.coming_soon && a.url && a.num !== lastSurprise);
+  if (!live.length) return;
+  const pick = live[Math.floor(Math.random() * live.length)];
+  lastSurprise = pick.num;
+  window.open(pick.url, "_blank", "noopener");
+});
 (function initInstall(){
   const sheet = document.getElementById("install-sheet");
   document.getElementById("install-portal").addEventListener("click", openInstall);

@@ -28,6 +28,21 @@
     document.head.appendChild(f);
   })();
 
+  // Browser chrome tint: unless the app sets its own theme-color, use the
+  // category color from its web manifest (address bar, task switcher).
+  (function () {
+    if (document.querySelector('meta[name="theme-color"]')) return;
+    var man = document.querySelector('link[rel="manifest"]');
+    if (!man || !man.href || !window.fetch) return;
+    fetch(man.href).then(function (r) { return r.json(); }).then(function (j) {
+      if (!j || !j.theme_color || document.querySelector('meta[name="theme-color"]')) return;
+      var tc = document.createElement("meta");
+      tc.name = "theme-color";
+      tc.content = j.theme_color;
+      document.head.appendChild(tc);
+    }).catch(function () {});
+  })();
+
   var KEY_SEEN = "appaday-save-seen";
   var params;
   try { params = new URLSearchParams(location.search); } catch (e) { params = null; }

@@ -1,0 +1,36 @@
+name: Weekly health check
+
+on:
+  schedule:
+    - cron: "17 13 * * 1"   # Mondays 13:17 UTC (8:17 CDT / 7:17 CST)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check every live app
+        id: run
+        run: python3 health_check.py
+        continue-on-error: true
+      - name: Open or update the health issue
+        if: steps.run.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TITLE="Weekly health check failures"
+          NUM=$(gh issue list --state open --search "\"$TITLE\" in:title" --json number --jq '.[0].number')
+          if [ -n "$NUM" ]; then
+            gh issue comment "$NUM" --body-file health_report.md
+          else
+            gh issue create --title "$TITLE" --body-file health_report.md
+          fi
+          exit 1
