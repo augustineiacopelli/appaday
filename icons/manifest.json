@@ -1326,5 +1326,13 @@
   "slug": "appaday-166-standing-desk-interval-coach",
   "glyph": "person-standing",
   "color": "#D14D72"
+ },
+ {
+  "num": "167",
+  "cat": "P",
+  "name": "Cub Scout Rank Checklist",
+  "slug": "appaday-167-cub-scout-rank-checklist",
+  "glyph": "badge-check",
+  "color": "#C8401A"
  }
 ]

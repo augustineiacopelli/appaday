@@ -1,0 +1,36 @@
+{
+ "name": "Cub Scout Rank Checklist",
+ "short_name": "Cub Ranks",
+ "id": "https://augustineiacopelli.github.io/appaday-167-cub-scout-rank-checklist/",
+ "start_url": "https://augustineiacopelli.github.io/appaday-167-cub-scout-rank-checklist/",
+ "scope": "https://augustineiacopelli.github.io/appaday-167-cub-scout-rank-checklist/",
+ "display": "standalone",
+ "background_color": "#0F0E0C",
+ "theme_color": "#C8401A",
+ "icons": [
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/167.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/167.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/167.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/167.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

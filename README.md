@@ -10,9 +10,9 @@ Every app is a single self-contained file of vanilla HTML, CSS, and JavaScript w
 
 ## The count
 
-**All 166 shipped apps, numbered 001 through 166 with no gaps in the sequence.** Building since May 2026.
+**All 167 shipped apps, numbered 001 through 167 with no gaps in the sequence.** Building since May 2026.
 
-Of the 166, fifty-one are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 166, Standing Desk Interval Coach, is a sit, stand, and walk interval timer for desk work with a walking pad: Cornell 20/8/2 and custom presets, color and chime nudges, honest overtime, adjustable walking speed and distance, a daily posture timeline, a 7 day view, and a streak on the days you choose, all stored on the device. The nine categories are spread as follows.
+Of the 167, fifty-one are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 167, Cub Scout Rank Checklist, tracks Cub Scout advancement from Lion through Arrow of Light under the program in effect since June 2024: every adventure requirement checked off with a date, adventures and ranks that complete on their own, Religious Emblem and swim alternates, and a Scoutbook queue that turns weekly entry into a straight copy, all stored on the device. The nine categories are spread as follows.
 
 | Category | Code | Shipped |
 | --- | --- | --- |
@@ -22,7 +22,7 @@ Of the 166, fifty-one are AI-powered. App 150, Saga Studio, is the latest milest
 | Games | G | 19 |
 | Health | H | 17 |
 | Interactive | I | 14 |
-| Productivity | P | 24 |
+| Productivity | P | 25 |
 | Spirituality | S | 19 |
 | Utility | U | 21 |
 

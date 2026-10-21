@@ -105,6 +105,7 @@ GLYPH_MAP = {
     "164": "handshake",
     "165": "wrench",
     "166": "person-standing",
+    "167": "badge-check",
 }
 PORTFOLIO_GLYPH = "shapes"
 
