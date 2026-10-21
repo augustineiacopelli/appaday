@@ -15,6 +15,19 @@
   if (window.__appadaySave) return;
   window.__appadaySave = true;
 
+  // Browser tab icon: point the favicon at the app's own home screen icon.
+  (function () {
+    var t = document.querySelector('link[rel="apple-touch-icon"]');
+    if (!t || !t.href) return;
+    var old = document.querySelectorAll('link[rel~="icon"]');
+    for (var i = 0; i < old.length; i++) old[i].parentNode.removeChild(old[i]);
+    var f = document.createElement("link");
+    f.rel = "icon";
+    f.type = "image/png";
+    f.href = t.href;
+    document.head.appendChild(f);
+  })();
+
   var KEY_SEEN = "appaday-save-seen";
   var params;
   try { params = new URLSearchParams(location.search); } catch (e) { params = null; }
