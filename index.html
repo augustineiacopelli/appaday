@@ -84,6 +84,14 @@
    10. Surprise Me - header .share-pill.alt (#surprise-me) after Save to
        Phone. Opens a random live app (coming_soon excluded) in a new tab,
        never the same app twice in a row (lastSurprise).
+   11. About sheet - #about-sheet modal opened by the header .share-pill.alt
+       (#about-open), first in .header-actions. Headshot from img/stino.webp
+       with img/stino.jpg fallback, bio, live stats computed from APPS at
+       open (apps shipped, AI powered, categories), and
+       GitHub and LinkedIn links. Opens on load when the URL hash is #about,
+       sets #about while open and clears it on close. Reuses .share-sheet
+       and .share-card; closes on Done, backdrop tap, or Escape. The footer
+       also carries a LinkedIn link beside GitHub.
   Update this manifest whenever a new portal feature is added.
   ==================================================================
 -->
@@ -845,6 +853,59 @@
   .share-actions button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .share-actions button[hidden] { display: none; }
 
+  /* About sheet (manifest item 11) */
+  .about-card { width: 480px; text-align: left; }
+  .about-top { display: flex; gap: 16px; align-items: center; margin: 0 0 16px; }
+  .about-photo {
+    flex: 0 0 auto; width: 96px; height: 96px; border-radius: 50%;
+    overflow: hidden; border: 2px solid var(--accent); background: var(--paper-dark);
+  }
+  .about-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .about-card .share-title { margin: 4px 0 2px; }
+  .about-role { font-size: 13px; line-height: 1.4; color: var(--muted); }
+  .about-body p { font-size: 14px; line-height: 1.6; color: var(--ink); margin: 0 0 12px; }
+  .about-body h3 {
+    font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin: 16px 0 6px;
+  }
+  .about-body h3:first-child { margin-top: 0; }
+  .about-body a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+  .about-chip {
+    display: inline-block; margin-top: 8px; padding: 4px 10px; border-radius: 999px;
+    background: var(--accent-dim); color: var(--accent);
+    font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .about-stats {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;
+    margin: 4px 0 16px; padding: 12px 6px;
+    background: var(--paper-dark); border-radius: 6px; text-align: center;
+  }
+  .about-stat b {
+    display: block; font-family: 'DM Serif Display', serif; font-size: 24px;
+    font-weight: 400; line-height: 1.1; color: var(--accent);
+  }
+  .about-stat span {
+    display: block; margin-top: 3px; font-family: 'DM Mono', monospace;
+    font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
+  }
+  .about-links { display: flex; gap: 8px; margin: 0 0 10px; }
+  .about-links a {
+    flex: 1 1 0; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    border-radius: 6px; border: 1px solid var(--ink); color: var(--ink); text-decoration: none;
+    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+  .about-links a:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .about-links a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .about-links svg { width: 16px; height: 16px; fill: currentColor; }
+  .about-links .about-li { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .about-links .about-li:hover { background: var(--ink); border-color: var(--ink); }
+  .about-cta { font-size: 14px; line-height: 1.6; color: var(--ink); margin: 0 0 12px; }
+  .about-cta a { color: var(--accent); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+  @media (max-width: 380px) {
+    .about-photo { width: 76px; height: 76px; }
+  }
+
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(16px); }
     to   { opacity: 1; transform: translateY(0); }
@@ -882,6 +943,7 @@
       <div class="stat-label">Day Streak</div>
     </div>
     <div class="header-actions">
+      <button type="button" class="share-pill alt" id="about-open" aria-label="About Augustine Iacopelli and the AppADay project"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>About</button>
       <button type="button" class="share-pill" id="share-portal" aria-label="Share the AppADay portfolio with a QR code or link"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h3v3h-3zM18 18h3v3h-3zM18 14h3M14 18v3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>Share</button>
       <button type="button" class="share-pill alt" id="install-portal" aria-label="How to save an app to your phone's home screen"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v7M9 11l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Save to Phone</button>
       <button type="button" class="share-pill alt" id="surprise-me" aria-label="Open a random app from the archive"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="8" cy="8" r="1.5" fill="currentColor"/><circle cx="16" cy="8" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="8" cy="16" r="1.5" fill="currentColor"/><circle cx="16" cy="16" r="1.5" fill="currentColor"/></svg>Surprise Me</button>
@@ -917,6 +979,48 @@
 </div>
 
 <main id="main-content"></main>
+
+<div class="share-sheet" id="about-sheet" role="dialog" aria-modal="true" aria-labelledby="about-title">
+  <div class="share-card about-card">
+    <div class="about-top">
+      <picture class="about-photo">
+        <source srcset="img/stino.webp" type="image/webp">
+        <img src="img/stino.jpg" width="96" height="96" alt="Headshot of Augustine Iacopelli" loading="lazy" decoding="async">
+      </picture>
+      <div>
+        <div class="share-eyebrow">The builder</div>
+        <div class="share-title" id="about-title">Augustine Iacopelli</div>
+        <div class="about-role">Director of Branch Campuses, Wichita State University</div>
+        <div class="about-chip">Open to analytics and AI roles</div>
+      </div>
+    </div>
+    <div class="about-body">
+      <h3>Where I'm headed</h3>
+      <p>I'm a higher education leader moving into business and data analytics, with a particular focus on putting AI to practical work. I'm looking for roles where I can turn messy operational data into clear decisions and build the tools that make that repeatable. I'm open to analytics, AI enablement, and data driven operations roles, including remote positions.</p>
+      <h3>What I've done</h3>
+      <p>I have spent more than twenty years at Wichita State University, starting as an administrative assistant in 2003 and growing into the Director of Branch Campuses. Along the way I built the systems my team runs on: a suite of Google Apps Script web apps for staff scheduling, work orders, and building audits, tied together by a single sign on portal, with automated notifications and OCR card intake. I serve on the executive board of the National Association of Branch Campus Administrators, where I am First Vice Chair of the Membership Committee, and I have presented at its annual conference (2025).</p>
+      <p>I have also taught meteorology at Wichita State since 2011, including courses in severe and extreme weather. I hold a BS in Meteorology from Valparaiso University and an MBA from Wichita State, where I am now completing a Master of Science in Business Analytics, expected in 2027.</p>
+      <h3>Why AppADay</h3>
+      <p>AppADay began on May 8, 2026, inspired by Jonathan Mann's Song A Day. Every day, one complete, working, mobile friendly app gets designed, built, and published, with no skip days. It is my working lab for analytics and applied AI. <a href="https://augustineiacopelli.github.io/appaday-100-signal-desk/" target="_blank" rel="noopener">Signal Desk</a>, App 100, is a bring your own CSV analyst workbench with automatic profiling, driver analysis, forecasting, and Simpson's paradox checks. <a href="https://augustineiacopelli.github.io/appaday-092-semester-forecast/" target="_blank" rel="noopener">Semester Forecast</a> has Claude read every syllabus in a term, then computes a week by week workload chart that names the crunch weeks before they arrive. <a href="https://augustineiacopelli.github.io/appaday-150-saga-studio/" target="_blank" rel="noopener">Saga Studio</a> grew from zero lines into a full RPG creation platform in five days. Dozens of the apps call Claude directly, each designed so the model works from computed facts rather than guesses.</p>
+      <h3>What drives me</h3>
+      <p>I play to win. Competition is my top CliftonStrength, followed by Significance, Consistency, Relator, and Focus. I want to know how my work measures up, and then I work to come out on top. A daily shipping streak with no skip days is that drive in action, with Consistency and Focus keeping it alive. Relator shows in how many of these apps were built for the people around me: my family, my students, my colleagues, and my parish. I'm Catholic and my faith shapes how I work and what I build, which is why the Spirituality shelf holds rosaries, novenas, and prayer companions alongside the games and dashboards.</p>
+    </div>
+    <div class="about-stats" aria-label="AppADay by the numbers">
+      <div class="about-stat"><b id="about-apps">0</b><span>Apps</span></div>
+      <div class="about-stat"><b id="about-ai">0</b><span>AI powered</span></div>
+      <div class="about-stat"><b id="about-cats">0</b><span>Categories</span></div>
+    </div>
+    <p class="about-cta">Want the full story? My complete work history, projects, and credentials are on <a href="https://www.linkedin.com/in/augustineiacopelli/" target="_blank" rel="noopener">LinkedIn</a>. I'd be glad to connect.</p>
+    <div class="about-links">
+      <a href="https://github.com/augustineiacopelli" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.6 22.4c.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.4 11.4 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.9 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.2c0 .3.2.7.8.6A11.5 11.5 0 0 0 12 .5z"/></svg>GitHub</a>
+      <a class="about-li" href="https://www.linkedin.com/in/augustineiacopelli/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>LinkedIn</a>
+    </div>
+    <div class="share-actions">
+      <button type="button" id="about-share">Share portfolio</button>
+      <button type="button" id="about-done">Done</button>
+    </div>
+  </div>
+</div>
 
 <div class="share-sheet" id="install-sheet" role="dialog" aria-modal="true" aria-labelledby="install-title">
   <div class="share-card">
@@ -976,7 +1080,7 @@
 
 <footer>
   <span class="footer-motto">Ship something every day. It compounds.</span>
-  <a class="footer-link" href="https://github.com/augustineiacopelli" target="_blank" rel="noopener">GitHub ↗</a>
+  <span><a class="footer-link" href="https://github.com/augustineiacopelli" target="_blank" rel="noopener">GitHub ↗</a> &nbsp; <a class="footer-link" href="https://www.linkedin.com/in/augustineiacopelli/" target="_blank" rel="noopener">LinkedIn ↗</a></span>
 </footer>
 
 <script>
@@ -2407,6 +2511,45 @@ document.getElementById("surprise-me").addEventListener("click", () => {
     setInstallTab(next); document.getElementById("ins-tab-" + next).focus();
   });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape" && sheet.classList.contains("open")) closeInstall(); });
+})();
+
+// ============================================================
+//  ABOUT SHEET (manifest item 11)
+// ============================================================
+let aboutReturnFocus = null;
+function fillAboutStats() {
+  const live = APPS.filter(a => !a.coming_soon);
+  const cats = new Set(live.map(a => a.cat).filter(Boolean));
+  document.getElementById("about-apps").textContent = live.length;
+  document.getElementById("about-ai").textContent = live.filter(a => a.ai).length;
+  document.getElementById("about-cats").textContent = cats.size;
+}
+function openAbout() {
+  aboutReturnFocus = document.activeElement;
+  fillAboutStats();
+  document.getElementById("about-sheet").classList.add("open");
+  if (location.hash !== "#about") { try { history.replaceState(null, "", "#about"); } catch (e) { /* ignore */ } }
+  sheet_scrollTop();
+  document.getElementById("about-done").focus({ preventScroll: true });
+}
+function sheet_scrollTop() { const c = document.querySelector("#about-sheet .about-card"); if (c) c.scrollTop = 0; }
+function closeAbout() {
+  document.getElementById("about-sheet").classList.remove("open");
+  if (location.hash === "#about") { try { history.replaceState(null, "", location.pathname + location.search); } catch (e) { /* ignore */ } }
+  if (aboutReturnFocus && aboutReturnFocus.focus) aboutReturnFocus.focus();
+}
+(function initAbout(){
+  const sheet = document.getElementById("about-sheet");
+  document.getElementById("about-open").addEventListener("click", openAbout);
+  document.getElementById("about-done").addEventListener("click", closeAbout);
+  document.getElementById("about-share").addEventListener("click", () => {
+    closeAbout();
+    openShare(PORTAL_URL, "AppADay", "The whole portfolio");
+  });
+  sheet.addEventListener("click", (e) => { if (e.target === sheet) closeAbout(); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && sheet.classList.contains("open")) closeAbout(); });
+  window.addEventListener("hashchange", () => { if (location.hash === "#about" && !sheet.classList.contains("open")) openAbout(); });
+  if (location.hash === "#about") openAbout();
 })();
 
 // ============================================================
