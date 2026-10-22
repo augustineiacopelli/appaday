@@ -93,6 +93,17 @@
        and .share-card; closes on Done, backdrop tap, or Escape. The footer
        also carries a LinkedIn link beside GitHub. The five CliftonStrengths
        names in the What drives me paragraph link to Gallup's theme pages.
+   12. Contact form - #contact-form inside #about-sheet, between the
+       .about-cta paragraph and .about-links. Posts text/plain JSON (name,
+       email, message, website honeypot, elapsed ms since the sheet opened)
+       to CONTACT_ENDPOINT, a Google Apps Script web app (AppADay Contact)
+       that filters, triages with Claude, logs to a private Sheet, and
+       emails legit messages. No email address is ever published. Client
+       checks mirror the server (name 1 to 80, valid email, message 20 to
+       2000, at most 2 links). #cf-website is the hidden honeypot and must
+       stay empty and out of tab order. On success #cf-done replaces the
+       form; errors show in #cf-status with a LinkedIn fallback. If the
+       Apps Script deployment URL ever changes, update CONTACT_ENDPOINT only.
   Update this manifest whenever a new portal feature is added.
   ==================================================================
 -->
@@ -907,6 +918,50 @@
     .about-photo { width: 76px; height: 76px; }
   }
 
+  /* Contact form (manifest item 12) */
+  .about-contact { margin: 4px 0 16px; padding: 14px 14px 12px; border: 1px solid var(--rule); border-radius: 6px; background: var(--paper-dark); }
+  .about-contact h3 {
+    font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin: 0 0 4px;
+  }
+  .cf-intro { font-size: 13px; line-height: 1.5; color: var(--muted); margin: 0 0 12px; }
+  .cf-field { display: block; margin: 0 0 10px; }
+  .cf-field span {
+    display: block; margin: 0 0 4px; font-family: 'DM Mono', monospace; font-size: 10px;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink);
+  }
+  .cf-field input, .cf-field textarea {
+    display: block; width: 100%; box-sizing: border-box; min-height: 44px;
+    padding: 10px 12px; border: 1px solid rgba(15,14,12,0.28); border-radius: 6px;
+    background: #fff; color: var(--ink); font-family: 'DM Sans', sans-serif; font-size: 16px; line-height: 1.4;
+  }
+  .cf-field textarea { min-height: 120px; resize: vertical; }
+  .cf-field input:focus, .cf-field textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
+  .cf-field [aria-invalid="true"] { border-color: var(--accent); }
+  .cf-count { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); text-align: right; margin: -6px 0 10px; }
+  .cf-count.over { color: var(--accent); }
+  .cf-hp { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; opacity: 0; pointer-events: none; }
+  .cf-send {
+    width: 100%; min-height: 44px; border-radius: 6px; border: 1px solid var(--accent);
+    background: var(--accent); color: #fff; cursor: pointer;
+    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+  }
+  .cf-send:hover { background: var(--ink); border-color: var(--ink); }
+  .cf-send:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .cf-send[disabled] { opacity: 0.6; cursor: progress; }
+  .cf-status { font-size: 13px; line-height: 1.5; color: var(--accent); margin: 8px 0 0; min-height: 0; }
+  .cf-status:empty { display: none; }
+  .cf-status a, .cf-done a { color: var(--accent); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+  .cf-note { font-size: 12px; line-height: 1.5; color: var(--muted); margin: 8px 0 0; }
+  .cf-done p { font-size: 14px; line-height: 1.6; color: var(--ink); margin: 0 0 10px; }
+  .cf-done[hidden], #contact-form[hidden] { display: none; }
+  .cf-again {
+    min-height: 44px; padding: 0 16px; border-radius: 6px; border: 1px solid var(--ink);
+    background: transparent; color: var(--ink); cursor: pointer;
+    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+  }
+  .cf-again:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(16px); }
     to   { opacity: 1; transform: translateY(0); }
@@ -1012,6 +1067,27 @@
       <div class="about-stat"><b id="about-cats">0</b><span>Categories</span></div>
     </div>
     <p class="about-cta">Want the full story? My complete work history, projects, and credentials are on <a href="https://www.linkedin.com/in/augustineiacopelli/" target="_blank" rel="noopener">LinkedIn</a>. I'd be glad to connect.</p>
+    <section class="about-contact" aria-labelledby="contact-title">
+      <h3 id="contact-title">Send me a note</h3>
+      <p class="cf-intro">Questions about an app, an idea, or a role? Write here and it comes straight to me.</p>
+      <form id="contact-form" novalidate>
+        <label class="cf-field" for="cf-name"><span>Name</span>
+          <input id="cf-name" name="name" type="text" autocomplete="name" maxlength="80" required></label>
+        <label class="cf-field" for="cf-email"><span>Email</span>
+          <input id="cf-email" name="email" type="email" autocomplete="email" inputmode="email" maxlength="254" required></label>
+        <label class="cf-field" for="cf-message"><span>Message</span>
+          <textarea id="cf-message" name="message" rows="5" maxlength="2000" required aria-describedby="cf-count"></textarea></label>
+        <div class="cf-count" id="cf-count">0 / 2000</div>
+        <div class="cf-hp" aria-hidden="true"><label for="cf-website">Website</label><input id="cf-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+        <button type="submit" class="cf-send" id="cf-send">Send</button>
+        <p class="cf-status" id="cf-status" role="status" aria-live="polite"></p>
+        <p class="cf-note">Messages go to Augustine privately and are never published.</p>
+      </form>
+      <div class="cf-done" id="cf-done" hidden tabindex="-1">
+        <p><b>Thanks, your note is on its way.</b> I read every message and reply to the email you gave.</p>
+        <button type="button" class="cf-again" id="cf-again">Write another</button>
+      </div>
+    </section>
     <div class="about-links">
       <a href="https://github.com/augustineiacopelli" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.6 22.4c.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.4 11.4 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.9 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.2c0 .3.2.7.8.6A11.5 11.5 0 0 0 12 .5z"/></svg>GitHub</a>
       <a class="about-li" href="https://www.linkedin.com/in/augustineiacopelli/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>LinkedIn</a>
@@ -2527,6 +2603,7 @@ function fillAboutStats() {
 }
 function openAbout() {
   aboutReturnFocus = document.activeElement;
+  contactOpenedAt = performance.now();
   fillAboutStats();
   document.getElementById("about-sheet").classList.add("open");
   if (location.hash !== "#about") { try { history.replaceState(null, "", "#about"); } catch (e) { /* ignore */ } }
@@ -2551,6 +2628,108 @@ function closeAbout() {
   document.addEventListener("keydown", (e) => { if (e.key === "Escape" && sheet.classList.contains("open")) closeAbout(); });
   window.addEventListener("hashchange", () => { if (location.hash === "#about" && !sheet.classList.contains("open")) openAbout(); });
   if (location.hash === "#about") openAbout();
+})();
+
+// ============================================================
+//  CONTACT FORM (manifest item 12)
+// ============================================================
+const CONTACT_ENDPOINT = "https://script.google.com/macros/s/AKfycbwyhaFKw39kw018sgz9al3TO6p7HbJp6QSd1WyO7mIxyvRyYFg38LfU1265E7Y6dk1M/exec";
+var contactOpenedAt = performance.now();
+(function initContact(){
+  const form = document.getElementById("contact-form");
+  const name = document.getElementById("cf-name");
+  const email = document.getElementById("cf-email");
+  const msg = document.getElementById("cf-message");
+  const hp = document.getElementById("cf-website");
+  const send = document.getElementById("cf-send");
+  const status = document.getElementById("cf-status");
+  const count = document.getElementById("cf-count");
+  const done = document.getElementById("cf-done");
+  const LI = '<a href="https://www.linkedin.com/in/augustineiacopelli/" target="_blank" rel="noopener">LinkedIn</a>';
+  const ERRORS = {
+    invalid_name: ["Please enter your name.", name],
+    invalid_email: ["Please check your email address.", email],
+    message_too_short: ["Please write at least 20 characters.", msg],
+    message_too_long: ["Please keep your message under 2,000 characters.", msg],
+    too_many_links: ["Please include no more than two links.", msg],
+    rate_limited: ["Too many messages right now. Please try again in an hour, or reach me on " + LI + ".", null],
+    expired: ["This panel was open a long time. Please close it, reopen it, and send again.", null]
+  };
+
+  function updateCount() {
+    const n = msg.value.trim().length;
+    count.textContent = n + " / 2000";
+    count.classList.toggle("over", n > 2000);
+  }
+  function clearInvalid() { [name, email, msg].forEach(el => el.removeAttribute("aria-invalid")); }
+  function showError(code) {
+    const e = ERRORS[code] || ["Your message could not be sent. Please try again, or reach me on " + LI + ".", null];
+    status.innerHTML = e[0];
+    if (e[1]) { e[1].setAttribute("aria-invalid", "true"); e[1].focus(); }
+  }
+  function check(v) {
+    if (!v.name || v.name.length > 80) return "invalid_name";
+    if (v.email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.email)) return "invalid_email";
+    if (v.message.length < 20) return "message_too_short";
+    if (v.message.length > 2000) return "message_too_long";
+    if ((v.message.match(/https?:\/\/|www\./gi) || []).length > 2) return "too_many_links";
+    return "";
+  }
+
+  msg.addEventListener("input", updateCount);
+  [name, email, msg].forEach(el => el.addEventListener("input", () => el.removeAttribute("aria-invalid")));
+
+  form.addEventListener("submit", async (ev) => {
+    ev.preventDefault();
+    if (send.disabled) return;
+    clearInvalid();
+    status.textContent = "";
+    const v = {
+      name: name.value.trim(),
+      email: email.value.trim(),
+      message: msg.value.trim(),
+      website: hp.value,
+      elapsed: Math.round(performance.now() - contactOpenedAt)
+    };
+    const local = check(v);
+    if (local) { showError(local); return; }
+
+    send.disabled = true;
+    send.textContent = "Sending...";
+    const ctrl = typeof AbortController === "function" ? new AbortController() : null;
+    const timer = ctrl ? setTimeout(() => ctrl.abort(), 45000) : null;
+    try {
+      const res = await fetch(CONTACT_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(v),
+        signal: ctrl ? ctrl.signal : undefined
+      });
+      const data = await res.json();
+      if (data && data.ok) {
+        form.reset();
+        updateCount();
+        form.hidden = true;
+        done.hidden = false;
+        done.focus({ preventScroll: true });
+      } else {
+        showError(data && data.error);
+      }
+    } catch (err) {
+      showError("network");
+    } finally {
+      if (timer) clearTimeout(timer);
+      send.disabled = false;
+      send.textContent = "Send";
+    }
+  });
+
+  document.getElementById("cf-again").addEventListener("click", () => {
+    done.hidden = true;
+    form.hidden = false;
+    contactOpenedAt = performance.now();
+    name.focus();
+  });
 })();
 
 // ============================================================
