@@ -10,9 +10,9 @@ Every app is a single self-contained file of vanilla HTML, CSS, and JavaScript w
 
 ## The count
 
-**All 167 shipped apps, numbered 001 through 167 with no gaps in the sequence.** Building since May 2026.
+**All 168 shipped apps, numbered 001 through 168 with no gaps in the sequence.** Building since May 2026.
 
-Of the 167, fifty-one are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 167, Cub Scout Rank Checklist, tracks Cub Scout advancement from Lion through Arrow of Light under the program in effect since June 2024: every adventure requirement checked off with a date, adventures and ranks that complete on their own, Religious Emblem and swim alternates, and a Scoutbook queue that turns weekly entry into a straight copy, all stored on the device. The nine categories are spread as follows.
+Of the 168, fifty-one are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 168, Dominoes Toppler, is a 3D domino run you build and topple in the browser: drag a path or start from a line, S curve, or spiral, pick which domino gets the first push, and watch real physics carry the chain, with slow motion, a follow camera, collision clicks, and a shareable result image. The nine categories are spread as follows.
 
 | Category | Code | Shipped |
 | --- | --- | --- |
@@ -21,7 +21,7 @@ Of the 167, fifty-one are AI-powered. App 150, Saga Studio, is the latest milest
 | Educational | E | 16 |
 | Games | G | 19 |
 | Health | H | 17 |
-| Interactive | I | 14 |
+| Interactive | I | 15 |
 | Productivity | P | 25 |
 | Spirituality | S | 19 |
 | Utility | U | 21 |
