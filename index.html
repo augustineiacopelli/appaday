@@ -94,7 +94,9 @@
        also carries a LinkedIn link beside GitHub. The five CliftonStrengths
        names in the What drives me paragraph link to Gallup's theme pages.
    12. Contact form - #contact-form inside #about-sheet, between the
-       .about-cta paragraph and .about-links. Posts text/plain JSON (name,
+       .about-cta paragraph and .about-links, collapsed behind the
+       #cf-toggle "Send me a note" button (aria-expanded) that rolls out
+       #cf-panel (inert while closed). Posts text/plain JSON (name,
        email, message, website honeypot, elapsed ms since the sheet opened)
        to CONTACT_ENDPOINT, a Google Apps Script web app (AppADay Contact)
        that filters, triages with Claude, logs to a private Sheet, and
@@ -919,11 +921,23 @@
   }
 
   /* Contact form (manifest item 12) */
-  .about-contact { margin: 4px 0 16px; padding: 14px 14px 12px; border: 1px solid var(--rule); border-radius: 6px; background: var(--paper-dark); }
-  .about-contact h3 {
-    font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500;
-    letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin: 0 0 4px;
+  .about-contact { margin: 0 0 10px; }
+  .cf-toggle {
+    width: 100%; min-height: 44px; display: flex; align-items: center; justify-content: center; gap: 8px;
+    border-radius: 6px; border: 1px solid var(--accent); background: transparent; color: var(--accent); cursor: pointer;
+    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    transition: background 0.15s ease, color 0.15s ease;
   }
+  .cf-toggle:hover, .cf-toggle[aria-expanded="true"] { background: var(--accent); color: #fff; }
+  .cf-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .cf-toggle svg { width: 16px; height: 16px; flex: 0 0 auto; }
+  .cf-chev { transition: transform 0.2s ease; }
+  .cf-toggle[aria-expanded="true"] .cf-chev { transform: rotate(180deg); }
+  .cf-panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.3s ease; }
+  .cf-panel.open { grid-template-rows: 1fr; }
+  .cf-clip { overflow: hidden; min-height: 0; }
+  .cf-box { margin-top: 8px; padding: 14px 14px 12px; border: 1px solid var(--rule); border-radius: 6px; background: var(--paper-dark); }
+  @media (prefers-reduced-motion: reduce) { .cf-panel, .cf-chev { transition: none; } }
   .cf-intro { font-size: 13px; line-height: 1.5; color: var(--muted); margin: 0 0 12px; }
   .cf-field { display: block; margin: 0 0 10px; }
   .cf-field span {
@@ -1067,8 +1081,11 @@
       <div class="about-stat"><b id="about-cats">0</b><span>Categories</span></div>
     </div>
     <p class="about-cta">Want the full story? My complete work history, projects, and credentials are on <a href="https://www.linkedin.com/in/augustineiacopelli/" target="_blank" rel="noopener">LinkedIn</a>. I'd be glad to connect.</p>
-    <section class="about-contact" aria-labelledby="contact-title">
-      <h3 id="contact-title">Send me a note</h3>
+    <section class="about-contact" aria-label="Contact Augustine">
+      <button type="button" class="cf-toggle" id="cf-toggle" aria-expanded="false" aria-controls="cf-panel"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 6.5l8.5 6.5 8.5-6.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>Send me a note<svg class="cf-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="cf-panel" id="cf-panel" inert>
+      <div class="cf-clip">
+      <div class="cf-box">
       <p class="cf-intro">Questions about an app, an idea, or a role? Write here and it comes straight to me.</p>
       <form id="contact-form" novalidate>
         <label class="cf-field" for="cf-name"><span>Name</span>
@@ -1086,6 +1103,9 @@
       <div class="cf-done" id="cf-done" hidden tabindex="-1">
         <p><b>Thanks, your note is on its way.</b> I read every message and reply to the email you gave.</p>
         <button type="button" class="cf-again" id="cf-again">Write another</button>
+      </div>
+      </div>
+      </div>
       </div>
     </section>
     <div class="about-links">
@@ -2676,6 +2696,23 @@ var contactOpenedAt = performance.now();
     return "";
   }
 
+  const toggle = document.getElementById("cf-toggle");
+  const panel = document.getElementById("cf-panel");
+  toggle.addEventListener("click", () => {
+    const open = toggle.getAttribute("aria-expanded") !== "true";
+    toggle.setAttribute("aria-expanded", String(open));
+    panel.classList.toggle("open", open);
+    if (open) {
+      panel.removeAttribute("inert");
+      setTimeout(() => {
+        panel.scrollIntoView({ block: "nearest", behavior: "smooth" });
+        if (window.matchMedia("(pointer: fine)").matches && !form.hidden) name.focus({ preventScroll: true });
+      }, 320);
+    } else {
+      panel.setAttribute("inert", "");
+    }
+  });
+
   msg.addEventListener("input", updateCount);
   [name, email, msg].forEach(el => el.addEventListener("input", () => el.removeAttribute("aria-invalid")));
 
@@ -2727,7 +2764,6 @@ var contactOpenedAt = performance.now();
   document.getElementById("cf-again").addEventListener("click", () => {
     done.hidden = true;
     form.hidden = false;
-    contactOpenedAt = performance.now();
     name.focus();
   });
 })();
