@@ -107,6 +107,7 @@ GLYPH_MAP = {
     "166": "person-standing",
     "167": "badge-check",
     "168": "gallery-horizontal-end",
+    "169": "bomb",
 }
 PORTFOLIO_GLYPH = "shapes"
 

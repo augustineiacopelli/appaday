@@ -76,6 +76,7 @@ TITLE = {
     "165": "Home Upkeep",
     "166": "Desk Coach",
     "167": "Cub Ranks",
+    "169": "Crumble City",
 }
 
 ANCHOR = re.compile(r"<meta[^>]*name=[\"']viewport[\"'][^>]*>", re.I)
