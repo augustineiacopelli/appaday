@@ -1,0 +1,1091 @@
+{
+  "count_apps": 170,
+  "count_fetched": 170,
+  "count_ai": 54,
+  "count_done": 1,
+  "count_todo": 53,
+  "count_needs_review": 45,
+  "fetch_failures": [],
+  "apps": [
+    {
+      "num": "004",
+      "slug": "appaday-004-tube-sort",
+      "ai": true,
+      "done": false,
+      "legacy": [],
+      "legacy_spec": "",
+      "form": null,
+      "needs_review": true,
+      "reasons": [
+        "no legacy storage name found",
+        "no callClaude function",
+        "2 references to api.anthropic.com"
+      ],
+      "has_callClaude": false,
+      "anthropic_fetches": 2,
+      "x_api_key_exprs": [
+        "apiKey"
+      ],
+      "bytes": 28887
+    },
+    {
+      "num": "005",
+      "slug": "appaday-005-dad-joke-generator",
+      "ai": true,
+      "done": false,
+      "legacy": [
+        "dadJokeApiKey"
+      ],
+      "legacy_spec": "dadJokeApiKey",
+      "form": "plain",
+      "needs_review": true,
+      "reasons": [
+        "no callClaude function"
+      ],
+      "has_callClaude": false,
+      "anthropic_fetches": 1,
+      "x_api_key_exprs": [
+        "apiKey"
+      ],
+      "bytes": 16449
+    },
+    {
+      "num": "017",
+      "slug": "appaday-017-session-scribe",
+      "ai": true,
+      "done": false,
+      "legacy": [],
+      "legacy_spec": "",
+      "form": null,
+      "needs_review": true,
+      "reasons": [
+        "no legacy storage name found",
+        "no callClaude function",
+        "2 references to api.anthropic.com"
+      ],
+      "has_callClaude": false,
+      "anthropic_fetches": 2,
+      "x_api_key_exprs": [
+        "key"
+      ],
+      "bytes": 42989
+    },
+    {
+      "num": "019",
+      "slug": "appaday-019-tone-translator",
+      "ai": true,
+      "done": false,
+      "legacy": [
+        "tt_apiKey"
+      ],
+      "legacy_spec": "tt_apiKey",
+      "form": "plain",
+      "needs_review": true,
+      "reasons": [
+        "no callClaude function"
+      ],
+      "has_callClaude": false,
+      "anthropic_fetches": 1,
+      "x_api_key_exprs": [
+        "apiKey"
+      ],
+      "bytes": 22788
+    },
+    {
+      "num": "022",
+      "slug": "appaday-022-haiku-engine",
+      "ai": true,
+      "done": false,
+      "legacy": [
+        "haiku_api_key"
+      ],
+      "legacy_spec": "haiku_api_key",
+      "form": "plain",
+      "needs_review": true,
+      "reasons": [
+        "no callClaude function"
+      ],
+      "has_callClaude": false,
+      "anthropic_fetches": 1,
+      "x_api_key_exprs": [
+        "apiKey"
+      ],
+      "bytes": 30163
+    },
+    {
+      "num": "023",
+      "slug": "appaday-023-beer-tasting-scorecard",
+      "ai": true,
+      "done": false,
+      "legacy": [],
+      "legacy_spec": "",
+      "form": null,
+      "needs_review": true,
+      "reasons": [
+        "no legacy storage name found",
+        "no callClaude function"
+      ],
+      "has_callClaude": false,
+      "anthropic_fetches": 1,
+      "x_api_key_exprs": [
+        "apiKey"
+      ],
+      "bytes": 39192
+    },
+    {
+      "num": "029",
+      "slug": "appaday-029-life-advocate",
+      "ai": true,
+      "done": false,
+      "legacy": [
+        "embrace_api_key",
+        "life_advocate_api_key"
+      ],
+      "legacy_spec": "embrace_api_key,life_advocate_api_key",
+      "form": "plain",
+      "needs_review": true,
+      "reasons": [
+        "several candidate storage names: embrace_api_key, life_advocate_api_key",
+        "no callClaude function",
+        "2 references to api.anthropic.com"
+      ],
+      "has_callClaude": false,
+      "anthropic_fetches": 2,
+      "x_api_key_exprs": [
+        "apiKey"
+      ],
+      "bytes": 50072
+    },
+    {
+      "num": "035",
+      "slug": "appaday-035-meeting-distiller",
+      "ai": true,
+      "done": false,
+      "legacy": [],
+      "legacy_spec": "",
+      "form": null,
+      "needs_review": true,
+      "reasons": [
+        "no legacy storage name found",
+        "no callClaude function"
+      ],
+      "has_callClaude": false,
+      "anthropic_fetches": 1,
+      "x_api_key_exprs": [
+        "apiKey"
+      ],
+      "bytes": 38527
+    },
+    {
+      "num": "040",
+      "slug": "appaday-040-kitchen-tamer",
+      "ai": true,
+      "done": false,
+      "legacy": [
+        "kt_api_key"
+      ],
+      "legacy_spec": "kt_api_key",
+      "form": "plain",
+      "needs_review": true,
+      "reasons": [
+        "no callClaude function"
+      ],
+      "has_callClaude": false,
+      "anthropic_fetches": 1,
+      "x_api_key_exprs": [
+        "apiKey"
+      ],
+      "bytes": 39218
+    },
+    {
+      "num": "045",
+      "slug": "appaday-045-water-reminder",
+      "ai": true,
+      "done": false,
+      "legacy": [],
+      "legacy_spec": "",
+      "form": null,
+      "needs_review": true,
+      "reasons": [
+        "no legacy storage name found"
+      ],
+      "has_callClaude": true,
+      "anthropic_fetches": 1,
+      "x_api_key_exprs": [
+        "apiKey"
+      ],
+      "bytes": 46108
+    },
+    {
+      "num": "054",
+      "slug": "appaday-054-daily-examen",
+      "ai": true,
+      "done": false,
+      "legacy": [
+        "examen-api-key"
+      ],
+      "legacy_spec": "examen-api-key",
+      "form": "plain",
+      "needs_review": true,
+      "reasons": [
+        "no callClaude function"
+      ],
+      "has_callClaude": false,
+      "anthropic_fetches": 1,
+      "x_api_key_exprs": [
+        "key"
+      ],
+      "bytes": 46679
+    },
+    {
+      "num": "061",
+      "slug": "appaday-061-language-flashcard-sprint",
+      "ai": true,
+      "done": false,
+      "legacy": [
+        "appaday-061-apikey"
+      ],
+      "legacy_spec": "appaday-061-apikey",
+      "form": "plain",
+      "needs_review": true,
+      "reasons": [
+        "no callClaude function"
+      ],
+      "has_callClaude": false,
+      "anthropic_fetches": 1,
+      "x_api_key_exprs": [
+        "apikey"
+      ],
+      "bytes": 34299
+    },
+    {
+      "num": "063",
+      "slug": "appaday-063-bleeding-edge",
+      "ai": true,
+      "done": false,
+      "legacy": [],
+      "legacy_spec": "",
+      "form": null,
+      "needs_review": true,
+      "reasons": [
+        "no legacy storage name found"
+      ],
+      "has_callClaude": true,
+      "anthropic_fetches": 1,
+      "x_api_key_exprs": [
+        "getKey()"
+      ],
+      "bytes": 88180
+    },
+    {
+      "num": "067",
+      "slug": "appaday-067-thought-chisel",
+      "ai": true,
+      "done": false,
+      "legacy": [
+        "tc_api_key"
+      ],
+      "legacy_spec": "tc_api_key",
+      "form": "plain",
+      "needs_review": false,
+      "reasons": [],
+      "has_callClaude": true,
+      "anthropic_fetches": 1,
+      "x_api_key_exprs": [
+        "apiKey"
+      ],
+      "bytes": 27111
+    },
+    {
+      "num": "068",
+      "slug": "appaday-068-ten-lessons",
+      "ai": true,
+      "done": false,
+      "legacy": [
+        "tl_api_key"
+      ],
+      "legacy_spec": "tl_api_key",
+      "form": "plain",
+      "needs_review": false,
+      "reasons": [],
+      "has_callClaude": true,
+      "anthropic_fetches": 1,
+      "x_api_key_exprs": [
+        "key"
+      ],
+      "bytes": 43004
+    },
+    {
+      "num": "072",
+      "slug": "appaday-072-fix-it-lens",
+      "ai": true,
+      "done": false,
+      "legacy": [
+        "fixlens_api_key"
+      ],
+      "legacy_spec": "fixlens_api_key",
+      "form": "plain",
+      "needs_review": false,
+      "reasons": [],
+      "has_callClaude": true,
+      "anthropic_fetches": 1,
+      "x_api_key_exprs": [
+        "key"
+      ],
+      "bytes": 62919
+    },
+    {
+      "num": "073",
+      "slug": "appaday-073-three-ways",
+      "ai": true,
+      "done": false,
+      "legacy": [
+        "fixlens_api_key"
+      ],
+      "legacy_spec": "fixlens_api_key",
+      "form": "plain",
+      "needs_review": false,
+      "reasons": [],
+      "has_callClaude": true,
+      "anthropic_fetches": 1,
+      "x_api_key_exprs": [
+        "key"
+      ],
+      "bytes": 64529
+    },
+    {
+      "num": "078",
+      "slug": "appaday-078-red-team-this",
+      "ai": true,
+      "done": false,
+      "legacy": [],
+      "legacy_spec": "",
+      "form": null,
+      "needs_review": true,
+      "reasons": [
+        "no legacy storage name found",
+        "no callClaude function"
+      ],
+      "has_callClaude": false,
+      "anthropic_fetches": 1,
+      "x_api_key_exprs": [
+        "key"
+      ],
+      "bytes": 34509
+    },
+    {
+      "num": "083",
+      "slug": "appaday-083-homebrew-label-lab",
+      "ai": true,
+      "done": false,
+      "legacy": [],
+      "legacy_spec": "",
+      "form": null,
+      "needs_review": true,
+      "reasons": [
+        "no legacy storage name found",
+        "no callClaude function"
+      ],
+      "has_callClaude": false,
+      "anthropic_fetches": 1,
+      "x_api_key_exprs": [
+        "key"
+      ],
+      "bytes": 44205
+    },
+    {
+      "num": "086",
+      "slug": "appaday-086-subject-line-lab",
+      "ai": true,
+      "done": false,
+      "legacy": [],
+      "legacy_spec": "",
+      "form": null,
+      "needs_review": true,
+      "reasons": [
+        "no legacy storage name found",
+        "no callClaude function"
+      ],
+      "has_callClaude": false,
+      "anthropic_fetches": 1,
+      "x_api_key_exprs": [
+        "key"
+      ],
+      "bytes": 31588
+    },
+    {
+      "num": "090",
+      "slug": "appaday-090-syllabus-skimmer",
+      "ai": true,
+      "done": false,
+      "legacy": [],
+      "legacy_spec": "",
+      "form": null,
+      "needs_review": true,
+      "reasons": [
+        "no legacy storage name found",
+        "no callClaude function",
+        "2 references to api.anthropic.com"
+      ],
+      "has_callClaude": false,
+      "anthropic_fetches": 2,
+      "x_api_key_exprs": [
+        "key",
+        "load(K_KEY"
+      ],
+      "bytes": 64733
+    },
+    {
+      "num": "091",
+      "slug": "appaday-091-grade-runway",
+      "ai": true,
+      "done": false,
+      "legacy": [],
+      "legacy_spec": "",
+      "form": null,
+      "needs_review": true,
+      "reasons": [
+        "no legacy storage name found",
+        "no callClaude function",
+        "2 references to api.anthropic.com"
+      ],
+      "has_callClaude": false,
+      "anthropic_fetches": 2,
+      "x_api_key_exprs": [
+        "getKey()",
+        "k"
+      ],
+      "bytes": 61665
+    },
+    {
+      "num": "092",
+      "slug": "appaday-092-semester-forecast",
+      "ai": true,
+      "done": false,
+      "legacy": [],
+      "legacy_spec": "",
+      "form": null,
+      "needs_review": true,
+      "reasons": [
+        "no legacy storage name found",
+        "no callClaude function",
+        "3 references to api.anthropic.com"
+      ],
+      "has_callClaude": false,
+      "anthropic_fetches": 3,
+      "x_api_key_exprs": [
+        "key",
+        "load(K_KEY"
+      ],
+      "bytes": 161748
+    },
+    {
+      "num": "093",
+      "slug": "appaday-093-scam-text-tormentor",
+      "ai": true,
+      "done": false,
+      "legacy": [],
+      "legacy_spec": "",
+      "form": null,
+      "needs_review": true,
+      "reasons": [
+        "no legacy storage name found"
+      ],
+      "has_callClaude": true,
+      "anthropic_fetches": 1,
+      "x_api_key_exprs": [
+        "key"
+      ],
+      "bytes": 39423
+    },
+    {
+      "num": "097",
+      "slug": "appaday-097-field-marks",
+      "ai": true,
+      "done": false,
+      "legacy": [],
+      "legacy_spec": "",
+      "form": null,
+      "needs_review": true,
+      "reasons": [
+        "no legacy storage name found"
+      ],
+      "has_callClaude": true,
+      "anthropic_fetches": 1,
+      "x_api_key_exprs": [
+        "key"
+      ],
+      "bytes": 63775
+    },
+    {
+      "num": "099",
+      "slug": "appaday-099-social-post-responder",
+      "ai": true,
+      "done": false,
+      "legacy": [],
+      "legacy_spec": "",
+      "form": null,
+      "needs_review": true,
+      "reasons": [
+        "no legacy storage name found"
+      ],
+      "has_callClaude": true,
+      "anthropic_fetches": 1,
+      "x_api_key_exprs": [
+        "key"
+      ],
+      "bytes": 49374
+    },
+    {
+      "num": "100",
+      "slug": "appaday-100-signal-desk",
+      "ai": true,
+      "done": false,
+      "legacy": [],
+      "legacy_spec": "",
+      "form": null,
+      "needs_review": true,
+      "reasons": [
+        "no legacy storage name found",
+        "no callClaude function"
+      ],
+      "has_callClaude": false,
+      "anthropic_fetches": 1,
+      "x_api_key_exprs": [
+        "key"
+      ],
+      "bytes": 351119
+    },
+    {
+      "num": "106",
+      "slug": "appaday-106-python-discombobulator",
+      "ai": true,
+      "done": false,
+      "legacy": [
+        "pyExplainer_apiKey"
+      ],
+      "legacy_spec": "pyExplainer_apiKey",
+      "form": "plain",
+      "needs_review": false,
+      "reasons": [],
+      "has_callClaude": true,
+      "anthropic_fetches": 1,
+      "x_api_key_exprs": [
+        "apiKey"
+      ],
+      "bytes": 24876
+    },
+    {
+      "num": "110",
+      "slug": "appaday-110-album-cover-generator",
+      "ai": true,
+      "done": false,
+      "legacy": [],
+      "legacy_spec": "",
+      "form": null,
+      "needs_review": true,
+      "reasons": [
+        "no legacy storage name found"
+      ],
+      "has_callClaude": true,
+      "anthropic_fetches": 1,
+      "x_api_key_exprs": [
+        "apiKey"
+      ],
+      "bytes": 20942
+    },
+    {
+      "num": "111",
+      "slug": "appaday-111-application-gap-analysis",
+      "ai": true,
+      "done": false,
+      "legacy": [],
+      "legacy_spec": "",
+      "form": null,
+      "needs_review": true,
+      "reasons": [
+        "no legacy storage name found"
+      ],
+      "has_callClaude": true,
+      "anthropic_fetches": 1,
+      "x_api_key_exprs": [
+        "STATE.apiKey"
+      ],
+      "bytes": 162927
+    },
+    {
+      "num": "115",
+      "slug": "appaday-115-basket-ledger",
+      "ai": true,
+      "done": false,
+      "legacy": [],
+      "legacy_spec": "",
+      "form": null,
+      "needs_review": true,
+      "reasons": [
+        "no legacy storage name found",
+        "no callClaude function"
+      ],
+      "has_callClaude": false,
+      "anthropic_fetches": 1,
+      "x_api_key_exprs": [
+        "settings.apiKey"
+      ],
+      "bytes": 36614
+    },
+    {
+      "num": "119",
+      "slug": "appaday-119-room-read",
+      "ai": true,
+      "done": false,
+      "legacy": [],
+      "legacy_spec": "",
+      "form": null,
+      "needs_review": true,
+      "reasons": [
+        "no legacy storage name found",
+        "no callClaude function"
+      ],
+      "has_callClaude": false,
+      "anthropic_fetches": 1,
+      "x_api_key_exprs": [
+        "state.apiKey"
+      ],
+      "bytes": 43589
+    },
+    {
+      "num": "120",
+      "slug": "appaday-120-thought-chisel-ii",
+      "ai": true,
+      "done": false,
+      "legacy": [
+        "tc_api_key"
+      ],
+      "legacy_spec": "tc_api_key",
+      "form": "plain",
+      "needs_review": false,
+      "reasons": [],
+      "has_callClaude": true,
+      "anthropic_fetches": 1,
+      "x_api_key_exprs": [
+        "apiKey"
+      ],
+      "bytes": 37650
+    },
+    {
+      "num": "123",
+      "slug": "appaday-123-two-minute-task-splitter",
+      "ai": true,
+      "done": false,
+      "legacy": [
+        "appaday123-apikey"
+      ],
+      "legacy_spec": "appaday123-apikey",
+      "form": "plain",
+      "needs_review": false,
+      "reasons": [],
+      "has_callClaude": true,
+      "anthropic_fetches": 1,
+      "x_api_key_exprs": [
+        "apiKey"
+      ],
+      "bytes": 21924
+    },
+    {
+      "num": "124",
+      "slug": "appaday-124-reframe",
+      "ai": true,
+      "done": false,
+      "legacy": [
+        "appaday124-reframe-apikey"
+      ],
+      "legacy_spec": "appaday124-reframe-apikey",
+      "form": "plain",
+      "needs_review": false,
+      "reasons": [],
+      "has_callClaude": true,
+      "anthropic_fetches": 1,
+      "x_api_key_exprs": [
+        "apiKey"
+      ],
+      "bytes": 15240
+    },
+    {
+      "num": "126",
+      "slug": "appaday-126-rubric-builder",
+      "ai": true,
+      "done": false,
+      "legacy": [
+        "rubricBuilder_apiKey"
+      ],
+      "legacy_spec": "rubricBuilder_apiKey",
+      "form": "plain",
+      "needs_review": true,
+      "reasons": [
+        "no callClaude function",
+        "2 references to api.anthropic.com"
+      ],
+      "has_callClaude": false,
+      "anthropic_fetches": 2,
+      "x_api_key_exprs": [
+        "apiKey"
+      ],
+      "bytes": 28269
+    },
+    {
+      "num": "128",
+      "slug": "appaday-128-sermon-note-catcher",
+      "ai": true,
+      "done": false,
+      "legacy": [],
+      "legacy_spec": "",
+      "form": null,
+      "needs_review": true,
+      "reasons": [
+        "no legacy storage name found",
+        "no callClaude function"
+      ],
+      "has_callClaude": false,
+      "anthropic_fetches": 1,
+      "x_api_key_exprs": [
+        "settings.apiKey"
+      ],
+      "bytes": 46818
+    },
+    {
+      "num": "130",
+      "slug": "appaday-130-locus-of-control",
+      "ai": true,
+      "done": false,
+      "legacy": [],
+      "legacy_spec": "",
+      "form": null,
+      "needs_review": true,
+      "reasons": [
+        "no legacy storage name found"
+      ],
+      "has_callClaude": true,
+      "anthropic_fetches": 1,
+      "x_api_key_exprs": [
+        "key"
+      ],
+      "bytes": 36443
+    },
+    {
+      "num": "131",
+      "slug": "appaday-131-cloud-reader",
+      "ai": true,
+      "done": false,
+      "legacy": [],
+      "legacy_spec": "",
+      "form": null,
+      "needs_review": true,
+      "reasons": [
+        "no legacy storage name found"
+      ],
+      "has_callClaude": true,
+      "anthropic_fetches": 1,
+      "x_api_key_exprs": [
+        "key"
+      ],
+      "bytes": 32996
+    },
+    {
+      "num": "134",
+      "slug": "appaday-134-anagram-alchemy",
+      "ai": true,
+      "done": false,
+      "legacy": [],
+      "legacy_spec": "",
+      "form": null,
+      "needs_review": true,
+      "reasons": [
+        "no legacy storage name found",
+        "no callClaude function"
+      ],
+      "has_callClaude": false,
+      "anthropic_fetches": 1,
+      "x_api_key_exprs": [
+        "apiKey"
+      ],
+      "bytes": 49928
+    },
+    {
+      "num": "136",
+      "slug": "appaday-136-detour",
+      "ai": true,
+      "done": false,
+      "legacy": [],
+      "legacy_spec": "",
+      "form": null,
+      "needs_review": true,
+      "reasons": [
+        "no legacy storage name found",
+        "no callClaude function"
+      ],
+      "has_callClaude": false,
+      "anthropic_fetches": 1,
+      "x_api_key_exprs": [
+        "key"
+      ],
+      "bytes": 40367
+    },
+    {
+      "num": "140",
+      "slug": "appaday-140-delegation-draft",
+      "ai": true,
+      "done": false,
+      "legacy": [],
+      "legacy_spec": "",
+      "form": null,
+      "needs_review": true,
+      "reasons": [
+        "no legacy storage name found",
+        "no callClaude function"
+      ],
+      "has_callClaude": false,
+      "anthropic_fetches": 1,
+      "x_api_key_exprs": [
+        "state.settings.apiKey"
+      ],
+      "bytes": 55420
+    },
+    {
+      "num": "141",
+      "slug": "appaday-141-court-of-honor-citation",
+      "ai": true,
+      "done": false,
+      "legacy": [],
+      "legacy_spec": "",
+      "form": null,
+      "needs_review": true,
+      "reasons": [
+        "no legacy storage name found"
+      ],
+      "has_callClaude": true,
+      "anthropic_fetches": 1,
+      "x_api_key_exprs": [
+        "key"
+      ],
+      "bytes": 35894
+    },
+    {
+      "num": "144",
+      "slug": "appaday-144-bulletin-brief",
+      "ai": true,
+      "done": false,
+      "legacy": [
+        "appaday-144-apikey"
+      ],
+      "legacy_spec": "appaday-144-apikey",
+      "form": "unknown",
+      "needs_review": true,
+      "reasons": [
+        "storage 'appaday-144-apikey' form unclear",
+        "no callClaude function",
+        "2 references to api.anthropic.com"
+      ],
+      "has_callClaude": false,
+      "anthropic_fetches": 2,
+      "x_api_key_exprs": [
+        "key"
+      ],
+      "bytes": 48409
+    },
+    {
+      "num": "145",
+      "slug": "appaday-145-story-seed",
+      "ai": true,
+      "done": false,
+      "legacy": [],
+      "legacy_spec": "",
+      "form": null,
+      "needs_review": true,
+      "reasons": [
+        "no legacy storage name found"
+      ],
+      "has_callClaude": true,
+      "anthropic_fetches": 1,
+      "x_api_key_exprs": [
+        "key"
+      ],
+      "bytes": 35527
+    },
+    {
+      "num": "146",
+      "slug": "appaday-146-saga-forge",
+      "ai": true,
+      "done": false,
+      "legacy": [],
+      "legacy_spec": "",
+      "form": null,
+      "needs_review": true,
+      "reasons": [
+        "no legacy storage name found",
+        "no callClaude function"
+      ],
+      "has_callClaude": false,
+      "anthropic_fetches": 1,
+      "x_api_key_exprs": [
+        "key"
+      ],
+      "bytes": 684303
+    },
+    {
+      "num": "147",
+      "slug": "appaday-147-art-and-audio-forge",
+      "ai": true,
+      "done": false,
+      "legacy": [],
+      "legacy_spec": "",
+      "form": null,
+      "needs_review": true,
+      "reasons": [
+        "no legacy storage name found",
+        "no callClaude function"
+      ],
+      "has_callClaude": false,
+      "anthropic_fetches": 1,
+      "x_api_key_exprs": [
+        "key"
+      ],
+      "bytes": 1236729
+    },
+    {
+      "num": "148",
+      "slug": "appaday-148-world-forge",
+      "ai": true,
+      "done": false,
+      "legacy": [],
+      "legacy_spec": "",
+      "form": null,
+      "needs_review": true,
+      "reasons": [
+        "no legacy storage name found",
+        "no callClaude function"
+      ],
+      "has_callClaude": false,
+      "anthropic_fetches": 1,
+      "x_api_key_exprs": [
+        "key"
+      ],
+      "bytes": 997418
+    },
+    {
+      "num": "149",
+      "slug": "appaday-149-story-forge",
+      "ai": true,
+      "done": false,
+      "legacy": [],
+      "legacy_spec": "",
+      "form": null,
+      "needs_review": true,
+      "reasons": [
+        "no legacy storage name found",
+        "no callClaude function"
+      ],
+      "has_callClaude": false,
+      "anthropic_fetches": 1,
+      "x_api_key_exprs": [
+        "key"
+      ],
+      "bytes": 1534717
+    },
+    {
+      "num": "153",
+      "slug": "appaday-153-social-pulse",
+      "ai": true,
+      "done": false,
+      "legacy": [],
+      "legacy_spec": "",
+      "form": null,
+      "needs_review": true,
+      "reasons": [
+        "no legacy storage name found",
+        "no callClaude function",
+        "2 references to api.anthropic.com"
+      ],
+      "has_callClaude": false,
+      "anthropic_fetches": 2,
+      "x_api_key_exprs": [
+        "key"
+      ],
+      "bytes": 44353
+    },
+    {
+      "num": "155",
+      "slug": "appaday-155-forecast-discussion-decoder",
+      "ai": true,
+      "done": false,
+      "legacy": [],
+      "legacy_spec": "",
+      "form": null,
+      "needs_review": true,
+      "reasons": [
+        "no legacy storage name found",
+        "no callClaude function"
+      ],
+      "has_callClaude": false,
+      "anthropic_fetches": 1,
+      "x_api_key_exprs": [
+        "key"
+      ],
+      "bytes": 59924
+    },
+    {
+      "num": "158",
+      "slug": "appaday-158-gratitude-jar",
+      "ai": true,
+      "done": false,
+      "legacy": [],
+      "legacy_spec": "",
+      "form": null,
+      "needs_review": true,
+      "reasons": [
+        "no legacy storage name found",
+        "no callClaude function"
+      ],
+      "has_callClaude": false,
+      "anthropic_fetches": 1,
+      "x_api_key_exprs": [
+        "key"
+      ],
+      "bytes": 43564
+    },
+    {
+      "num": "160",
+      "slug": "appaday-160-procedure-scribe",
+      "ai": true,
+      "done": false,
+      "legacy": [],
+      "legacy_spec": "",
+      "form": null,
+      "needs_review": true,
+      "reasons": [
+        "no legacy storage name found",
+        "2 references to api.anthropic.com"
+      ],
+      "has_callClaude": true,
+      "anthropic_fetches": 2,
+      "x_api_key_exprs": [
+        "state.apiKey"
+      ],
+      "bytes": 76563
+    },
+    {
+      "num": "170",
+      "slug": "appaday-170-mock-interview-drill",
+      "ai": true,
+      "done": true,
+      "legacy": [],
+      "legacy_spec": "",
+      "form": null,
+      "needs_review": false,
+      "reasons": [],
+      "has_callClaude": false,
+      "anthropic_fetches": 0,
+      "x_api_key_exprs": [],
+      "bytes": 40477
+    }
+  ]
+}

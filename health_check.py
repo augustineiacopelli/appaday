@@ -6,12 +6,15 @@ checks that the app page loads, that its head carries exactly one of each
 of the seven required tags (five home screen icon tags plus the two Save to
 Phone tags) with the right app number, that its icon, install icons and
 manifest are live, and that its portal entry carries kw search keywords.
+Every AI app (listed in keys_inventory.json, or calling api.anthropic.com)
+must also carry exactly one keys.js tag with data-app set to its number.
 
 Run by .github/workflows/health-check.yml every Monday, or by hand:
     python3 health_check.py            # check the live GitHub Pages site
     python3 health_check.py --offline  # app HTML from raw GitHub, assets from this repo
 Exits 1 and writes health_report.md when anything fails.
 """
+import json
 import os
 import re
 import sys
@@ -50,6 +53,19 @@ def fetch(url, tries=3):
             last = str(e)
         time.sleep(2 * (i + 1))
     return last, b""
+
+KEYS_TAG = r'<script[^>]+src="[^"]*/appaday/keys\.js"[^>]*>'
+
+
+def ai_nums():
+    try:
+        inv = json.load(open(os.path.join(ROOT, "keys_inventory.json"), encoding="utf-8"))
+        return {a["num"] for a in inv["apps"] if a.get("ai")}
+    except (OSError, ValueError, KeyError):
+        return set()
+
+
+AI_NUMS = ai_nums()
 
 
 def load_apps():
@@ -99,6 +115,13 @@ def check(app):
             n = len(re.findall(pat, head, re.I))
             if n != 1:
                 problems.append("%s tag appears %d times" % (label, n))
+        text = body.decode("utf-8", "replace")
+        if num in AI_NUMS or "api.anthropic.com" in text:
+            tags = re.findall(KEYS_TAG, head, re.I)
+            if len(tags) != 1:
+                problems.append("AI app: keys.js tag appears %d times" % len(tags))
+            elif not re.search(r'data-app="%s"' % re.escape(num), tags[0]):
+                problems.append("AI app: keys.js data-app does not match %s" % num)
         m = re.search(r'rel="apple-touch-icon"[^>]*href="([^"]+)"', head) or \
             re.search(r'href="([^"]+)"[^>]*rel="apple-touch-icon"', head)
         if m and not m.group(1).endswith("/icons/%s.png" % num):
