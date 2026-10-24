@@ -1,0 +1,36 @@
+{
+ "name": "Mock Interview Drill",
+ "short_name": "Mock Drill",
+ "id": "https://augustineiacopelli.github.io/appaday-170-mock-interview-drill/",
+ "start_url": "https://augustineiacopelli.github.io/appaday-170-mock-interview-drill/",
+ "scope": "https://augustineiacopelli.github.io/appaday-170-mock-interview-drill/",
+ "display": "standalone",
+ "background_color": "#0F0E0C",
+ "theme_color": "#1F7A8C",
+ "icons": [
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/170.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/170.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/170.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/170.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

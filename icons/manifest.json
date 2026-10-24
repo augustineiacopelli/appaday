@@ -1350,5 +1350,13 @@
   "slug": "appaday-169-creation-and-destruction",
   "glyph": "bomb",
   "color": "#5B4BC4"
+ },
+ {
+  "num": "170",
+  "cat": "E",
+  "name": "Mock Interview Drill",
+  "slug": "appaday-170-mock-interview-drill",
+  "glyph": "messages-square",
+  "color": "#1F7A8C"
  }
 ]

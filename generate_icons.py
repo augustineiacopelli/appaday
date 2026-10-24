@@ -108,6 +108,7 @@ GLYPH_MAP = {
     "167": "badge-check",
     "168": "gallery-horizontal-end",
     "169": "bomb",
+    "170": "messages-square",
 }
 PORTFOLIO_GLYPH = "shapes"
 
