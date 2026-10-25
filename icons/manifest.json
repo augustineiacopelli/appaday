@@ -1358,5 +1358,13 @@
   "slug": "appaday-170-mock-interview-drill",
   "glyph": "messages-square",
   "color": "#1F7A8C"
+ },
+ {
+  "num": "171",
+  "cat": "D",
+  "name": "Pocket Actuary",
+  "slug": "appaday-171-pocket-actuary",
+  "glyph": "hourglass",
+  "color": "#B8860B"
  }
 ]

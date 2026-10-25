@@ -10,14 +10,14 @@ Every app is a single self-contained file of vanilla HTML, CSS, and JavaScript w
 
 ## The count
 
-**All 170 shipped apps, numbered 001 through 170 with no gaps in the sequence.** Building since May 2026.
+**All 171 shipped apps, numbered 001 through 171 with no gaps in the sequence.** Building since May 2026.
 
-Of the 170, fifty-two are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 170, Mock Interview Drill, turns any job posting into 8 to 10 likely behavioral and technical interview questions from Claude, each with its own practice timer, autosaving notes, and a practiced toggle, and exports the whole prep sheet as Markdown. The nine categories are spread as follows.
+Of the 171, fifty-two are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 171, Pocket Actuary, turns the official SSA 2022 life table into your own survival odds, with a shaded band for future mortality improvement, a partner view, a life in weeks grid, and Social Security break even ages at 62, 67, and 70. The nine categories are spread as follows.
 
 | Category | Code | Shipped |
 | --- | --- | --- |
 | Creative | C | 19 |
-| Data | D | 17 |
+| Data | D | 18 |
 | Educational | E | 17 |
 | Games | G | 19 |
 | Health | H | 17 |

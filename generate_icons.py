@@ -109,6 +109,7 @@ GLYPH_MAP = {
     "168": "gallery-horizontal-end",
     "169": "bomb",
     "170": "messages-square",
+    "171": "hourglass",
 }
 PORTFOLIO_GLYPH = "shapes"
 
