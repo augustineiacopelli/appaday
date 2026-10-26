@@ -1366,5 +1366,13 @@
   "slug": "appaday-171-pocket-actuary",
   "glyph": "hourglass",
   "color": "#B8860B"
+ },
+ {
+  "num": "172",
+  "cat": "S",
+  "name": "Slow Word",
+  "slug": "appaday-172-slow-word",
+  "glyph": "book-open",
+  "color": "#6A4C93"
  }
 ]

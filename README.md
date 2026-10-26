@@ -10,9 +10,9 @@ Every app is a single self-contained file of vanilla HTML, CSS, and JavaScript w
 
 ## The count
 
-**All 171 shipped apps, numbered 001 through 171 with no gaps in the sequence.** Building since May 2026.
+**All 172 shipped apps, numbered 001 through 172 with no gaps in the sequence.** Building since May 2026.
 
-Of the 171, fifty-two are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 171, Pocket Actuary, turns the official SSA 2022 life table into your own survival odds, with a shaded band for future mortality improvement, a partner view, a life in weeks grid, and Social Security break even ages at 62, 67, and 70. The nine categories are spread as follows.
+Of the 172, fifty-two are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 172, Slow Word, is a lectio divina companion for the daily Mass readings: it loads the Gospel of the day and paces you through four timed movements of reading, reflection, response, and rest with generated chimes, then keeps the word that stayed with you in a journal with a prayer streak. The nine categories are spread as follows.
 
 | Category | Code | Shipped |
 | --- | --- | --- |
@@ -23,7 +23,7 @@ Of the 171, fifty-two are AI-powered. App 150, Saga Studio, is the latest milest
 | Health | H | 17 |
 | Interactive | I | 16 |
 | Productivity | P | 25 |
-| Spirituality | S | 19 |
+| Spirituality | S | 20 |
 | Utility | U | 21 |
 
 ## How it is organized

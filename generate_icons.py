@@ -110,6 +110,7 @@ GLYPH_MAP = {
     "169": "bomb",
     "170": "messages-square",
     "171": "hourglass",
+    "172": "book-open",
 }
 PORTFOLIO_GLYPH = "shapes"
 
