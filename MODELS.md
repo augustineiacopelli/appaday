@@ -77,3 +77,9 @@ python3 apply_models.py --root DIR --write     patch in place
 ```
 
 The Kit family (146 to 149) shares its model code through KIT:CORE, which 147 to 149 copy byte for byte from 146 at build time. Change it in 146 first, then rebuild the others. Their `build.js` head templates now carry the full tag block, including `models.js`, so a rebuild no longer drops the icon, Save to Phone, and key ring tags.
+
+## Knowing when a new model ships
+
+The weekly health check asks Anthropic's Models API which models exist and fails when `config.json` is not on the newest model of each tier, or names a model the API no longer offers. The report in the Weekly health check failures issue lists the proposed `config.json` models and labels, ready to copy. It never changes anything itself, because a new model can need request changes (as `thinking` did in October 2026), so test one AI app per changed tier before pushing.
+
+The check needs a repository secret named `ANTHROPIC_API_KEY` (Settings, Secrets and variables, Actions). Listing models costs nothing, so a dedicated key with a very low spend cap is enough. Without the secret, this part of the check is skipped and the rest still runs.

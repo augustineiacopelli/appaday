@@ -19,6 +19,8 @@ jobs:
           python-version: "3.12"
       - name: Check every live app
         id: run
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: python3 health_check.py
         continue-on-error: true
       - name: Open or update the health issue

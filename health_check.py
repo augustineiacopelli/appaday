@@ -14,6 +14,13 @@ models.js must match config.json. Where node is installed, every app's inline
 scripts must also parse as classic scripts, which catches the top level await
 that blanked eleven apps in October 2026.
 
+When ANTHROPIC_API_KEY is set (a repository secret in the workflow), the
+check also asks Anthropic's Models API which models exist and fails when
+config.json is not on the newest model of each tier, or names a model the API
+no longer offers. The report lists the exact config.json and models.js edits.
+Without the key that part is skipped with a note. It never edits anything:
+a new model can need request changes, so a person approves every switch.
+
 Run by .github/workflows/health-check.yml every Monday, or by hand:
     python3 health_check.py            # check the live GitHub Pages site
     python3 health_check.py --offline  # app HTML from raw GitHub, assets from this repo
@@ -147,6 +154,69 @@ def models_problems():
     return probs
 
 
+TIERS = ("haiku", "sonnet", "opus", "fable")
+DATE_SUFFIX = re.compile(r"-\d{8}$")
+
+
+def list_models(key):
+    """Every model the key can see, from GET /v1/models, following pagination."""
+    out, after = [], None
+    while True:
+        url = "https://api.anthropic.com/v1/models?limit=1000" + ("&after_id=" + after if after else "")
+        req = urllib.request.Request(url, headers={"x-api-key": key, "anthropic-version": "2023-06-01", **UA})
+        with urllib.request.urlopen(req, timeout=30) as r:
+            page = json.loads(r.read().decode("utf-8"))
+        out.extend(page.get("data", []))
+        if not page.get("has_more"):
+            return out
+        after = page.get("last_id")
+
+
+def newest_by_tier(models):
+    """For each tier, the newest model (by created_at), with any date suffix dropped from its ID."""
+    best = {}
+    for m in models:
+        mid = DATE_SUFFIX.sub("", m.get("id", ""))
+        hit = re.match(r"claude-(%s)-" % "|".join(TIERS), mid)
+        if not hit:
+            continue
+        t = hit.group(1)
+        if t not in best or m.get("created_at", "") > best[t]["created_at"]:
+            best[t] = {"id": mid, "created_at": m.get("created_at", ""),
+                       "label": re.sub(r"^Claude\s+", "", m.get("display_name", "") or mid)}
+    return best
+
+
+def latest_model_problems():
+    """config.json should name the newest model of every tier the API offers."""
+    key = os.environ.get("ANTHROPIC_API_KEY", "").strip()
+    if not key:
+        print("Model currency check skipped: ANTHROPIC_API_KEY is not set.")
+        return []
+    try:
+        models = list_models(key)
+    except Exception as e:
+        return ["Models API could not be read (%s), so model currency was not checked" % e]
+    cfg = json.load(open(os.path.join(ROOT, "config.json"), encoding="utf-8"))
+    offered = set(DATE_SUFFIX.sub("", m.get("id", "")) for m in models)
+    best = newest_by_tier(models)
+    probs, new_models, new_labels = [], dict(cfg.get("models", {})), dict(cfg.get("labels", {}))
+    for t in TIERS:
+        have = DATE_SUFFIX.sub("", cfg.get("models", {}).get(t, ""))
+        if t in best and best[t]["id"] != have:
+            probs.append("newer %s model available: config.json has %s, the newest is %s (%s)"
+                         % (t, have or "nothing", best[t]["id"], best[t]["label"]))
+            new_models[t], new_labels[t] = best[t]["id"], best[t]["label"]
+        elif have and have not in offered:
+            probs.append("config.json %s model %s is no longer offered by the API" % (t, have))
+    if probs:
+        probs.append("Proposed config.json models: %s" % json.dumps(new_models))
+        probs.append("Proposed config.json labels: %s" % json.dumps(new_labels))
+        probs.append("Make the same change to EMBED in models.js, bump lastUpdated in both, "
+                     "and test one AI app per changed tier before pushing (see MODELS.md)")
+    return probs
+
+
 def asset_ok(path):
     if OFFLINE:
         return 200 if os.path.isfile(os.path.join(ROOT, path)) else 404
@@ -212,6 +282,9 @@ def main():
     mp = models_problems()
     if mp:
         results.append(("000", "Portal models.js", SITE + "models.js", mp))
+    lp = latest_model_problems()
+    if lp:
+        results.append(("000", "Model currency", SITE + "config.json", lp))
     bad = [r for r in results if r[3]]
     print("Checked %d apps, %d with problems." % (len(results), len(bad)))
     if not bad:
