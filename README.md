@@ -10,9 +10,9 @@ Every app is a single self-contained file of vanilla HTML, CSS, and JavaScript w
 
 ## The count
 
-**All 172 shipped apps, numbered 001 through 172 with no gaps in the sequence.** Building since May 2026.
+**All 173 shipped apps, numbered 001 through 173 with no gaps in the sequence.** Building since May 2026.
 
-Of the 172, fifty-two are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 172, Slow Word, is a lectio divina companion for the daily Mass readings: it loads the Gospel of the day and paces you through four timed movements of reading, reflection, response, and rest with generated chimes, then keeps the word that stayed with you in a journal with a prayer streak. The nine categories are spread as follows.
+Of the 173, fifty-three are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 173, Key Ring Inspector, opens your encrypted AppADay key file with its passphrase and compares every AI app's key against the keys saved in this browser, marking each as a match, a mismatch, only in the file, only in the browser, or missing. It can fix gaps in either direction, test a key with a one token request, and download a fresh encrypted backup, and no key leaves the device except an optional Test. The nine categories are spread as follows.
 
 | Category | Code | Shipped |
 | --- | --- | --- |
@@ -24,7 +24,7 @@ Of the 172, fifty-two are AI-powered. App 150, Saga Studio, is the latest milest
 | Interactive | I | 16 |
 | Productivity | P | 25 |
 | Spirituality | S | 20 |
-| Utility | U | 21 |
+| Utility | U | 22 |
 
 ## How it is organized
 

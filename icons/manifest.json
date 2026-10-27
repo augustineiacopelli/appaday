@@ -1374,5 +1374,13 @@
   "slug": "appaday-172-slow-word",
   "glyph": "book-open",
   "color": "#6A4C93"
+ },
+ {
+  "num": "173",
+  "cat": "U",
+  "name": "Key Ring Inspector",
+  "slug": "appaday-173-key-ring-inspector",
+  "glyph": "key-round",
+  "color": "#289664"
  }
 ]
