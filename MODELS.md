@@ -76,7 +76,7 @@ python3 apply_models.py --root DIR             dry run over DIR/<slug>/index.htm
 python3 apply_models.py --root DIR --write     patch in place
 ```
 
-The Kit family (146 to 149) shares its model code through KIT:CORE, which 147 to 149 copy byte for byte from 146 at build time. Change it in 146 first, then rebuild the others. Their `build.js` head templates now carry the full tag block, including `models.js`, so a rebuild no longer drops the icon, Save to Phone, and key ring tags.
+Saga Studio (150) keeps its Claude call in core/kit.js, which `vendor.js` cuts from Day 146, so it was moved the same day by running `node vendor.js` against the retrofitted Day 146 and adding the two head tags. The Kit family (146 to 149) shares its model code through KIT:CORE, which 147 to 149 copy byte for byte from 146 at build time. Change it in 146 first, then rebuild the others. Their `build.js` head templates now carry the full tag block, including `models.js`, so a rebuild no longer drops the icon, Save to Phone, and key ring tags.
 
 ## Knowing when a new model ships
 

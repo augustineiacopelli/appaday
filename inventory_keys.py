@@ -41,6 +41,8 @@ CONST_STR = re.compile(r"""(?:const|let|var)\s+([A-Za-z_$][\w$]*)\s*=\s*(['"`])(
 CONST_PROP = re.compile(r"""\b([A-Za-z_$][\w$]*)\s*:\s*(['"`])([^'"`$\\]+)\2""")
 XAPI = re.compile(r"""['"]x-api-key['"]\s*:\s*([^,}\n]+)""")
 FETCH_ANTH = re.compile(r"fetch\s*\(\s*[^)]*api\.anthropic\.com[^)]*\)|api\.anthropic\.com")
+RAW_FILE = "https://raw.githubusercontent.com/augustineiacopelli/%s/main/%s"
+LOCAL_SCRIPT_RE = re.compile(r"""<script[^>]+\bsrc=["'](?!https?:|//|data:)([^"'?#]+\.js)[^"']*["']""", re.I)
 
 
 def fetch(url, tries=3):
@@ -120,15 +122,17 @@ def classify(src, name, sites):
     return form, field, notes
 
 
-def analyze(num, slug, src):
+def analyze(num, slug, src, script_hit=None):
     rec = {"num": num, "slug": slug, "ai": False, "done": False,
            "legacy": [], "legacy_spec": "", "form": None,
            "needs_review": False, "reasons": [],
            "has_callClaude": False, "anthropic_fetches": 0,
            "x_api_key_exprs": [], "bytes": len(src.encode("utf-8"))}
-    if "api.anthropic.com" not in src:
+    if "api.anthropic.com" not in src and not script_hit:
         return rec
     rec["ai"] = True
+    if script_hit:
+        rec["claude_call_in"] = script_hit
     rec["done"] = bool(KEYS_TAG_RE.search(src))
     if rec["done"]:
         return rec
@@ -196,6 +200,32 @@ def analyze(num, slug, src):
     return rec
 
 
+def find_ai_in_local_scripts(slug, html, cache, offline):
+    """Multi file apps (such as 150 Saga Studio) keep their Claude call in a script the page loads from its own
+    repository, so the index.html alone never mentions api.anthropic.com. Walk the page's relative script files in load
+    order and return the first one that does. Returns the path, or None. Files are cached next to index.html."""
+    seen = set()
+    for m in LOCAL_SCRIPT_RE.finditer(html):
+        rel = m.group(1)
+        if rel in seen or ".." in rel.split("/"):
+            continue
+        seen.add(rel)
+        path = os.path.join(cache, slug, rel)
+        text = None
+        if os.path.exists(path):
+            text = open(path, encoding="utf-8", errors="replace").read()
+        elif not offline:
+            status, body = fetch(RAW_FILE % (slug, rel))
+            if status == 200:
+                os.makedirs(os.path.dirname(path), exist_ok=True)
+                with open(path, "wb") as f:
+                    f.write(body)
+                text = body.decode("utf-8", "replace")
+        if text and "api.anthropic.com" in text:
+            return rel
+    return None
+
+
 def load_one(args):
     a, cache, offline = args
     path = os.path.join(cache, a["slug"], "index.html")
@@ -231,7 +261,10 @@ def main():
         if err:
             failures.append((a["num"], a["slug"], err))
             continue
-        records.append(analyze(a["num"], a["slug"], src))
+        hit = None
+        if "api.anthropic.com" not in src:
+            hit = find_ai_in_local_scripts(a["slug"], src, args.cache, args.offline)
+        records.append(analyze(a["num"], a["slug"], src, hit))
     records.sort(key=lambda r: r["num"])
 
     ai = [r for r in records if r["ai"]]

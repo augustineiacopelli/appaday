@@ -47,6 +47,8 @@ Validate exactly one keys.js tag per AI app, with `data-app` matching the repo n
 
 Every change fires a window event, `appaday:keychange`, with `detail.has`. All injected DOM and styles use the `ak-` prefix. The Settings section inherits the app's text color and font; the sheet follows the system light or dark mode.
 
+Apps whose Claude call sits in a script file of their own repository (150 Saga Studio, through core/kit.js) are found by `inventory_keys.py`, which follows an app's relative script files when its index.html never mentions api.anthropic.com. App 173 builds its list of AI apps from `keys_inventory.json`, so rerun the inventory and update that list when an AI app ships.
+
 ## Integrating an app
 
 1. Add the tag above after `save.js`.
