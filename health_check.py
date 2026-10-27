@@ -7,7 +7,12 @@ of the seven required tags (five home screen icon tags plus the two Save to
 Phone tags) with the right app number, that its icon, install icons and
 manifest are live, and that its portal entry carries kw search keywords.
 Every AI app (listed in keys_inventory.json, or calling api.anthropic.com)
-must also carry exactly one keys.js tag with data-app set to its number.
+must also carry exactly one keys.js tag with data-app set to its number and
+exactly one models.js tag, and must not carry a Claude model ID of its own
+(models come from models.js by tier; see MODELS.md). The EMBED table in
+models.js must match config.json. Where node is installed, every app's inline
+scripts must also parse as classic scripts, which catches the top level await
+that blanked eleven apps in October 2026.
 
 Run by .github/workflows/health-check.yml every Monday, or by hand:
     python3 health_check.py            # check the live GitHub Pages site
@@ -17,7 +22,10 @@ Exits 1 and writes health_report.md when anything fails.
 import json
 import os
 import re
+import shutil
+import subprocess
 import sys
+import tempfile
 import time
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor
@@ -88,6 +96,57 @@ def load_apps():
     return apps
 
 
+MODELS_TAG = r'<script[^>]+src="[^"]*/appaday/models\.js"[^>]*>'
+MODEL_ID = re.compile(r'claude-(?:haiku|sonnet|opus|fable)-[a-z0-9.-]*')
+SCRIPT_RE = re.compile(r'<script\b([^>]*)>(.*?)</script>', re.S | re.I)
+NODE = shutil.which("node")
+
+
+def script_errors(text):
+    """Inline scripts that fail node --check, parsed the way the browser parses them."""
+    if not NODE:
+        return []
+    out = []
+    for i, m in enumerate(SCRIPT_RE.finditer(text)):
+        attrs, body = m.group(1), m.group(2)
+        if "src=" in attrs or not body.strip() or re.search(r'type=["\']?(importmap|application/(ld\+)?json)', attrs):
+            continue
+        fd, path = tempfile.mkstemp(suffix=".mjs" if "module" in attrs else ".cjs")
+        with os.fdopen(fd, "w", encoding="utf-8") as f:
+            f.write(body)
+        r = subprocess.run([NODE, "--check", path], capture_output=True, text=True)
+        os.unlink(path)
+        if r.returncode:
+            msg = [l for l in r.stderr.splitlines() if "Error" in l]
+            out.append("inline script %d does not parse: %s" % (i, msg[0] if msg else "syntax error"))
+    return out
+
+
+def models_problems():
+    """models.js EMBED must equal config.json, so first loads and offline loads are current."""
+    try:
+        if OFFLINE:
+            js = open(os.path.join(ROOT, "models.js"), encoding="utf-8").read()
+            cfg = json.load(open(os.path.join(ROOT, "config.json"), encoding="utf-8"))
+        else:
+            js = fetch(SITE + "models.js")[1].decode("utf-8", "replace")
+            cfg = json.loads(fetch(SITE + "config.json")[1].decode("utf-8"))
+    except Exception as e:
+        return ["models.js or config.json could not be read: %s" % e]
+    probs = []
+    m = re.search(r"var EMBED = \{\s*lastUpdated: '([^']+)',\s*models: \{([^}]*)\},\s*labels: \{([^}]*)\}", js)
+    if not m:
+        return ["models.js has no EMBED table"]
+    pairs = lambda t: dict(re.findall(r"(\w+): '([^']*)'", t))
+    if m.group(1) != cfg.get("lastUpdated"):
+        probs.append("models.js lastUpdated %s differs from config.json %s" % (m.group(1), cfg.get("lastUpdated")))
+    if pairs(m.group(2)) != cfg.get("models"):
+        probs.append("models.js EMBED models differ from config.json models")
+    if pairs(m.group(3)) != cfg.get("labels"):
+        probs.append("models.js EMBED labels differ from config.json labels")
+    return probs
+
+
 def asset_ok(path):
     if OFFLINE:
         return 200 if os.path.isfile(os.path.join(ROOT, path)) else 404
@@ -122,6 +181,13 @@ def check(app):
                 problems.append("AI app: keys.js tag appears %d times" % len(tags))
             elif not re.search(r'data-app="%s"' % re.escape(num), tags[0]):
                 problems.append("AI app: keys.js data-app does not match %s" % num)
+            n = len(re.findall(MODELS_TAG, head, re.I))
+            if n != 1:
+                problems.append("AI app: models.js tag appears %d times" % n)
+            ids = sorted(set(MODEL_ID.findall(text)))
+            if ids:
+                problems.append("AI app: carries its own model ID (%s) instead of asking models.js" % ", ".join(ids))
+        problems.extend(script_errors(text))
         m = re.search(r'rel="apple-touch-icon"[^>]*href="([^"]+)"', head) or \
             re.search(r'href="([^"]+)"[^>]*rel="apple-touch-icon"', head)
         if m and not m.group(1).endswith("/icons/%s.png" % num):
@@ -143,6 +209,9 @@ def main():
     apps = [a for a in load_apps() if not a["soon"]]
     with ThreadPoolExecutor(max_workers=8) as pool:
         results = sorted(pool.map(check, apps))
+    mp = models_problems()
+    if mp:
+        results.append(("000", "Portal models.js", SITE + "models.js", mp))
     bad = [r for r in results if r[3]]
     print("Checked %d apps, %d with problems." % (len(results), len(bad)))
     if not bad:
