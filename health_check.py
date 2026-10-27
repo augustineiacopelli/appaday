@@ -99,6 +99,7 @@ def load_apps():
             "url": field("url"),
             "kw": field("kw"),
             "soon": bool(re.search(r"coming_soon\s*:\s*true", chunk)),
+            "ai": bool(re.search(r"\bai\s*:\s*true", chunk)),
         })
     return apps
 
@@ -107,6 +108,27 @@ MODELS_TAG = r'<script[^>]+src="[^"]*/appaday/models\.js"[^>]*>'
 MODEL_ID = re.compile(r'claude-(?:haiku|sonnet|opus|fable)-[a-z0-9.-]*')
 SCRIPT_RE = re.compile(r'<script\b([^>]*)>(.*?)</script>', re.S | re.I)
 NODE = shutil.which("node")
+
+
+LOCAL_SCRIPT = re.compile(r"""<script[^>]+\bsrc=["'](?!https?:|//|data:)([^"'?#]+\.js)[^"']*["']""", re.I)
+
+
+def local_ai_script(text, base):
+    """Multi file apps (150 Saga Studio) keep their Claude call in a script from their own repository, so the page
+    itself never says api.anthropic.com. Walk the page's relative scripts in load order and return (path, text) for
+    the first that does, or (None, "")."""
+    seen = set()
+    for m in LOCAL_SCRIPT.finditer(text):
+        rel = m.group(1)
+        if rel in seen or ".." in rel.split("/"):
+            continue
+        seen.add(rel)
+        status, body = fetch(base + rel, tries=2)
+        if status == 200:
+            body = body.decode("utf-8", "replace")
+            if "api.anthropic.com" in body:
+                return rel, body
+    return None, ""
 
 
 def script_errors(text):
@@ -245,7 +267,18 @@ def check(app):
             if n != 1:
                 problems.append("%s tag appears %d times" % (label, n))
         text = body.decode("utf-8", "replace")
-        if num in AI_NUMS or "api.anthropic.com" in text:
+        hit, hit_text = None, ""
+        if "api.anthropic.com" not in text:
+            base = page.rsplit("/", 1)[0] + "/"
+            hit, hit_text = local_ai_script(text, base)
+        detected = "api.anthropic.com" in text or bool(hit)
+        where = hit or "index.html"
+        if detected and not app["ai"]:
+            problems.append("calls Claude (%s) but its portal entry lacks ai:true, so the AI badge and the "
+                            "Key Ring Inspector list miss it" % where)
+        if app["ai"] and not detected:
+            problems.append("portal entry has ai:true but no Claude call was found in the app")
+        if num in AI_NUMS or detected:
             tags = re.findall(KEYS_TAG, head, re.I)
             if len(tags) != 1:
                 problems.append("AI app: keys.js tag appears %d times" % len(tags))
@@ -254,7 +287,7 @@ def check(app):
             n = len(re.findall(MODELS_TAG, head, re.I))
             if n != 1:
                 problems.append("AI app: models.js tag appears %d times" % n)
-            ids = sorted(set(MODEL_ID.findall(text)))
+            ids = sorted(set(MODEL_ID.findall(text)) | set(MODEL_ID.findall(hit_text)))
             if ids:
                 problems.append("AI app: carries its own model ID (%s) instead of asking models.js" % ", ".join(ids))
         problems.extend(script_errors(text))
