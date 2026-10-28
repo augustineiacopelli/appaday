@@ -1382,5 +1382,13 @@
   "slug": "appaday-173-key-ring-inspector",
   "glyph": "key-round",
   "color": "#289664"
+ },
+ {
+  "num": "174",
+  "cat": "G",
+  "name": "Rising Water",
+  "slug": "appaday-174-rising-water",
+  "glyph": "waves",
+  "color": "#276EB7"
  }
 ]

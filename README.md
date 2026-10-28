@@ -10,16 +10,16 @@ Every app is a single self-contained file of vanilla HTML, CSS, and JavaScript w
 
 ## The count
 
-**All 173 shipped apps, numbered 001 through 173 with no gaps in the sequence.** Building since May 2026.
+**All 174 shipped apps, numbered 001 through 174 with no gaps in the sequence.** Building since May 2026.
 
-Of the 173, fifty-six are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 173, Key Ring Inspector, opens your encrypted AppADay key file with its passphrase and compares every AI app's key against the keys saved in this browser, marking each as a match, a mismatch, only in the file, only in the browser, or missing. It can fix gaps in either direction, test a key with a one token request, and download a fresh encrypted backup, and no key leaves the device except an optional Test. The nine categories are spread as follows.
+Of the 174, fifty-six are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 174, Rising Water, is a daily word ladder with a flood on your heels: change one letter at a time to climb from the start word to the goal, while every move and every hint lifts the water one rung. Everyone gets the same ladder each day, chosen so a route of the day's par length is guaranteed, with three rungs to spare, streaks, and a share line. The nine categories are spread as follows.
 
 | Category | Code | Shipped |
 | --- | --- | --- |
 | Creative | C | 19 |
 | Data | D | 18 |
 | Educational | E | 17 |
-| Games | G | 19 |
+| Games | G | 20 |
 | Health | H | 17 |
 | Interactive | I | 16 |
 | Productivity | P | 25 |

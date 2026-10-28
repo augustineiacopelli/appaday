@@ -112,6 +112,7 @@ GLYPH_MAP = {
     "171": "hourglass",
     "172": "book-open",
     "173": "key-round",
+    "174": "waves",
 }
 PORTFOLIO_GLYPH = "shapes"
 
