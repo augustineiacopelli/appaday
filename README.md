@@ -10,9 +10,9 @@ Every app is a single self-contained file of vanilla HTML, CSS, and JavaScript w
 
 ## The count
 
-**All 174 shipped apps, numbered 001 through 174 with no gaps in the sequence.** Building since May 2026.
+**All 175 shipped apps, numbered 001 through 175 with no gaps in the sequence.** Building since May 2026.
 
-Of the 174, fifty-six are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 174, Rising Water, is a daily word ladder with a flood on your heels: change one letter at a time to climb from the start word to the goal, while every move and every hint lifts the water one rung. Everyone gets the same ladder each day, chosen so a route of the day's par length is guaranteed, with three rungs to spare, streaks, and a share line. The nine categories are spread as follows.
+Of the 175, fifty-six are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 175, Doctor Visit Log, keeps every appointment for the whole family in one private place: symptoms and starred questions before the visit, what the family doctor or specialist found and decided during it, and the medicine changes, tests, referrals, and to dos that follow, with a one page prep sheet to hand the doctor at check in. The nine categories are spread as follows.
 
 | Category | Code | Shipped |
 | --- | --- | --- |
@@ -20,7 +20,7 @@ Of the 174, fifty-six are AI-powered. App 150, Saga Studio, is the latest milest
 | Data | D | 18 |
 | Educational | E | 17 |
 | Games | G | 20 |
-| Health | H | 17 |
+| Health | H | 18 |
 | Interactive | I | 16 |
 | Productivity | P | 25 |
 | Spirituality | S | 20 |

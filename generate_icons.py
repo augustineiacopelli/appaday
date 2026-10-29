@@ -113,6 +113,7 @@ GLYPH_MAP = {
     "172": "book-open",
     "173": "key-round",
     "174": "waves",
+    "175": "stethoscope",
 }
 PORTFOLIO_GLYPH = "shapes"
 

@@ -1,0 +1,36 @@
+{
+ "name": "Doctor Visit Log",
+ "short_name": "Visit Log",
+ "id": "https://augustineiacopelli.github.io/appaday-175-doctor-visit-log/",
+ "start_url": "https://augustineiacopelli.github.io/appaday-175-doctor-visit-log/",
+ "scope": "https://augustineiacopelli.github.io/appaday-175-doctor-visit-log/",
+ "display": "standalone",
+ "background_color": "#0F0E0C",
+ "theme_color": "#D14D72",
+ "icons": [
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/175.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/175.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/175.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/175.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

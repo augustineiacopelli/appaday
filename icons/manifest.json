@@ -1390,5 +1390,13 @@
   "slug": "appaday-174-rising-water",
   "glyph": "waves",
   "color": "#276EB7"
+ },
+ {
+  "num": "175",
+  "cat": "H",
+  "name": "Doctor Visit Log",
+  "slug": "appaday-175-doctor-visit-log",
+  "glyph": "stethoscope",
+  "color": "#D14D72"
  }
 ]
