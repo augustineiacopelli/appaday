@@ -10,13 +10,13 @@ Every app is a single self-contained file of vanilla HTML, CSS, and JavaScript w
 
 ## The count
 
-**All 175 shipped apps, numbered 001 through 175 with no gaps in the sequence.** Building since May 2026.
+**All 176 shipped apps, numbered 001 through 176 with no gaps in the sequence.** Building since May 2026.
 
-Of the 175, fifty-six are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 175, Doctor Visit Log, keeps every appointment for the whole family in one private place: symptoms and starred questions before the visit, what the family doctor or specialist found and decided during it, and the medicine changes, tests, referrals, and to dos that follow, with a one page prep sheet to hand the doctor at check in. The nine categories are spread as follows.
+Of the 176, fifty-seven are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 176, Pitch Timer, has Claude draft a tight elevator pitch from your role, background, and target job, built as a hook, why it matters to the listener, one proof point, and a clear ask, then lets you rehearse it out loud against a countdown that shifts green to amber to red and logs every run against the target. The nine categories are spread as follows.
 
 | Category | Code | Shipped |
 | --- | --- | --- |
-| Creative | C | 19 |
+| Creative | C | 20 |
 | Data | D | 18 |
 | Educational | E | 17 |
 | Games | G | 20 |

@@ -1398,5 +1398,13 @@
   "slug": "appaday-175-doctor-visit-log",
   "glyph": "stethoscope",
   "color": "#D14D72"
+ },
+ {
+  "num": "176",
+  "cat": "C",
+  "name": "Pitch Timer",
+  "slug": "appaday-176-pitch-timer",
+  "glyph": "mic",
+  "color": "#A63D9E"
  }
 ]
