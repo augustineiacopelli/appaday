@@ -1406,5 +1406,13 @@
   "slug": "appaday-176-pitch-timer",
   "glyph": "mic",
   "color": "#A63D9E"
+ },
+ {
+  "num": "177",
+  "cat": "G",
+  "name": "Hallow Hunt",
+  "slug": "appaday-177-hallow-hunt",
+  "glyph": "ghost",
+  "color": "#276EB7"
  }
 ]

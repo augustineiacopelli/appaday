@@ -10,16 +10,16 @@ Every app is a single self-contained file of vanilla HTML, CSS, and JavaScript w
 
 ## The count
 
-**All 176 shipped apps, numbered 001 through 176 with no gaps in the sequence.** Building since May 2026.
+**All 177 shipped apps, numbered 001 through 177 with no gaps in the sequence.** Building since May 2026.
 
-Of the 176, fifty-seven are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 176, Pitch Timer, has Claude draft a tight elevator pitch from your role, background, and target job, built as a hook, why it matters to the listener, one proof point, and a clear ask, then lets you rehearse it out loud against a countdown that shifts green to amber to red and logs every run against the target. The nine categories are spread as follows.
+Of the 177, fifty-seven are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 177, Hallow Hunt, is a family Halloween creature hunt: friendly spooks hide around you in the phone camera, you flick a glowing lantern to catch them, and catches earn XP and candy to evolve 22 spooks, with seeded daily quests, a Walk mode that sends a new spook every 100 meters, photo cards, and a Family board for every hunter sharing the phone. The nine categories are spread as follows.
 
 | Category | Code | Shipped |
 | --- | --- | --- |
 | Creative | C | 20 |
 | Data | D | 18 |
 | Educational | E | 17 |
-| Games | G | 20 |
+| Games | G | 21 |
 | Health | H | 18 |
 | Interactive | I | 16 |
 | Productivity | P | 25 |
