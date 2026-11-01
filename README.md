@@ -10,9 +10,9 @@ Every app is a single self-contained file of vanilla HTML, CSS, and JavaScript w
 
 ## The count
 
-**All 177 shipped apps, numbered 001 through 177 with no gaps in the sequence.** Building since May 2026.
+**All 178 shipped apps, numbered 001 through 178 with no gaps in the sequence.** Building since May 2026.
 
-Of the 177, fifty-seven are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 177, Hallow Hunt, is a family Halloween creature hunt: friendly spooks hide around you in the phone camera, you flick a glowing lantern to catch them, and catches earn XP and candy to evolve 44 spooks, with seeded daily quests, a Walk mode that sends a new spook every 100 meters, photo cards, and a Family board for every hunter sharing the phone. The nine categories are spread as follows.
+Of the 178, fifty-seven are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 178, Pressure Pop, is a bubble wrap sheet for your phone: tap for a light pop or hold to squeeze until a bubble bursts, squeeze to prime the neighbors, hunt hidden gold, giant, stubborn, dud, and leaky bubbles, and unlock real world size milestones from an index card to a tennis court, with a seeded Daily sheet and a Free Play mode. The nine categories are spread as follows.
 
 | Category | Code | Shipped |
 | --- | --- | --- |
@@ -21,7 +21,7 @@ Of the 177, fifty-seven are AI-powered. App 150, Saga Studio, is the latest mile
 | Educational | E | 17 |
 | Games | G | 21 |
 | Health | H | 18 |
-| Interactive | I | 16 |
+| Interactive | I | 17 |
 | Productivity | P | 25 |
 | Spirituality | S | 20 |
 | Utility | U | 22 |

@@ -116,6 +116,7 @@ GLYPH_MAP = {
     "175": "stethoscope",
     "176": "mic",
     "177": "ghost",
+    "178": "bubbles",
 }
 PORTFOLIO_GLYPH = "shapes"
 

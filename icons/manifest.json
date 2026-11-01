@@ -1414,5 +1414,13 @@
   "slug": "appaday-177-hallow-hunt",
   "glyph": "ghost",
   "color": "#276EB7"
+ },
+ {
+  "num": "178",
+  "cat": "I",
+  "name": "Pressure Pop",
+  "slug": "appaday-178-pressure-pop",
+  "glyph": "bubbles",
+  "color": "#5B4BC4"
  }
 ]
