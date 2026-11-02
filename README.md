@@ -10,9 +10,9 @@ Every app is a single self-contained file of vanilla HTML, CSS, and JavaScript w
 
 ## The count
 
-**All 178 shipped apps, numbered 001 through 178 with no gaps in the sequence.** Building since May 2026.
+**All 179 shipped apps, numbered 001 through 179 with no gaps in the sequence.** Building since May 2026.
 
-Of the 178, fifty-seven are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 178, Pressure Pop, is a bubble wrap sheet for your phone: tap for a light pop or hold to squeeze until a bubble bursts, squeeze to prime the neighbors, hunt hidden gold, giant, stubborn, dud, and leaky bubbles, and unlock real world size milestones from an index card to a tennis court, with a seeded Daily sheet and a Free Play mode. The nine categories are spread as follows.
+Of the 179, fifty-seven are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 179, Tremor Log, is a seismograph for your phone: it calibrates against the sensor's own noise, detects every spike, rates shaking on a six level scale with peak hold, and translates each reading into g force, gals, Mercalli intensity, and a Richter style magnitude, with a live trace, an event log, and PNG and CSV export. The nine categories are spread as follows.
 
 | Category | Code | Shipped |
 | --- | --- | --- |
@@ -21,7 +21,7 @@ Of the 178, fifty-seven are AI-powered. App 150, Saga Studio, is the latest mile
 | Educational | E | 17 |
 | Games | G | 21 |
 | Health | H | 18 |
-| Interactive | I | 17 |
+| Interactive | I | 18 |
 | Productivity | P | 25 |
 | Spirituality | S | 20 |
 | Utility | U | 22 |

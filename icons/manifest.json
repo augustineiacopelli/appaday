@@ -1422,5 +1422,13 @@
   "slug": "appaday-178-pressure-pop",
   "glyph": "bubbles",
   "color": "#5B4BC4"
+ },
+ {
+  "num": "179",
+  "cat": "I",
+  "name": "Tremor Log",
+  "slug": "appaday-179-tremor-log",
+  "glyph": "activity",
+  "color": "#5B4BC4"
  }
 ]
