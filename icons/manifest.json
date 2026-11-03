@@ -1430,5 +1430,13 @@
   "slug": "appaday-179-tremor-log",
   "glyph": "activity",
   "color": "#5B4BC4"
+ },
+ {
+  "num": "180",
+  "cat": "C",
+  "name": "Selfie Studio",
+  "slug": "appaday-180-selfie-studio",
+  "glyph": "user-round",
+  "color": "#A63D9E"
  }
 ]

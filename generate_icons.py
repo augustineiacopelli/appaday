@@ -118,6 +118,7 @@ GLYPH_MAP = {
     "177": "ghost",
     "178": "bubbles",
     "179": "activity",
+    "180": "user-round",
 }
 PORTFOLIO_GLYPH = "shapes"
 
