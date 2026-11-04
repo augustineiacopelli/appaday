@@ -119,6 +119,7 @@ GLYPH_MAP = {
     "178": "bubbles",
     "179": "activity",
     "180": "user-round",
+    "181": "calendar-check",
 }
 PORTFOLIO_GLYPH = "shapes"
 

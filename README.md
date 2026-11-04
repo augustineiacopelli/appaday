@@ -10,9 +10,9 @@ Every app is a single self-contained file of vanilla HTML, CSS, and JavaScript w
 
 ## The count
 
-**All 180 shipped apps, numbered 001 through 180 with no gaps in the sequence.** Building since May 2026.
+**All 181 shipped apps, numbered 001 through 181 with no gaps in the sequence.** Building since May 2026.
 
-Of the 180, fifty-eight are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 180, Selfie Studio, turns everyday selfies into polished headshots without generating fake faces: Claude picks the best photo, drafts a LinkedIn headline, and art directs an on device retouch you refine in plain words, a live camera coach guides a reshoot, and matching sets give a whole group one look. The nine categories are spread as follows.
+Of the 181, fifty-eight are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 181, Yearglass, is a habit tracker whose whole interface is the year: each habit gets a 53 week heatmap grid that fills in as you tap Today, with streaks, a monthly streak freeze, daily, weekly, or chosen day goals, and JSON and CSV backup. The nine categories are spread as follows.
 
 | Category | Code | Shipped |
 | --- | --- | --- |
@@ -22,7 +22,7 @@ Of the 180, fifty-eight are AI-powered. App 150, Saga Studio, is the latest mile
 | Games | G | 21 |
 | Health | H | 18 |
 | Interactive | I | 18 |
-| Productivity | P | 25 |
+| Productivity | P | 26 |
 | Spirituality | S | 20 |
 | Utility | U | 22 |
 
