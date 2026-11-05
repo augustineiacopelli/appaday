@@ -1446,5 +1446,13 @@
   "slug": "appaday-181-yearglass",
   "glyph": "calendar-check",
   "color": "#C8401A"
+ },
+ {
+  "num": "182",
+  "cat": "P",
+  "name": "Hour Budget",
+  "slug": "appaday-182-hour-budget",
+  "glyph": "hourglass",
+  "color": "#C8401A"
  }
 ]

@@ -120,6 +120,7 @@ GLYPH_MAP = {
     "179": "activity",
     "180": "user-round",
     "181": "calendar-check",
+    "182": "hourglass",
 }
 PORTFOLIO_GLYPH = "shapes"
 
