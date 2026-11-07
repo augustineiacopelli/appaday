@@ -122,6 +122,7 @@ GLYPH_MAP = {
     "181": "calendar-check",
     "182": "hourglass",
     "183": "sunrise",
+    "184": "hand-heart",
 }
 PORTFOLIO_GLYPH = "shapes"
 

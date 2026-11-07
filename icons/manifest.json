@@ -1462,5 +1462,13 @@
   "slug": "appaday-183-daily-intentions",
   "glyph": "sunrise",
   "color": "#C8401A"
+ },
+ {
+  "num": "184",
+  "cat": "S",
+  "name": "Session Coach",
+  "slug": "appaday-184-session-coach",
+  "glyph": "hand-heart",
+  "color": "#6A4C93"
  }
 ]

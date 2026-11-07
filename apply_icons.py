@@ -33,6 +33,7 @@ ICON_BASE = "https://augustineiacopelli.github.io/appaday/icons"
 # Anything longer than that needs a short form here.
 TITLE = {
     "183": "Intentions",
+    "184": "SessionCoach",
     "001": "Reaction", "002": "Stream", "003": "Scripture", "005": "Dad Jokes",
     "007": "Standing", "008": "Numbers", "011": "Password", "012": "Prayers",
     "016": "Chug", "017": "Scribe", "019": "Tone", "020": "Readers",

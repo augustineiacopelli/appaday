@@ -10,9 +10,9 @@ Every app is a single self-contained file of vanilla HTML, CSS, and JavaScript w
 
 ## The count
 
-**All 183 shipped apps, numbered 001 through 183 with no gaps in the sequence.** Building since May 2026.
+**All 184 shipped apps, numbered 001 through 184 with no gaps in the sequence.** Building since May 2026.
 
-Of the 183, fifty-eight are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 183, Daily Intentions, is a quiet morning card with three prompts, one intention, one priority, and one thing to let go of, that resets each day, keeps a private history, and lets you mark each line kept by evening. The nine categories are spread as follows.
+Of the 184, fifty-eight are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 184, Session Coach, is a private, offline coaching companion for pregnancy center advocates who meet with fathers, scoring the advocate's own listening and topic coverage out of 100 with one strength, one area to grow, and a next question, and printing blank or drafted talking point forms. The nine categories are spread as follows.
 
 | Category | Code | Shipped |
 | --- | --- | --- |
@@ -23,7 +23,7 @@ Of the 183, fifty-eight are AI-powered. App 150, Saga Studio, is the latest mile
 | Health | H | 18 |
 | Interactive | I | 18 |
 | Productivity | P | 28 |
-| Spirituality | S | 20 |
+| Spirituality | S | 21 |
 | Utility | U | 22 |
 
 ## How it is organized
