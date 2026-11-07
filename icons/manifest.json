@@ -1454,5 +1454,13 @@
   "slug": "appaday-182-hour-budget",
   "glyph": "hourglass",
   "color": "#C8401A"
+ },
+ {
+  "num": "183",
+  "cat": "P",
+  "name": "Daily Intentions",
+  "slug": "appaday-183-daily-intentions",
+  "glyph": "sunrise",
+  "color": "#C8401A"
  }
 ]

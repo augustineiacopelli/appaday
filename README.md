@@ -10,9 +10,9 @@ Every app is a single self-contained file of vanilla HTML, CSS, and JavaScript w
 
 ## The count
 
-**All 182 shipped apps, numbered 001 through 182 with no gaps in the sequence.** Building since May 2026.
+**All 183 shipped apps, numbered 001 through 183 with no gaps in the sequence.** Building since May 2026.
 
-Of the 182, fifty-eight are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 182, Hour Budget, gives each part of the week an allowance of hours, like a money budget for time: log against it with a one tap timer or manual entry and watch each category fill, turn amber near its limit, and go red once it runs over. The nine categories are spread as follows.
+Of the 183, fifty-eight are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 183, Daily Intentions, is a quiet morning card with three prompts, one intention, one priority, and one thing to let go of, that resets each day, keeps a private history, and lets you mark each line kept by evening. The nine categories are spread as follows.
 
 | Category | Code | Shipped |
 | --- | --- | --- |
@@ -22,7 +22,7 @@ Of the 182, fifty-eight are AI-powered. App 150, Saga Studio, is the latest mile
 | Games | G | 21 |
 | Health | H | 18 |
 | Interactive | I | 18 |
-| Productivity | P | 27 |
+| Productivity | P | 28 |
 | Spirituality | S | 20 |
 | Utility | U | 22 |
 
