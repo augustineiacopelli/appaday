@@ -10,9 +10,9 @@ Every app is a single self-contained file of vanilla HTML, CSS, and JavaScript w
 
 ## The count
 
-**All 184 shipped apps, numbered 001 through 184 with no gaps in the sequence.** Building since May 2026.
+**All 185 shipped apps, numbered 001 through 185 with no gaps in the sequence.** Building since May 2026.
 
-Of the 184, fifty-eight are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 184, Session Coach, is a private, offline coaching companion for pregnancy center advocates who meet with fathers, scoring the advocate's own listening and topic coverage out of 100 with one strength, one area to grow, and a next question, and printing blank or drafted talking point forms. The nine categories are spread as follows.
+Of the 185, fifty-eight are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 185, Sun Compass, shows where the sun is on a live compass dial with a plain English why for every reading, overlays the day's sun path on the phone camera in Sky View, calibrates the phone compass against the sun, and scrubs to any solstice or equinox. The nine categories are spread as follows.
 
 | Category | Code | Shipped |
 | --- | --- | --- |
@@ -21,7 +21,7 @@ Of the 184, fifty-eight are AI-powered. App 150, Saga Studio, is the latest mile
 | Educational | E | 17 |
 | Games | G | 21 |
 | Health | H | 18 |
-| Interactive | I | 18 |
+| Interactive | I | 19 |
 | Productivity | P | 28 |
 | Spirituality | S | 21 |
 | Utility | U | 22 |

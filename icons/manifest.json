@@ -1470,5 +1470,13 @@
   "slug": "appaday-184-session-coach",
   "glyph": "hand-heart",
   "color": "#6A4C93"
+ },
+ {
+  "num": "185",
+  "cat": "I",
+  "name": "Sun Compass",
+  "slug": "appaday-185-sun-compass",
+  "glyph": "sun",
+  "color": "#5B4BC4"
  }
 ]
