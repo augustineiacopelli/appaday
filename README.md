@@ -10,9 +10,9 @@ Every app is a single self-contained file of vanilla HTML, CSS, and JavaScript w
 
 ## The count
 
-**All 185 shipped apps, numbered 001 through 185 with no gaps in the sequence.** Building since May 2026.
+**All 186 shipped apps, numbered 001 through 186 with no gaps in the sequence.** Building since May 2026.
 
-Of the 185, fifty-eight are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 185, Sun Compass, shows where the sun is on a live compass dial with a plain English why for every reading, overlays the day's sun path on the phone camera in Sky View, calibrates the phone compass against the sun, and scrubs to any solstice or equinox. The nine categories are spread as follows.
+Of the 186, fifty-nine are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 186, Home Asset Tracker, builds a home inventory for insurance: photograph an item and its label, Claude suggests the name, brand, model, condition and replacement and used value ranges, and the dashboard compares the total against the policy coverage limit before exporting a claim-ready PDF, a CSV, or a full photo backup. The nine categories are spread as follows.
 
 | Category | Code | Shipped |
 | --- | --- | --- |
@@ -24,7 +24,7 @@ Of the 185, fifty-eight are AI-powered. App 150, Saga Studio, is the latest mile
 | Interactive | I | 19 |
 | Productivity | P | 28 |
 | Spirituality | S | 21 |
-| Utility | U | 22 |
+| Utility | U | 23 |
 
 ## How it is organized
 

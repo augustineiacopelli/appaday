@@ -1478,5 +1478,13 @@
   "slug": "appaday-185-sun-compass",
   "glyph": "sun",
   "color": "#5B4BC4"
+ },
+ {
+  "num": "186",
+  "cat": "U",
+  "name": "Home Asset Tracker",
+  "slug": "appaday-186-home-asset-tracker",
+  "glyph": "house",
+  "color": "#289664"
  }
 ]
