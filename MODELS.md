@@ -50,7 +50,20 @@ Never write a model ID such as `claude-sonnet-5-5` into an app. The weekly healt
 | `AppModels.onChange(fn)` | Calls `fn` if `config.json` brings newer models during the visit |
 | `AppModels.fill(root)` | Refills the markup helpers below inside `root` (run automatically on load and on change) |
 
+| `AppModels.thinking(x)` | The lowest thinking setting the tier's (or model ID's) model accepts, such as `{type: 'between_tools'}`, or `undefined` when the field must be left out |
+| `AppModels.text(data)` | Every text block of a Messages API reply joined, so a leading thinking block never hides the answer |
+
 Unknown tiers fall back to `sonnet`.
+
+## Thinking and max_tokens (added November 9, 2026)
+
+Sonnet 5.5, Sonnet 5, Haiku 5.5 and Opus 5.5 all think by default when a request carries no `thinking` field, and thinking tokens count against `max_tokens`. A small budget can be spent entirely on thinking, so the reply arrives with no text block. The accepted way to turn thinking off differs by model: Sonnet 5.5 takes `{type: 'between_tools'}` and rejects `disabled` with a 400, Sonnet 5 and Haiku 5.5 take `disabled`, and Opus 5.5 always thinks. Every AI app request body therefore carries
+
+```js
+thinking: (window.AppModels && window.AppModels.thinking ? window.AppModels.thinking(MODEL_OR_TIER) : undefined),
+```
+
+which `JSON.stringify` drops when it is `undefined`. Read replies with `AppModels.text(data)` or by filtering for `type === 'text'`, never `content[0].text`. An app that calls the `opus` tier gets no thinking field, so its `max_tokens` must leave room for thinking (a few thousand at least). When a tier moves to a new model, add the new model to the `LEAN` table in `models.js` in the same commit as the `EMBED` edit. On November 9, 2026, the day sonnet moved to Sonnet 5.5, 42 apps were patched this way (37 gained the field, 029 on the opus tier got larger budgets instead, 136, 140, 141 and 144 had sent `disabled`, 140 also had a forced `tool_choice` that Sonnet 5.5 rejects, and 017, 022, 023 and 029 read `content[0].text`). Apps that already retried through the thinking forms (073, 134, 145, 146 to 150, 153, 155, 158, 160, 170, 176, 180, 186) were left as they were.
 
 ## Model names in the interface
 

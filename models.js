@@ -14,6 +14,9 @@
      AppModels.tier('claude-opus-4-8') -> 'opus'   (old saved IDs map to their tier)
      AppModels.tiers()             -> ['haiku','sonnet','opus','fable']
      AppModels.onChange(fn)        -> fn() runs if config.json brings newer models
+     AppModels.thinking('sonnet')  -> {type:'between_tools'} or undefined: the lowest thinking
+                                      setting for the model; put it in the request body as is
+     AppModels.text(data)          -> all text blocks of a Messages API reply, joined
 
    Markup helpers, filled on load and again whenever the models change:
      <span data-model-label="sonnet"></span>           -> Sonnet 5.5
@@ -89,6 +92,29 @@
   function id(t) { return cur.models[tier(t)]; }
   function label(t) { return cur.labels[tier(t)]; }
 
+  // The lowest thinking setting each model accepts. Thinking tokens count against max_tokens,
+  // so a request that leaves thinking on can spend its whole budget before writing any text.
+  // A model missing here gets no thinking field (Opus 5.5 always thinks; models before
+  // Sonnet 5 never did by default). Update this table whenever a tier moves to a new model.
+  var LEAN = {
+    'claude-sonnet-5-5': 'between_tools',
+    'claude-sonnet-5': 'disabled',
+    'claude-haiku-5-5': 'disabled'
+  };
+  function thinking(x) {
+    var m = String(x == null ? '' : x);
+    if (m.indexOf('claude-') !== 0) m = id(m);
+    return LEAN[m] ? { type: LEAN[m] } : undefined;
+  }
+  // Every text block of a Messages API reply joined, so a leading thinking block never hides the answer.
+  function text(data) {
+    var c = data && data.content;
+    if (!c || !c.length) return '';
+    var out = [];
+    for (var i = 0; i < c.length; i++) if (c[i] && c[i].type === 'text' && c[i].text) out.push(c[i].text);
+    return out.join('\n\n');
+  }
+
   function fill(root) {
     var doc = root || document;
     if (!doc || !doc.querySelectorAll) return;
@@ -131,6 +157,8 @@
     id: id,
     get: get,
     label: label,
+    thinking: thinking,
+    text: text,
     tier: tier,
     tiers: function () { return TIERS.slice(); },
     ready: ready,
