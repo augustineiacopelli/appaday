@@ -33,9 +33,9 @@
   var TIERS = ['haiku', 'sonnet', 'opus', 'fable'];
 
   var EMBED = {
-    lastUpdated: '2026-10-27',
-    models: { haiku: 'claude-haiku-5-5', sonnet: 'claude-sonnet-5-5', opus: 'claude-opus-5-5', fable: 'claude-fable-5-1' },
-    labels: { haiku: 'Haiku 5.5', sonnet: 'Sonnet 5.5', opus: 'Opus 5.5', fable: 'Fable 5.1' }
+    lastUpdated: '2026-11-09',
+    models: { haiku: 'claude-haiku-5-5', sonnet: 'claude-sonnet-5-5', opus: 'claude-opus-5-5', fable: 'claude-fable-5-2' },
+    labels: { haiku: 'Haiku 5.5', sonnet: 'Sonnet 5.5', opus: 'Opus 5.5', fable: 'Fable 5.2' }
   };
 
   function valid(c) {
