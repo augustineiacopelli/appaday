@@ -12,7 +12,7 @@ Every app is a single self-contained file of vanilla HTML, CSS, and JavaScript w
 
 **All 187 shipped apps, numbered 001 through 187 with no gaps in the sequence.** Building since May 2026.
 
-Of the 187, fifty-nine are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 187, Pachinko Hall, is a six seat pachinko parlor that traces the game from the mechanical bells and tulips of 1962 to modern digital reels, hidden modes and LCD duels, with custom ball physics, seeded odds and play balls only. The nine categories are spread as follows.
+Of the 187, fifty-nine are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 187, Pachinko Hall, is a seven seat pachinko parlor tracing the game from the mechanical bells and tulips of 1962 to the 2023 ball-less smart cabinet, with custom ball physics, seeded odds, a rented-ball economy, a prize counter and the three shop exchange. The nine categories are spread as follows.
 
 | Category | Code | Shipped |
 | --- | --- | --- |
