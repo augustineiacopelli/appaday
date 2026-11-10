@@ -10,16 +10,16 @@ Every app is a single self-contained file of vanilla HTML, CSS, and JavaScript w
 
 ## The count
 
-**All 186 shipped apps, numbered 001 through 186 with no gaps in the sequence.** Building since May 2026.
+**All 187 shipped apps, numbered 001 through 187 with no gaps in the sequence.** Building since May 2026.
 
-Of the 186, fifty-nine are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 186, Home Asset Tracker, builds a home inventory for insurance: photograph an item and its label, Claude suggests the name, brand, model, condition and replacement and used value ranges, and the dashboard compares the total against the policy coverage limit before exporting a claim-ready PDF, a CSV, or a full photo backup. The nine categories are spread as follows.
+Of the 187, fifty-nine are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 187, Pachinko Hall, is a six seat pachinko parlor that traces the game from the mechanical bells and tulips of 1962 to modern digital reels, hidden modes and LCD duels, with custom ball physics, seeded odds and play balls only. The nine categories are spread as follows.
 
 | Category | Code | Shipped |
 | --- | --- | --- |
 | Creative | C | 21 |
 | Data | D | 18 |
 | Educational | E | 17 |
-| Games | G | 21 |
+| Games | G | 22 |
 | Health | H | 18 |
 | Interactive | I | 19 |
 | Productivity | P | 28 |

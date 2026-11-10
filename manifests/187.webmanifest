@@ -1,0 +1,36 @@
+{
+ "name": "Pachinko Hall",
+ "short_name": "Pachinko",
+ "id": "https://augustineiacopelli.github.io/appaday-187-pachinko-hall/",
+ "start_url": "https://augustineiacopelli.github.io/appaday-187-pachinko-hall/",
+ "scope": "https://augustineiacopelli.github.io/appaday-187-pachinko-hall/",
+ "display": "standalone",
+ "background_color": "#0F0E0C",
+ "theme_color": "#276EB7",
+ "icons": [
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/187.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/187.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/187.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/187.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

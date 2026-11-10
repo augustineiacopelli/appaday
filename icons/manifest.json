@@ -1486,5 +1486,13 @@
   "slug": "appaday-186-home-asset-tracker",
   "glyph": "house",
   "color": "#289664"
+ },
+ {
+  "num": "187",
+  "cat": "G",
+  "name": "Pachinko Hall",
+  "slug": "appaday-187-pachinko-hall",
+  "glyph": "cherry",
+  "color": "#276EB7"
  }
 ]
