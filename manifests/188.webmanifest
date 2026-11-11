@@ -1,0 +1,36 @@
+{
+ "name": "Custom Crossword Maker",
+ "short_name": "Crosswords",
+ "id": "https://augustineiacopelli.github.io/appaday-188-custom-crossword-maker/",
+ "start_url": "https://augustineiacopelli.github.io/appaday-188-custom-crossword-maker/",
+ "scope": "https://augustineiacopelli.github.io/appaday-188-custom-crossword-maker/",
+ "display": "standalone",
+ "background_color": "#0F0E0C",
+ "theme_color": "#A63D9E",
+ "icons": [
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/188.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/188.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/188.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/188.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

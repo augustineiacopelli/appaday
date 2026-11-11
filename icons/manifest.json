@@ -1494,5 +1494,13 @@
   "slug": "appaday-187-pachinko-hall",
   "glyph": "cherry",
   "color": "#276EB7"
+ },
+ {
+  "num": "188",
+  "cat": "C",
+  "name": "Custom Crossword Maker",
+  "slug": "appaday-188-custom-crossword-maker",
+  "glyph": "grid-3x3",
+  "color": "#A63D9E"
  }
 ]

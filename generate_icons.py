@@ -126,6 +126,7 @@ GLYPH_MAP = {
     "185": "sun",
     "186": "house",
     "187": "cherry",
+    "188": "grid-3x3",
 }
 PORTFOLIO_GLYPH = "shapes"
 
