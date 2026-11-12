@@ -37,6 +37,7 @@ TITLE = {
     "186": "Home Assets",
     "187": "Pachinko",
     "188": "Crosswords",
+    "189": "Debt Payoff",
     "001": "Reaction", "002": "Stream", "003": "Scripture", "005": "Dad Jokes",
     "007": "Standing", "008": "Numbers", "011": "Password", "012": "Prayers",
     "016": "Chug", "017": "Scribe", "019": "Tone", "020": "Readers",

@@ -1502,5 +1502,13 @@
   "slug": "appaday-188-custom-crossword-maker",
   "glyph": "grid-3x3",
   "color": "#A63D9E"
+ },
+ {
+  "num": "189",
+  "cat": "U",
+  "name": "Debt Payoff",
+  "slug": "appaday-189-debt-payoff",
+  "glyph": "trending-down",
+  "color": "#289664"
  }
 ]
