@@ -10,15 +10,15 @@ Every app is a single self-contained file of vanilla HTML, CSS, and JavaScript w
 
 ## The count
 
-**All 189 shipped apps, numbered 001 through 189 with no gaps in the sequence.** Building since May 2026.
+**All 190 shipped apps, numbered 001 through 190 with no gaps in the sequence.** Building since May 2026.
 
-Of the 189, sixty are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 189, Debt Payoff, compares the debt snowball and debt avalanche side by side: enter your debts and any extra monthly amount to see your debt free date, total interest under each plan, the payoff order, and a balance over time chart. The nine categories are spread as follows.
+Of the 190, sixty-one are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 190, Stat Test Picker, asks five plain language questions about a study and names the right statistical test, with an assumptions checklist, a nonparametric fallback, a why not note, and an optional Claude explanation written for an intro stats student. The nine categories are spread as follows.
 
 | Category | Code | Shipped |
 | --- | --- | --- |
 | Creative | C | 22 |
 | Data | D | 18 |
-| Educational | E | 17 |
+| Educational | E | 18 |
 | Games | G | 22 |
 | Health | H | 18 |
 | Interactive | I | 19 |

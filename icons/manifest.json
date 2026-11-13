@@ -1510,5 +1510,13 @@
   "slug": "appaday-189-debt-payoff",
   "glyph": "trending-down",
   "color": "#289664"
+ },
+ {
+  "num": "190",
+  "cat": "E",
+  "name": "Stat Test Picker",
+  "slug": "appaday-190-stat-test-picker",
+  "glyph": "sigma",
+  "color": "#1F7A8C"
  }
 ]
