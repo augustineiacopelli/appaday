@@ -129,6 +129,7 @@ GLYPH_MAP = {
     "188": "grid-3x3",
     "189": "trending-down",
     "190": "sigma",
+    "191": "diff",
 }
 PORTFOLIO_GLYPH = "shapes"
 

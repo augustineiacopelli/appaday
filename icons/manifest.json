@@ -1518,5 +1518,13 @@
   "slug": "appaday-190-stat-test-picker",
   "glyph": "sigma",
   "color": "#1F7A8C"
+ },
+ {
+  "num": "191",
+  "cat": "U",
+  "name": "Text Diff",
+  "slug": "appaday-191-text-diff",
+  "glyph": "diff",
+  "color": "#289664"
  }
 ]
