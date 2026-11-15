@@ -10,9 +10,9 @@ Every app is a single self-contained file of vanilla HTML, CSS, and JavaScript w
 
 ## The count
 
-**All 191 shipped apps, numbered 001 through 191 with no gaps in the sequence.** Building since May 2026.
+**All 192 shipped apps, numbered 001 through 192 with no gaps in the sequence.** Building since May 2026.
 
-Of the 191, sixty-one are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 191, Text Diff, compares two pasted texts by words, lines, or characters with optional ignore case and ignore whitespace, shows what was added and removed inline or side by side with a similarity percent, and copies a unified diff, all offline in the browser. The nine categories are spread as follows.
+Of the 192, sixty-two are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 192, Advent Calendar, builds a Catholic family Advent calendar with a door for every day from the First Sunday of Advent to Christmas Eve, worked out fresh for each year, and Claude writes a Scripture paraphrase, reflection, activity and prayer for every age in the home, ready to edit and print. The nine categories are spread as follows.
 
 | Category | Code | Shipped |
 | --- | --- | --- |
@@ -23,7 +23,7 @@ Of the 191, sixty-one are AI-powered. App 150, Saga Studio, is the latest milest
 | Health | H | 18 |
 | Interactive | I | 19 |
 | Productivity | P | 28 |
-| Spirituality | S | 21 |
+| Spirituality | S | 22 |
 | Utility | U | 25 |
 
 ## How it is organized

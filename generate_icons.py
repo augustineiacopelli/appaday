@@ -130,6 +130,7 @@ GLYPH_MAP = {
     "189": "trending-down",
     "190": "sigma",
     "191": "diff",
+    "192": "calendar-heart",
 }
 PORTFOLIO_GLYPH = "shapes"
 

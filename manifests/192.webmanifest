@@ -1,0 +1,36 @@
+{
+ "name": "Advent Calendar",
+ "short_name": "Advent",
+ "id": "https://augustineiacopelli.github.io/appaday-192-advent-calendar-builder/",
+ "start_url": "https://augustineiacopelli.github.io/appaday-192-advent-calendar-builder/",
+ "scope": "https://augustineiacopelli.github.io/appaday-192-advent-calendar-builder/",
+ "display": "standalone",
+ "background_color": "#0F0E0C",
+ "theme_color": "#6A4C93",
+ "icons": [
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/192.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/192.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/192.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/192.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}
