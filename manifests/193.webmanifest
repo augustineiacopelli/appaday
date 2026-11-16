@@ -1,0 +1,36 @@
+{
+ "name": "Cornhole Scorekeeper",
+ "short_name": "Cornhole",
+ "id": "https://augustineiacopelli.github.io/appaday-193-cornhole-scorekeeper/",
+ "start_url": "https://augustineiacopelli.github.io/appaday-193-cornhole-scorekeeper/",
+ "scope": "https://augustineiacopelli.github.io/appaday-193-cornhole-scorekeeper/",
+ "display": "standalone",
+ "background_color": "#0F0E0C",
+ "theme_color": "#276EB7",
+ "icons": [
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/193.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/193.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/193.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/193.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

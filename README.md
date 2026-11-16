@@ -10,16 +10,16 @@ Every app is a single self-contained file of vanilla HTML, CSS, and JavaScript w
 
 ## The count
 
-**All 192 shipped apps, numbered 001 through 192 with no gaps in the sequence.** Building since May 2026.
+**All 193 shipped apps, numbered 001 through 193 with no gaps in the sequence.** Building since May 2026.
 
-Of the 192, sixty-two are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 192, Advent Calendar, builds a Catholic family Advent calendar with a door for every day from the First Sunday of Advent to Christmas Eve, worked out fresh for each year, and Claude writes a Scripture paraphrase, reflection, activity and prayer for every age in the home, ready to edit and print. The nine categories are spread as follows.
+Of the 193, sixty-two are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 193, Cornhole Scorekeeper, is a backyard scoreboard for singles or doubles that nets each frame by cancellation scoring, previews the result before it is committed, handles the bust rule and best of 3 or 5 series, and tracks American Cornhole League stats such as PPR, DPR and bags in percentage by team and by player, with a career page across every saved game. The nine categories are spread as follows.
 
 | Category | Code | Shipped |
 | --- | --- | --- |
 | Creative | C | 22 |
 | Data | D | 18 |
 | Educational | E | 18 |
-| Games | G | 22 |
+| Games | G | 23 |
 | Health | H | 18 |
 | Interactive | I | 19 |
 | Productivity | P | 28 |

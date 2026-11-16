@@ -1534,5 +1534,13 @@
   "slug": "appaday-192-advent-calendar-builder",
   "glyph": "calendar-heart",
   "color": "#6A4C93"
+ },
+ {
+  "num": "193",
+  "cat": "G",
+  "name": "Cornhole Scorekeeper",
+  "slug": "appaday-193-cornhole-scorekeeper",
+  "glyph": "circle-dot",
+  "color": "#276EB7"
  }
 ]

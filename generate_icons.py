@@ -131,6 +131,7 @@ GLYPH_MAP = {
     "190": "sigma",
     "191": "diff",
     "192": "calendar-heart",
+    "193": "circle-dot",
 }
 PORTFOLIO_GLYPH = "shapes"
 
