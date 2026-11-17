@@ -110,6 +110,9 @@ SCRIPT_RE = re.compile(r'<script\b([^>]*)>(.*?)</script>', re.S | re.I)
 NODE = shutil.which("node")
 
 
+QD_CORE = re.compile(r"/\* QD:CORE BEGIN[\s\S]*?/\* QD:CORE END \*/")
+
+
 LOCAL_SCRIPT = re.compile(r"""<script[^>]+\bsrc=["'](?!https?:|//|data:)([^"'?#]+\.js)[^"']*["']""", re.I)
 
 
@@ -267,11 +270,14 @@ def check(app):
             if n != 1:
                 problems.append("%s tag appears %d times" % (label, n))
         text = body.decode("utf-8", "replace")
+        # The vendored Query Desk core (Apps 194 to 200) carries QD.claude, but only apps that also vendor
+        # QD:ASK call it, so the core block alone does not make an app an AI app.
+        own = QD_CORE.sub("", text)
         hit, hit_text = None, ""
-        if "api.anthropic.com" not in text:
+        if "api.anthropic.com" not in own:
             base = page.rsplit("/", 1)[0] + "/"
             hit, hit_text = local_ai_script(text, base)
-        detected = "api.anthropic.com" in text or bool(hit)
+        detected = "api.anthropic.com" in own or "/* QD:ASK BEGIN" in text or bool(hit)
         where = hit or "index.html"
         if detected and not app["ai"]:
             problems.append("calls Claude (%s) but its portal entry lacks ai:true, so the AI badge and the "

@@ -10,9 +10,9 @@ Every app is a single self-contained file of vanilla HTML, CSS, and JavaScript w
 
 ## The count
 
-**All 193 shipped apps, numbered 001 through 193 with no gaps in the sequence.** Building since May 2026.
+**All 194 shipped apps, numbered 001 through 194 with no gaps in the sequence.** Building since May 2026.
 
-Of the 193, sixty-two are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 193, Cornhole Scorekeeper, is a backyard scoreboard for singles or doubles that nets each frame by cancellation scoring, previews the result before it is committed, handles the bust rule and best of 3 or 5 series, and tracks American Cornhole League stats such as PPR, DPR and bags in percentage by team and by player, with a career page across every saved game. The nine categories are spread as follows.
+Of the 194, sixty-two are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 194, CSV Intake, opens the run of daily builds that assemble into the Query Desk milestone on Day 200: it turns one or more CSV files into tables in a real SQLite database in the browser, reads each column as a number, date, yes or no, or text while keeping ZIP codes intact, handles Excel byte order marks, UTF-16 and semicolon files, flags rows and cells that do not fit, and hands back one .sqlite file. The nine categories are spread as follows.
 
 | Category | Code | Shipped |
 | --- | --- | --- |
@@ -24,7 +24,11 @@ Of the 193, sixty-two are AI-powered. App 150, Saga Studio, is the latest milest
 | Interactive | I | 19 |
 | Productivity | P | 28 |
 | Spirituality | S | 22 |
-| Utility | U | 25 |
+| Utility | U | 26 |
+
+## Shared SQLite engine
+
+The Query Desk apps (194 to 200) load the sql.js 1.16.0 SQLite engine from `vendor/sql.js-1.16.0/` in this repository by relative path (`../appaday/vendor/sql.js-1.16.0/`), so they carry no outside CDN dependency. Each of those apps vendors the shared Query Desk core inline; `health_check.py` ignores the Claude call inside that core unless the app also vendors the Ask module.
 
 ## How it is organized
 

@@ -1542,5 +1542,13 @@
   "slug": "appaday-193-cornhole-scorekeeper",
   "glyph": "circle-dot",
   "color": "#276EB7"
+ },
+ {
+  "num": "194",
+  "cat": "U",
+  "name": "CSV Intake",
+  "slug": "appaday-194-csv-intake",
+  "glyph": "file-spreadsheet",
+  "color": "#289664"
  }
 ]

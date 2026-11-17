@@ -132,6 +132,7 @@ GLYPH_MAP = {
     "191": "diff",
     "192": "calendar-heart",
     "193": "circle-dot",
+    "194": "file-spreadsheet",
 }
 PORTFOLIO_GLYPH = "shapes"
 
