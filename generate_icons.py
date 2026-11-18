@@ -133,6 +133,7 @@ GLYPH_MAP = {
     "192": "calendar-heart",
     "193": "circle-dot",
     "194": "file-spreadsheet",
+    "195": "square-terminal",
 }
 PORTFOLIO_GLYPH = "shapes"
 

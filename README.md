@@ -10,9 +10,9 @@ Every app is a single self-contained file of vanilla HTML, CSS, and JavaScript w
 
 ## The count
 
-**All 194 shipped apps, numbered 001 through 194 with no gaps in the sequence.** Building since May 2026.
+**All 195 shipped apps, numbered 001 through 195 with no gaps in the sequence.** Building since May 2026.
 
-Of the 194, sixty-two are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 194, CSV Intake, opens the run of daily builds that assemble into the Query Desk milestone on Day 200: it turns one or more CSV files into tables in a real SQLite database in the browser, reads each column as a number, date, yes or no, or text while keeping ZIP codes intact, handles Excel byte order marks, UTF-16 and semicolon files, flags rows and cells that do not fit, and hands back one .sqlite file. The nine categories are spread as follows.
+Of the 195, sixty-two are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 195, Query Bench, is the second of the daily builds that assemble into the Query Desk milestone on Day 200: a SQL workbench in the browser that opens any SQLite file or a CSV Intake project, lists its tables and columns, runs queries into a scrolling result grid, explains errors in plain English with the name you probably meant, keeps history and saved queries inside the project, exports results to CSV, and stays read only until you allow changes. The nine categories are spread as follows.
 
 | Category | Code | Shipped |
 | --- | --- | --- |
@@ -24,7 +24,7 @@ Of the 194, sixty-two are AI-powered. App 150, Saga Studio, is the latest milest
 | Interactive | I | 19 |
 | Productivity | P | 28 |
 | Spirituality | S | 22 |
-| Utility | U | 26 |
+| Utility | U | 27 |
 
 ## Shared SQLite engine
 

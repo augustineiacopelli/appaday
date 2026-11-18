@@ -1550,5 +1550,13 @@
   "slug": "appaday-194-csv-intake",
   "glyph": "file-spreadsheet",
   "color": "#289664"
+ },
+ {
+  "num": "195",
+  "cat": "U",
+  "name": "Query Bench",
+  "slug": "appaday-195-query-bench",
+  "glyph": "square-terminal",
+  "color": "#289664"
  }
 ]
