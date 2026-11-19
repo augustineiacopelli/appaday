@@ -10,9 +10,9 @@ Every app is a single self-contained file of vanilla HTML, CSS, and JavaScript w
 
 ## The count
 
-**All 195 shipped apps, numbered 001 through 195 with no gaps in the sequence.** Building since May 2026.
+**All 196 shipped apps, numbered 001 through 196 with no gaps in the sequence.** Building since May 2026.
 
-Of the 195, sixty-two are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 195, Query Bench, is the second of the daily builds that assemble into the Query Desk milestone on Day 200: a SQL workbench in the browser that opens any SQLite file or a CSV Intake project, lists its tables and columns, runs queries into a scrolling result grid, explains errors in plain English with the name you probably meant, keeps history and saved queries inside the project, exports results to CSV, and stays read only until you allow changes. The nine categories are spread as follows.
+Of the 196, sixty-two are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 196, Key Finder, is the third of the daily builds that assemble into the Query Desk milestone on Day 200: it profiles every column of a database, proposes a primary key for each table and the foreign keys between them with a confidence and plain reasons, avoids matching row number columns to each other, keeps every confirm or reject when you analyze again, draws the tables as a diagram you can arrange, and writes the JOIN for any two tables you tap, ready to open in Query Bench. The nine categories are spread as follows.
 
 | Category | Code | Shipped |
 | --- | --- | --- |
@@ -24,7 +24,7 @@ Of the 195, sixty-two are AI-powered. App 150, Saga Studio, is the latest milest
 | Interactive | I | 19 |
 | Productivity | P | 28 |
 | Spirituality | S | 22 |
-| Utility | U | 27 |
+| Utility | U | 28 |
 
 ## Shared SQLite engine
 

@@ -1558,5 +1558,13 @@
   "slug": "appaday-195-query-bench",
   "glyph": "square-terminal",
   "color": "#289664"
+ },
+ {
+  "num": "196",
+  "cat": "U",
+  "name": "Key Finder",
+  "slug": "appaday-196-key-finder",
+  "glyph": "key",
+  "color": "#289664"
  }
 ]
