@@ -10,9 +10,9 @@ Every app is a single self-contained file of vanilla HTML, CSS, and JavaScript w
 
 ## The count
 
-**All 196 shipped apps, numbered 001 through 196 with no gaps in the sequence.** Building since May 2026.
+**All 197 shipped apps, numbered 001 through 197 with no gaps in the sequence.** Building since May 2026.
 
-Of the 196, sixty-two are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 196, Key Finder, is the third of the daily builds that assemble into the Query Desk milestone on Day 200: it profiles every column of a database, proposes a primary key for each table and the foreign keys between them with a confidence and plain reasons, avoids matching row number columns to each other, keeps every confirm or reject when you analyze again, draws the tables as a diagram you can arrange, and writes the JOIN for any two tables you tap, ready to open in Query Bench. The nine categories are spread as follows.
+Of the 197, sixty-three are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 197, Plain Ask, is the fourth of the daily builds that assemble into the Query Desk milestone on Day 200: type a question about your data in plain English and Claude writes a read only SQL query, lists the assumptions it made, and explains the query step by step before you trust the answer. It shows the exact text it will send, which is only the table layout, up to three sample rows per table and your question, and the query can read but never change your data. The nine categories are spread as follows.
 
 | Category | Code | Shipped |
 | --- | --- | --- |
@@ -24,7 +24,7 @@ Of the 196, sixty-two are AI-powered. App 150, Saga Studio, is the latest milest
 | Interactive | I | 19 |
 | Productivity | P | 28 |
 | Spirituality | S | 22 |
-| Utility | U | 28 |
+| Utility | U | 29 |
 
 ## Shared SQLite engine
 

@@ -135,6 +135,7 @@ GLYPH_MAP = {
     "194": "file-spreadsheet",
     "195": "square-terminal",
     "196": "key",
+    "197": "message-circle-question",
 }
 PORTFOLIO_GLYPH = "shapes"
 

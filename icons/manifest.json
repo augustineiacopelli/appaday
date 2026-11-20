@@ -1566,5 +1566,13 @@
   "slug": "appaday-196-key-finder",
   "glyph": "key",
   "color": "#289664"
+ },
+ {
+  "num": "197",
+  "cat": "U",
+  "name": "Plain Ask",
+  "slug": "appaday-197-plain-ask",
+  "glyph": "message-circle-question",
+  "color": "#289664"
  }
 ]
