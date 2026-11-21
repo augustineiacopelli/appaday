@@ -10,14 +10,14 @@ Every app is a single self-contained file of vanilla HTML, CSS, and JavaScript w
 
 ## The count
 
-**All 197 shipped apps, numbered 001 through 197 with no gaps in the sequence.** Building since May 2026.
+**All 198 shipped apps, numbered 001 through 198 with no gaps in the sequence.** Building since May 2026.
 
-Of the 197, sixty-three are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 197, Plain Ask, is the fourth of the daily builds that assemble into the Query Desk milestone on Day 200: type a question about your data in plain English and Claude writes a read only SQL query, lists the assumptions it made, and explains the query step by step before you trust the answer. It shows the exact text it will send, which is only the table layout, up to three sample rows per table and your question, and the query can read but never change your data. The nine categories are spread as follows.
+Of the 198, sixty-three are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 198, Result Charts, is the fifth of the daily builds that assemble into the Query Desk milestone on Day 200: it reads the shape of any query result and picks the chart that fits, a bar, line, scatter, pie, grouped bar or single number, lets you pivot and restyle it in a tap, and pins charts to a board that reruns every query each time it opens. Everything runs on the device, and charts export as PNG. The nine categories are spread as follows.
 
 | Category | Code | Shipped |
 | --- | --- | --- |
 | Creative | C | 22 |
-| Data | D | 18 |
+| Data | D | 19 |
 | Educational | E | 18 |
 | Games | G | 23 |
 | Health | H | 18 |

@@ -1574,5 +1574,13 @@
   "slug": "appaday-197-plain-ask",
   "glyph": "message-circle-question",
   "color": "#289664"
+ },
+ {
+  "num": "198",
+  "cat": "D",
+  "name": "Result Charts",
+  "slug": "appaday-198-result-charts",
+  "glyph": "chart-column",
+  "color": "#B8860B"
  }
 ]

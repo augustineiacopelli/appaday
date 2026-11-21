@@ -136,6 +136,7 @@ GLYPH_MAP = {
     "195": "square-terminal",
     "196": "key",
     "197": "message-circle-question",
+    "198": "chart-column",
 }
 PORTFOLIO_GLYPH = "shapes"
 
