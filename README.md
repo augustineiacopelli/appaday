@@ -10,15 +10,15 @@ Every app is a single self-contained file of vanilla HTML, CSS, and JavaScript w
 
 ## The count
 
-**All 198 shipped apps, numbered 001 through 198 with no gaps in the sequence.** Building since May 2026.
+**All 199 shipped apps, numbered 001 through 199 with no gaps in the sequence.** Building since May 2026.
 
-Of the 198, sixty-three are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 198, Result Charts, is the fifth of the daily builds that assemble into the Query Desk milestone on Day 200: it reads the shape of any query result and picks the chart that fits, a bar, line, scatter, pie, grouped bar or single number, lets you pivot and restyle it in a tap, and pins charts to a board that reruns every query each time it opens. Everything runs on the device, and charts export as PNG. The nine categories are spread as follows.
+Of the 199, sixty-three are AI-powered. App 150, Saga Studio, is the latest milestone: it joins the four Saga forges of Days 146 to 149 into one studio that takes a classic RPG from its Charter to a game that plays on its own. The newest app, App 199, Query Clinic, is the last of the daily builds that assemble into the Query Desk milestone on Day 200: a hands on SQL course of forty graded exercises in ten units on a practice college database built in the browser, from SELECT to window functions. Every answer is graded by the rows it returns, so any correct query passes, each miss gets a specific reason, a setting adds notes on where SQL Server differs, and progress stays on the device. The nine categories are spread as follows.
 
 | Category | Code | Shipped |
 | --- | --- | --- |
 | Creative | C | 22 |
 | Data | D | 19 |
-| Educational | E | 18 |
+| Educational | E | 19 |
 | Games | G | 23 |
 | Health | H | 18 |
 | Interactive | I | 19 |

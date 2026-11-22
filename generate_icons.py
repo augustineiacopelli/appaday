@@ -137,6 +137,7 @@ GLYPH_MAP = {
     "196": "key",
     "197": "message-circle-question",
     "198": "chart-column",
+    "199": "graduation-cap",
 }
 PORTFOLIO_GLYPH = "shapes"
 

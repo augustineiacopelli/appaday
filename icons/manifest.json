@@ -1582,5 +1582,13 @@
   "slug": "appaday-198-result-charts",
   "glyph": "chart-column",
   "color": "#B8860B"
+ },
+ {
+  "num": "199",
+  "cat": "E",
+  "name": "Query Clinic",
+  "slug": "appaday-199-query-clinic",
+  "glyph": "graduation-cap",
+  "color": "#1F7A8C"
  }
 ]
