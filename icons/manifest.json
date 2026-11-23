@@ -1590,5 +1590,13 @@
   "slug": "appaday-199-query-clinic",
   "glyph": "graduation-cap",
   "color": "#1F7A8C"
+ },
+ {
+  "num": "200",
+  "cat": "U",
+  "name": "Query Desk",
+  "slug": "appaday-200-query-desk",
+  "glyph": "database-zap",
+  "color": "#289664"
  }
 ]
