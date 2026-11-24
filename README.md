@@ -10,9 +10,9 @@ Every app is a single self-contained file of vanilla HTML, CSS, and JavaScript w
 
 ## The count
 
-**All 200 shipped apps, numbered 001 through 201, with 038 not listed in the portal.** Building since May 2026.
+**All 201 shipped apps, numbered 001 through 201 with no gaps in the sequence.** Building since May 2026.
 
-Of the 200, sixty-five are AI-powered. App 200, Query Desk, is the latest milestone: it assembles the six daily builds of Days 194 to 199 into one data workstation in a single browser tab, where you load CSV files into a real SQLite database, find how the tables connect, ask in plain English or write SQL, chart the results, and export a finished report that prints to PDF, with the forty exercise SQL course built in. App 150, Saga Studio, was the milestone before it, joining the four Saga forges of Days 146 to 149 into one studio that took a classic RPG from its Charter to a game that plays on its own. The nine categories are spread as follows.
+Of the 201, sixty-five are AI-powered. App 200, Query Desk, is the latest milestone: it assembles the six daily builds of Days 194 to 199 into one data workstation in a single browser tab, where you load CSV files into a real SQLite database, find how the tables connect, ask in plain English or write SQL, chart the results, and export a finished report that prints to PDF, with the forty exercise SQL course built in. App 150, Saga Studio, was the milestone before it, joining the four Saga forges of Days 146 to 149 into one studio that took a classic RPG from its Charter to a game that plays on its own. The nine categories are spread as follows.
 
 | Category | Code | Shipped |
 | --- | --- | --- |
@@ -23,7 +23,7 @@ Of the 200, sixty-five are AI-powered. App 200, Query Desk, is the latest milest
 | Health | H | 18 |
 | Interactive | I | 19 |
 | Productivity | P | 28 |
-| Spirituality | S | 21 |
+| Spirituality | S | 22 |
 | Utility | U | 30 |
 
 ## Shared SQLite engine
