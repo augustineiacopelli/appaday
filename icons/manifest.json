@@ -1598,5 +1598,13 @@
   "slug": "appaday-200-query-desk",
   "glyph": "database-zap",
   "color": "#289664"
+ },
+ {
+  "num": "201",
+  "cat": "E",
+  "name": "ReadingRush",
+  "slug": "appaday-201-reading-rush",
+  "glyph": "book-open-text",
+  "color": "#1F7A8C"
  }
 ]
