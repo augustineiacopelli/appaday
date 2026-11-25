@@ -1606,5 +1606,13 @@
   "slug": "appaday-201-reading-rush",
   "glyph": "book-open-text",
   "color": "#1F7A8C"
+ },
+ {
+  "num": "202",
+  "cat": "C",
+  "name": "Bedtime Adventure Builder",
+  "slug": "appaday-202-bedtime-adventure-builder",
+  "glyph": "moon-star",
+  "color": "#A63D9E"
  }
 ]

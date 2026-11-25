@@ -1,0 +1,36 @@
+{
+ "name": "Bedtime Adventure Builder",
+ "short_name": "Bedtime",
+ "id": "https://augustineiacopelli.github.io/appaday-202-bedtime-adventure-builder/",
+ "start_url": "https://augustineiacopelli.github.io/appaday-202-bedtime-adventure-builder/",
+ "scope": "https://augustineiacopelli.github.io/appaday-202-bedtime-adventure-builder/",
+ "display": "standalone",
+ "background_color": "#0F0E0C",
+ "theme_color": "#A63D9E",
+ "icons": [
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/202.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/192/202.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/202.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://augustineiacopelli.github.io/appaday/icons/512/202.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

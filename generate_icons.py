@@ -140,6 +140,7 @@ GLYPH_MAP = {
     "199": "graduation-cap",
     "200": "database-zap",
     "201": "book-open-text",
+    "202": "moon-star",
 }
 PORTFOLIO_GLYPH = "shapes"
 
