@@ -141,6 +141,7 @@ GLYPH_MAP = {
     "200": "database-zap",
     "201": "book-open-text",
     "202": "moon-star",
+    "203": "cooking-pot",
 }
 PORTFOLIO_GLYPH = "shapes"
 
