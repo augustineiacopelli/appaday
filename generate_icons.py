@@ -142,6 +142,7 @@ GLYPH_MAP = {
     "201": "book-open-text",
     "202": "moon-star",
     "203": "cooking-pot",
+    "204": "snowflake",
 }
 PORTFOLIO_GLYPH = "shapes"
 

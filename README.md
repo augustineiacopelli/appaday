@@ -10,16 +10,16 @@ Every app is a single self-contained file of vanilla HTML, CSS, and JavaScript w
 
 ## The count
 
-**All 203 shipped apps, numbered 001 through 203 with no gaps in the sequence.** Building since May 2026.
+**All 204 shipped apps, numbered 001 through 204 with no gaps in the sequence.** Building since May 2026.
 
-Of the 203, sixty-six are AI-powered. App 200, Query Desk, is the latest milestone: it assembles the six daily builds of Days 194 to 199 into one data workstation in a single browser tab, where you load CSV files into a real SQLite database, find how the tables connect, ask in plain English or write SQL, chart the results, and export a finished report that prints to PDF, with the forty exercise SQL course built in. App 150, Saga Studio, was the milestone before it, joining the four Saga forges of Days 146 to 149 into one studio that took a classic RPG from its Charter to a game that plays on its own. The nine categories are spread as follows.
+Of the 204, sixty-six are AI-powered. App 200, Query Desk, is the latest milestone: it assembles the six daily builds of Days 194 to 199 into one data workstation in a single browser tab, where you load CSV files into a real SQLite database, find how the tables connect, ask in plain English or write SQL, chart the results, and export a finished report that prints to PDF, with the forty exercise SQL course built in. App 150, Saga Studio, was the milestone before it, joining the four Saga forges of Days 146 to 149 into one studio that took a classic RPG from its Charter to a game that plays on its own. The nine categories are spread as follows.
 
 | Category | Code | Shipped |
 | --- | --- | --- |
 | Creative | C | 23 |
 | Data | D | 19 |
 | Educational | E | 20 |
-| Games | G | 23 |
+| Games | G | 24 |
 | Health | H | 18 |
 | Interactive | I | 19 |
 | Productivity | P | 29 |

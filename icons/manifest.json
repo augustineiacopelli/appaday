@@ -1622,5 +1622,13 @@
   "slug": "appaday-203-feast-timer",
   "glyph": "cooking-pot",
   "color": "#C8401A"
+ },
+ {
+  "num": "204",
+  "cat": "G",
+  "name": "Snow Globe",
+  "slug": "appaday-204-snow-globe",
+  "glyph": "snowflake",
+  "color": "#276EB7"
  }
 ]
