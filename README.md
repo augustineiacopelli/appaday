@@ -19,9 +19,9 @@ Of the 204, sixty-six are AI-powered. App 200, Query Desk, is the latest milesto
 | Creative | C | 23 |
 | Data | D | 19 |
 | Educational | E | 20 |
-| Games | G | 24 |
+| Games | G | 23 |
 | Health | H | 18 |
-| Interactive | I | 19 |
+| Interactive | I | 20 |
 | Productivity | P | 29 |
 | Spirituality | S | 22 |
 | Utility | U | 30 |
